@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include brana_audiobook *.css
+recursive-include brana_audiobook *.csv
+recursive-include brana_audiobook *.html
+recursive-include brana_audiobook *.ico
+recursive-include brana_audiobook *.js
+recursive-include brana_audiobook *.json
+recursive-include brana_audiobook *.md
+recursive-include brana_audiobook *.png
+recursive-include brana_audiobook *.py
+recursive-include brana_audiobook *.svg
+recursive-include brana_audiobook *.txt
+recursive-exclude brana_audiobook *.pyc
