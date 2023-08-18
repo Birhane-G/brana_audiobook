@@ -1,0 +1,111 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-08-18 22:42:51.653304",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "title",
+  "description",
+  "host",
+  "publisher",
+  "subscription_level",
+  "audio_file",
+  "total_listening_time",
+  "licensing_cost",
+  "production_cost",
+  "royalty_percentage"
+ ],
+ "fields": [
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Title",
+   "reqd": 1
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text Editor",
+   "label": "Description"
+  },
+  {
+   "fieldname": "host",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Host",
+   "reqd": 1
+  },
+  {
+   "fieldname": "publisher",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Publisher",
+   "options": "publisher",
+   "reqd": 1
+  },
+  {
+   "fieldname": "subscription_level",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Subscription Level",
+   "reqd": 1
+  },
+  {
+   "fieldname": "audio_file",
+   "fieldtype": "Data",
+   "label": "Audio File",
+   "reqd": 1
+  },
+  {
+   "fieldname": "total_listening_time",
+   "fieldtype": "Data",
+   "label": "Total Listening Time",
+   "reqd": 1
+  },
+  {
+   "fieldname": "licensing_cost",
+   "fieldtype": "Currency",
+   "label": "Licensing Cost",
+   "reqd": 1
+  },
+  {
+   "fieldname": "production_cost",
+   "fieldtype": "Currency",
+   "label": "Production Cost",
+   "reqd": 1
+  },
+  {
+   "fieldname": "royalty_percentage",
+   "fieldtype": "Float",
+   "label": "Royalty Percentage",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2023-08-18 22:42:51.653304",
+ "modified_by": "Administrator",
+ "module": "Brana Audiobook",
+ "name": "Podcast",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

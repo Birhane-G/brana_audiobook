@@ -1,0 +1,76 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-08-18 22:38:48.184541",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "title",
+  "description",
+  "audiobook",
+  "audio_file",
+  "total_listening_time"
+ ],
+ "fields": [
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Title",
+   "reqd": 1
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text Editor",
+   "label": "Description"
+  },
+  {
+   "fieldname": "audiobook",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Audiobook",
+   "options": "Audiobook",
+   "reqd": 1
+  },
+  {
+   "fieldname": "audio_file",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Audio File",
+   "reqd": 1
+  },
+  {
+   "fieldname": "total_listening_time",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Total Listening Time",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2023-08-18 22:38:48.184541",
+ "modified_by": "Administrator",
+ "module": "Brana Audiobook",
+ "name": "Audiobook Chapter",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

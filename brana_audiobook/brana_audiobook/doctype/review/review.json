@@ -1,0 +1,84 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-08-18 23:23:59.819436",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "user",
+  "audio_content",
+  "rating",
+  "review_text",
+  "date_created",
+  "review_id"
+ ],
+ "fields": [
+  {
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "User",
+   "options": "User Profile",
+   "reqd": 1
+  },
+  {
+   "fieldname": "audio_content",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Audio Content",
+   "options": "Audiobook",
+   "reqd": 1
+  },
+  {
+   "fieldname": "rating",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Rating",
+   "reqd": 1
+  },
+  {
+   "fieldname": "review_text",
+   "fieldtype": "Text",
+   "label": "Review Text "
+  },
+  {
+   "fieldname": "date_created",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date Created",
+   "reqd": 1
+  },
+  {
+   "fieldname": "review_id",
+   "fieldtype": "Data",
+   "label": "Review ID",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2023-08-18 23:23:59.819436",
+ "modified_by": "Administrator",
+ "module": "Brana Audiobook",
+ "name": "Review",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

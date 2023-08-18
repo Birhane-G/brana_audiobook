@@ -1,0 +1,64 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-08-18 23:08:30.372263",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "user_profile",
+  "billing_address",
+  "shipping_address"
+ ],
+ "fields": [
+  {
+   "fieldname": "user_profile",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "User Profile",
+   "options": "User Profile",
+   "reqd": 1
+  },
+  {
+   "fieldname": "billing_address",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Billing Address",
+   "options": "Address",
+   "reqd": 1
+  },
+  {
+   "fieldname": "shipping_address",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Shipping Address",
+   "options": "Address",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2023-08-18 23:08:30.372263",
+ "modified_by": "Administrator",
+ "module": "Brana Audiobook",
+ "name": "Customers",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
