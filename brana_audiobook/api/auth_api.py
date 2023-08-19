@@ -68,8 +68,9 @@ def login(identifier, password):
 
     return {
         "user": user_doc.name,
-        "first_name": user_doc.get_first_name(),
-        "last_name": user_doc.get_last_name(),
+        "first_name": user_doc.first_name,
+        "middle_name": user_doc.last_name,
+        "last_name": user_doc.middle_name,
         "email": user_doc.email,
         "user_profile": user_profile
         # Add other user details as needed

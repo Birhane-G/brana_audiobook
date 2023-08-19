@@ -32,9 +32,10 @@
   },
   {
    "fieldname": "user_profile",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "in_list_view": 1,
    "label": "User Profile",
+   "options": "User Profile",
    "reqd": 1
   },
   {
@@ -59,7 +60,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-08-18 22:51:38.305951",
+ "modified": "2023-08-19 10:55:38.957319",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Subscriptions Plan",

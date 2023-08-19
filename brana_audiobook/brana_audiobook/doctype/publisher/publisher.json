@@ -26,13 +26,14 @@
   },
   {
    "fieldname": "address",
-   "fieldtype": "Data",
-   "label": "address"
+   "fieldtype": "Link",
+   "label": "address",
+   "options": "Address"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-08-18 17:50:45.632152",
+ "modified": "2023-08-19 11:09:40.948135",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "publisher",
