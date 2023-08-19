@@ -11,7 +11,18 @@ def retrieve_podcasts(search=None, page=None, limit=None):
     podcasts = get_list(
         "Podcast",
         filters=filters,
-        fields=["name", "title", "host", "description", "cover_image_url", "audio_file", "subscription_level"],
+        fields=["name", 
+                "title", 
+                "host", 
+                "description",
+                "host", 
+                "cover_image_url",
+                "publisher",
+                "subscription_level", 
+                "audio_file", 
+                "total_listening_time",
+                "licensing_cost",
+                "royality_percentage"],
         or_filters=[],
         limit_page_length=limit,
         start=page * limit if page and limit else None
@@ -43,8 +54,6 @@ def retrieve_podcasts(search=None, page=None, limit=None):
 
     return response
 
-    # return "its work"
-
 # @frappe.whitelist()
 # def retrieve_podcast(podcast_id):
 #     podcast = get_doc("Podcast", podcast_id)
@@ -71,7 +80,7 @@ def retrieve_podcasts(search=None, page=None, limit=None):
 
 #     response["is_favorite"] = bool(user_favorite_podcast)
 
-#     return response
+    return response
 
 # @frappe.whitelist(allow_guest=True)
 # def retrieve_podcast_sample(podcast_id):
