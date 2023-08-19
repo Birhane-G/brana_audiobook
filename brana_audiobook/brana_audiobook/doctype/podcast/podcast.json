@@ -10,6 +10,7 @@
   "title",
   "description",
   "host",
+  "cover_image_url",
   "publisher",
   "subscription_level",
   "audio_file",
@@ -85,11 +86,17 @@
    "fieldtype": "Float",
    "label": "Royalty Percentage",
    "reqd": 1
+  },
+  {
+   "fieldname": "cover_image_url",
+   "fieldtype": "Data",
+   "label": "Cover Image Url",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-08-19 11:30:38.044773",
+ "modified": "2023-08-19 13:45:37.112218",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Podcast",

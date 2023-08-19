@@ -1,49 +1,49 @@
 import frappe
-# from frappe import get_doc, get_list, get_all
-# from frappe.sessions import Session
+from frappe import get_doc, get_list, get_all
+from frappe.sessions import Session
+
 @frappe.whitelist()
 def retrieve_podcasts(search=None, page=None, limit=None):
     filters = {}
-    # if search:
-    #     filters["title"] = ["like", f"%{search}%"]
+    if search:
+        filters["title"] = ["like", f"%{search}%"]
 
-    # podcasts = get_list(
-    #     "Podcast",
-    #     filters=filters,
-    #     fields=["name", "title", "host", "description", "cover_image_url", "audio_file_url", "release_date",
-    #             "average_rating", "num_ratings", "subscription_level"],
-    #     or_filters=[],
-    #     limit_page_length=limit,
-    #     start=page * limit if page and limit else None
-    # )
+    podcasts = get_list(
+        "Podcast",
+        filters=filters,
+        fields=["name", "title", "host", "description", "cover_image_url", "audio_file", "subscription_level"],
+        or_filters=[],
+        limit_page_length=limit,
+        start=page * limit if page and limit else None
+    )
 
-    # total_count = get_all(
-    #     "Podcast",
-    #     filters=filters,
-    #     fields=["count(*) as total_count"]
-    # )[0].total_count
+    total_count = get_all(
+        "Podcast",
+        filters=filters,
+        fields=["count(*) as total_count"]
+    )[0].total_count
 
-    # # Get the currently logged-in user
-    # session = frappe.session.user
-    # user_favorite_podcasts = get_list(
-    #     "User Favorite",
-    #     filters={"user": session},
-    #     fields=["audio_content"],
-    # )
+    # Get the currently logged-in user
+    session = frappe.session.user
+    user_favorite_podcasts = get_list(
+        "User Favorite",
+        filters={"user": session},
+        fields=["audio_content"],
+    )
 
-    # favorite_podcast_ids = [fav.audio_content for fav in user_favorite_podcasts]
+    favorite_podcast_ids = [fav.audio_content for fav in user_favorite_podcasts]
 
-    # for podcast in podcasts:
-    #     podcast["is_favorite"] = podcast["name"] in favorite_podcast_ids
+    for podcast in podcasts:
+        podcast["is_favorite"] = podcast["name"] in favorite_podcast_ids
 
-    # response = {
-    #     "podcasts": podcasts,
-    #     "total_count": total_count
-    # }
+    response = {
+        "podcasts": podcasts,
+        "total_count": total_count
+    }
 
-    # return response
+    return response
 
-    return "its work"
+    # return "its work"
 
 # @frappe.whitelist()
 # def retrieve_podcast(podcast_id):
