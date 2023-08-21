@@ -58,7 +58,7 @@
   },
   {
    "fieldname": "subscription_level",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Subscription Level",
    "options": "Subscription Level",
@@ -112,7 +112,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-08-21 09:06:59.177449",
+ "modified": "2023-08-21 10:31:34.132922",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Audiobook",

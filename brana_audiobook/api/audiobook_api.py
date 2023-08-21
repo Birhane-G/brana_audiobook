@@ -23,7 +23,7 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
     audiobooks = frappe.get_all(
         "Audiobook",
         filters={
-            # "docstatus": 1,
+                #  "docstatus": 1,
                 #  "disabled": 0,
                 #  "subscription_level": ("!=", "")
                  },
@@ -64,17 +64,20 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
         # author = frappe.get_doc("Author", audiobook.author)
         # narrator = frappe.get_doc("Narrator", audiobook.narrator)
         publisher = frappe.get_doc("Publisher", audiobook.publisher)
-        # subscription_level = frappe.get_doc("Subscription Level", audiobook.subscription_level
+        # subscription_level = frappe.get_doc("Subscription Level", audiobook.subscription_level)
         response_data.append({
             # "id": audiobook.name,
             "title": audiobook.title,
             "description": audiobook.description,
-            # "total_listening_time": audiobook.total_listening_time,
-            # "licensing_cost": audiobook.licensing_cost,
-            # "production_cost": audiobook.production_cost,
-            # "royalty_percentage": audiobook.royalty_percentage,
+            "author": audiobook.author,
+            "narrator": audiobook.narrator,
+            "publisher": audiobook.publisher,
+            "total_listening_time": str(audiobook.total_listening_time),
+            "licensing_cost": str(audiobook.licensing_cost),
+            "production_cost": str(audiobook.production_cost),
+            "royalty_percentage": str(audiobook.royalty_percentage),
             # "thumbnail": audio_file.thumbnail,
-            # "audio_file_url": audio_file.file_url,
+            "audio_file_url": audio_file.file_url,
             # "author": {
             #     "name": author.name,
             #     "bio": author.bio,
@@ -90,16 +93,17 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
             "publisher": {
                 "name": publisher.name,
                 "website": publisher.website,
+                "address": publisher.address
                 # "address_line1": publisher.address_line1,
                 # "city": publisher.city,
                 # "state": publisher.state,
                 # "country": publisher.country
             },
             # "subscription_level": {
-            #     "name": subscription_level.name,
-            #     "monthly_price": subscription_level.monthly_price,
-            #     "annual_price": subscription_level.annual_price,
-            #     "access_frequency": subscription_level.access_frequency
+                # "name": subscription_level.name1,
+                # "monthly_price": subscription_level.monthly_price,
+                # "annual_price": subscription_level.annual_price,
+                # "access_frequency": subscription_level.access_frequency
             # }
         })
 
