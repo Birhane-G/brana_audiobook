@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "field:title",
  "creation": "2023-08-18 19:52:37.715223",
  "default_view": "List",
  "doctype": "DocType",
@@ -27,7 +28,8 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Title",
-   "reqd": 1
+   "reqd": 1,
+   "unique": 1
   },
   {
    "fieldname": "description",
@@ -52,7 +54,7 @@
    "fieldname": "publisher",
    "fieldtype": "Link",
    "label": "Publisher",
-   "options": "publisher"
+   "options": "Publisher"
   },
   {
    "fieldname": "subscription_level",
@@ -64,9 +66,10 @@
   },
   {
    "fieldname": "audio_file",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Audio File",
+   "options": "File",
    "reqd": 1
   },
   {
@@ -109,10 +112,11 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-08-19 10:50:47.047706",
+ "modified": "2023-08-21 09:06:59.177449",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Audiobook",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {

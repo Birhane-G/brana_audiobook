@@ -1,7 +1,8 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2023-08-18 17:50:45.632152",
+ "autoname": "field:name1",
+ "creation": "2023-08-21 08:43:49.344514",
  "default_view": "List",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -17,26 +18,28 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Name",
-   "reqd": 1
+   "reqd": 1,
+   "unique": 1
   },
   {
    "fieldname": "website",
    "fieldtype": "Data",
-   "label": "website"
+   "label": "Website"
   },
   {
    "fieldname": "address",
    "fieldtype": "Link",
-   "label": "address",
+   "label": "Address",
    "options": "Address"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-08-19 11:09:40.948135",
+ "modified": "2023-08-21 08:46:05.436180",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
- "name": "publisher",
+ "name": "Publisher",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {

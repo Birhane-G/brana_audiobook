@@ -22,17 +22,27 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
 
     audiobooks = frappe.get_all(
         "Audiobook",
-        filters={"docstatus": 1, 
-                #  "disabled": 0, 
-                 "subscription_level": ("!=", "")},
-        fields=["name", 
-                "title", 
-                "description", 
-                "total_listening_time", 
+        filters={
+            # "docstatus": 1,
+                #  "disabled": 0,
+                #  "subscription_level": ("!=", "")
+                 },
+        fields=[
+                # "name",
+                "title",
+                "description",
+                "author",
+                "narrator",
+                "publisher",
+                "subscription_level",
+                "audio_file",
+                "total_listening_time",
                 "licensing_cost",
-                "production_cost", 
-                "royalty_percentage", 
-                "audio_file"],
+                "production_cost",
+                "royalty_percentage",
+                "listening_history",
+                "chapters"
+                ],
         limit=limit,
         start=offset,
         order_by="creation DESC"
@@ -40,56 +50,57 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
 
     total_count = frappe.get_value(
         "Audiobook",
-        filters={"docstatus": 1,
-                #   "disabled": 0, 
-                 "subscription_level": ("!=", "")},
-        fieldname="COUNT(name)"
+        filters={
+                #   docstatus": 1,
+                #  "disabled": 0,
+                #  "subscription_level": ("!=", "")
+                 },
+        fieldname="COUNT(title)"
     )
 
     response_data = []
     for audiobook in audiobooks:
         audio_file = frappe.get_doc("File", audiobook.audio_file)
-        author = frappe.get_doc("Author", audiobook.author)
-        narrator = frappe.get_doc("Narrator", audiobook.narrator)
+        # author = frappe.get_doc("Author", audiobook.author)
+        # narrator = frappe.get_doc("Narrator", audiobook.narrator)
         publisher = frappe.get_doc("Publisher", audiobook.publisher)
-        subscription_level = frappe.get_doc("Subscription Level", audiobook.subscription_level)
-
+        # subscription_level = frappe.get_doc("Subscription Level", audiobook.subscription_level
         response_data.append({
-            "id": audiobook.name,
+            # "id": audiobook.name,
             "title": audiobook.title,
             "description": audiobook.description,
-            "total_listening_time": audiobook.total_listening_time,
-            "licensing_cost": audiobook.licensing_cost,
-            "production_cost": audiobook.production_cost,
-            "royalty_percentage": audiobook.royalty_percentage,
-            "thumbnail": audio_file.thumbnail,
-            "audio_file_url": audio_file.file_url,
-            "author": {
-                "name": author.name,
-                "bio": author.bio,
-                "first_name": author.first_name,
-                "last_name": author.last_name
-            },
-            "narrator": {
-                "name": narrator.name,
-                "bio": narrator.bio,
-                "first_name": narrator.first_name,
-                "last_name": narrator.last_name
-            },
+            # "total_listening_time": audiobook.total_listening_time,
+            # "licensing_cost": audiobook.licensing_cost,
+            # "production_cost": audiobook.production_cost,
+            # "royalty_percentage": audiobook.royalty_percentage,
+            # "thumbnail": audio_file.thumbnail,
+            # "audio_file_url": audio_file.file_url,
+            # "author": {
+            #     "name": author.name,
+            #     "bio": author.bio,
+            #     "first_name": author.first_name,
+            #     "last_name": author.last_name
+            # },
+            # "narrator": {
+            #     "name": narrator.name,
+            #     "bio": narrator.bio,
+            #     "first_name": narrator.first_name,
+            #     "last_name": narrator.last_name
+            # },
             "publisher": {
                 "name": publisher.name,
                 "website": publisher.website,
-                "address_line1": publisher.address_line1,
-                "city": publisher.city,
-                "state": publisher.state,
-                "country": publisher.country
+                # "address_line1": publisher.address_line1,
+                # "city": publisher.city,
+                # "state": publisher.state,
+                # "country": publisher.country
             },
-            "subscription_level": {
-                "name": subscription_level.name,
-                "monthly_price": subscription_level.monthly_price,
-                "annual_price": subscription_level.annual_price,
-                "access_frequency": subscription_level.access_frequency
-            }
+            # "subscription_level": {
+            #     "name": subscription_level.name,
+            #     "monthly_price": subscription_level.monthly_price,
+            #     "annual_price": subscription_level.annual_price,
+            #     "access_frequency": subscription_level.access_frequency
+            # }
         })
 
     return json.dumps({"success": True, "data": {"audiobooks": response_data, "total_count": total_count}})
