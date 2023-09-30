@@ -28,7 +28,7 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
                 #  "subscription_level": ("!=", "")
                  },
         fields=[
-                # "name",
+                "name",
                 "title",
                 "description",
                 "author",
@@ -39,8 +39,8 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
                 "total_listening_time",
                 "licensing_cost",
                 "production_cost",
-                "royalty_percentage",
-                "listening_history",
+                # "royalty_percentage",
+                # "listening_history",
                 # "chapters"
                 ],
         limit=limit,
@@ -61,14 +61,14 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
     response_data = []
     for audiobook in audiobooks:
         # audio_file = frappe.get_doc("File", audiobook.audio_file)
-        # author = frappe.get_doc("Author", audiobook.author)
+        # author = frappe.get_doc("User", audiobook.author)
         # narrator = frappe.get_doc("Narrator", audiobook.narrator)
         # publisher = frappe.get_doc("Publisher", audiobook.publisher)
         # subscription_level = frappe.get_doc("Subscription Level", audiobook.subscription_level)
         response_data.append({
             "id": audiobook.name,
             "title": audiobook.title,
-            # "description": audiobook.description,
+            "description": audiobook.description,
             # "author": audiobook.author,
             # "narrator": audiobook.narrator,
             # "publisher": audiobook.publisher,

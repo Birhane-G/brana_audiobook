@@ -15,6 +15,7 @@
   "publisher",
   "subscription_level",
   "audio_file",
+  "thumbnail",
   "total_listening_time",
   "licensing_cost",
   "production_cost",
@@ -37,17 +38,17 @@
   },
   {
    "fieldname": "author",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Author",
-   "options": "User Profile",
+   "options": "User",
    "reqd": 1
   },
   {
    "fieldname": "narrator",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "label": "Narrator",
-   "options": "User Profile"
+   "options": "User"
   },
   {
    "fieldname": "publisher",
@@ -74,8 +75,7 @@
   {
    "fieldname": "total_listening_time",
    "fieldtype": "Time",
-   "label": "Total Listening Time",
-   "reqd": 1
+   "label": "Total Listening Time"
   },
   {
    "fieldname": "licensing_cost",
@@ -100,11 +100,17 @@
    "fieldtype": "Table",
    "label": "Listening History",
    "options": "Audiobook Listening History"
+  },
+  {
+   "fieldname": "thumbnail",
+   "fieldtype": "Attach Image",
+   "label": "Thumbnail",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-09-30 09:53:13.123712",
+ "modified": "2023-09-30 10:51:40.652258",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Audiobook",
