@@ -22,7 +22,8 @@ def retrieve_podcasts(search=None, page=None, limit=None):
                 "audio_file", 
                 "total_listening_time",
                 "licensing_cost",
-                "royality_percentage"],
+                # "royality_percentage"
+                ],
         or_filters=[],
         limit_page_length=limit,
         start=page * limit if page and limit else None

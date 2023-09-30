@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2023-08-18 22:55:36.155595",
+ "creation": "2023-09-30 09:35:07.850446",
  "default_view": "List",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -14,28 +14,31 @@
  "fields": [
   {
    "fieldname": "user",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "in_list_view": 1,
    "label": "User",
+   "options": "User",
    "reqd": 1
   },
   {
    "fieldname": "wish_list",
-   "fieldtype": "Data",
-   "label": "Wish List"
+   "fieldtype": "Link",
+   "label": "Wish List",
+   "options": "Wish List Item"
   },
   {
    "fieldname": "listening_history",
-   "fieldtype": "Data",
-   "label": "Listening History"
+   "fieldtype": "Link",
+   "label": "Listening History",
+   "options": "User Listening History"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-08-18 22:55:36.155595",
+ "modified": "2023-09-30 09:41:42.256697",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
- "name": "User Profile",
+ "name": "Brana User Profile",
  "owner": "Administrator",
  "permissions": [
   {
@@ -53,5 +56,7 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_changes": 1,
+ "track_seen": 1
 }

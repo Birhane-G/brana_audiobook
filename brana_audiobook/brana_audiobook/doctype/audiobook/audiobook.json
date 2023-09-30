@@ -19,8 +19,7 @@
   "licensing_cost",
   "production_cost",
   "royalty_percentage",
-  "listening_history",
-  "chapters"
+  "listening_history"
  ],
  "fields": [
   {
@@ -101,18 +100,11 @@
    "fieldtype": "Table",
    "label": "Listening History",
    "options": "Audiobook Listening History"
-  },
-  {
-   "fieldname": "chapters",
-   "fieldtype": "Table",
-   "label": "Chapters",
-   "options": "Audiobook Chapter",
-   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-08-21 10:31:34.132922",
+ "modified": "2023-09-30 09:53:13.123712",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Audiobook",

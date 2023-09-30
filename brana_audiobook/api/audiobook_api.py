@@ -41,7 +41,7 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
                 "production_cost",
                 "royalty_percentage",
                 "listening_history",
-                "chapters"
+                # "chapters"
                 ],
         limit=limit,
         start=offset,
@@ -60,24 +60,24 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
 
     response_data = []
     for audiobook in audiobooks:
-        audio_file = frappe.get_doc("File", audiobook.audio_file)
+        # audio_file = frappe.get_doc("File", audiobook.audio_file)
         # author = frappe.get_doc("Author", audiobook.author)
         # narrator = frappe.get_doc("Narrator", audiobook.narrator)
-        publisher = frappe.get_doc("Publisher", audiobook.publisher)
+        # publisher = frappe.get_doc("Publisher", audiobook.publisher)
         # subscription_level = frappe.get_doc("Subscription Level", audiobook.subscription_level)
         response_data.append({
-            # "id": audiobook.name,
+            "id": audiobook.name,
             "title": audiobook.title,
-            "description": audiobook.description,
-            "author": audiobook.author,
-            "narrator": audiobook.narrator,
-            "publisher": audiobook.publisher,
-            "total_listening_time": str(audiobook.total_listening_time),
-            "licensing_cost": str(audiobook.licensing_cost),
-            "production_cost": str(audiobook.production_cost),
-            "royalty_percentage": str(audiobook.royalty_percentage),
+            # "description": audiobook.description,
+            # "author": audiobook.author,
+            # "narrator": audiobook.narrator,
+            # "publisher": audiobook.publisher,
+            # "total_listening_time": str(audiobook.total_listening_time),
+            # "licensing_cost": str(audiobook.licensing_cost),
+            # "production_cost": str(audiobook.production_cost),
+            # "royalty_percentage": str(audiobook.royalty_percentage),
             # "thumbnail": audio_file.thumbnail,
-            "audio_file_url": audio_file.file_url,
+            # "audio_file_url": audio_file.file_url,
             # "author": {
             #     "name": author.name,
             #     "bio": author.bio,
@@ -90,15 +90,15 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
             #     "first_name": narrator.first_name,
             #     "last_name": narrator.last_name
             # },
-            "publisher": {
-                "name": publisher.name,
-                "website": publisher.website,
-                "address": publisher.address
+            # "publisher": {
+            #     "name": publisher.name,
+            #     "website": publisher.website,
+            #     "address": publisher.address
                 # "address_line1": publisher.address_line1,
                 # "city": publisher.city,
                 # "state": publisher.state,
                 # "country": publisher.country
-            },
+            # },
             # "subscription_level": {
                 # "name": subscription_level.name1,
                 # "monthly_price": subscription_level.monthly_price,
