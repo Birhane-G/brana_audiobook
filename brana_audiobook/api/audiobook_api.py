@@ -5,15 +5,10 @@ from werkzeug.utils import secure_filename
 from frappe.utils import now_datetime
 import mimetypes
 
-@frappe.whitelist(allow_guest=False)
+@frappe.whitelist(allow_guest=True)
 def retrieve_audiobooks(search=None, page=1, limit=20):
     if not frappe.session.user:
         frappe.throw("User not authenticated", frappe.AuthenticationError)
-
-    # Perform user role and permission checks here
-    # ...
-    # Ensure the authenticated user has the necessary roles and permissions to access the API method
-
     filters = []
     if search:
         filters.append(f"(ab.title LIKE '%{search}%' OR aut.name LIKE '%{search}%' OR nar.name LIKE '%{search}%')")
@@ -36,12 +31,8 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
                 "publisher",
                 "subscription_level",
                 "audio_file",
+                "thumbnail",
                 "total_listening_time",
-                "licensing_cost",
-                "production_cost",
-                # "royalty_percentage",
-                # "listening_history",
-                # "chapters"
                 ],
         limit=limit,
         start=offset,
@@ -51,7 +42,7 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
     total_count = frappe.get_value(
         "Audiobook",
         filters={
-                #   docstatus": 1,
+                #  "docstatus": 1,
                 #  "disabled": 0,
                 #  "subscription_level": ("!=", "")
                  },
@@ -60,54 +51,22 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
 
     response_data = []
     for audiobook in audiobooks:
-        # audio_file = frappe.get_doc("File", audiobook.audio_file)
         # author = frappe.get_doc("User", audiobook.author)
         # narrator = frappe.get_doc("Narrator", audiobook.narrator)
-        # publisher = frappe.get_doc("Publisher", audiobook.publisher)
-        # subscription_level = frappe.get_doc("Subscription Level", audiobook.subscription_level)
         response_data.append({
             "id": audiobook.name,
             "title": audiobook.title,
             "description": audiobook.description,
-            # "author": audiobook.author,
-            # "narrator": audiobook.narrator,
-            # "publisher": audiobook.publisher,
-            # "total_listening_time": str(audiobook.total_listening_time),
-            # "licensing_cost": str(audiobook.licensing_cost),
-            # "production_cost": str(audiobook.production_cost),
-            # "royalty_percentage": str(audiobook.royalty_percentage),
-            # "thumbnail": audio_file.thumbnail,
-            # "audio_file_url": audio_file.file_url,
-            # "author": {
-            #     "name": author.name,
-            #     "bio": author.bio,
-            #     "first_name": author.first_name,
-            #     "last_name": author.last_name
-            # },
-            # "narrator": {
-            #     "name": narrator.name,
-            #     "bio": narrator.bio,
-            #     "first_name": narrator.first_name,
-            #     "last_name": narrator.last_name
-            # },
-            # "publisher": {
-            #     "name": publisher.name,
-            #     "website": publisher.website,
-            #     "address": publisher.address
-                # "address_line1": publisher.address_line1,
-                # "city": publisher.city,
-                # "state": publisher.state,
-                # "country": publisher.country
-            # },
-            # "subscription_level": {
-                # "name": subscription_level.name1,
-                # "monthly_price": subscription_level.monthly_price,
-                # "annual_price": subscription_level.annual_price,
-                # "access_frequency": subscription_level.access_frequency
-            # }
+            # "author": author.full_name,
+            # "narrator": narrator.full_name,
+            "publisher": audiobook.publisher,
+            "total_listening_time": str(audiobook.total_listening_time),
+            "thumbnail": audiobook.thumbnail,
+            "audio_file_url": audiobook.file_url,
+          
         })
 
-    return json.dumps({"success": True, "data": {"audiobooks": response_data, "total_count": total_count}})
+    return json.dumps({"success": True, "data": {"audiobooks": response_data, "total_count": total_count}}, ensure_ascii=False)
 
 
 @frappe.whitelist(allow_guest=False)
