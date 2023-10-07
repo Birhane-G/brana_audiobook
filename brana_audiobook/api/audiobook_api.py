@@ -1,11 +1,12 @@
 import frappe
 import json
-# from flask import send_file, Response, stream_with_context, abort, request
-from flask import Response, stream_with_context, send_file
-from werkzeug.utils import secure_filename
 from frappe.utils import now_datetime
 import mimetypes
 from frappe.utils.file_manager import get_file_url
+from flask import send_file, request, current_app
+from werkzeug.utils import secure_filename
+
+app = Flask(__name__)
 
 @frappe.whitelist(allow_guest=True)
 def retrieve_audiobooks(search=None, page=1, limit=20):
@@ -112,34 +113,30 @@ def retrieve_audiobook(audiobook_id):
     }
 
     return json.dumps({"success": True, "data": response}, ensure_ascii=False)
-
+@current_app.route("/api/audiobook/retrieve_audiobook_sample/<audiobook_id>")
 @frappe.whitelist(allow_guest=False)
 def retrieve_audiobook_sample(audiobook_id):
-    if not frappe.session.user:
-        frappe.throw("User not authenticated", frappe.AuthenticationError)
+    if not request.user:
+        return current_app.abort(401)
 
     # Perform user role and permission checks here
     # ...
     # Ensure the authenticated user has the necessary roles and permissions to access the API method
 
-    audiobook_doc = frappe.get_doc("Audiobook", audiobook_id)
-    audio_file_doc = frappe.get_doc("File", audiobook_doc.sample_audio_file)
-    audio_file_url = get_file_url(audio_file_doc.file_name) if audio_file_doc.file_name else None
+    audiobook_doc = current_app.get_doc("Audiobook", audiobook_id)
+    audio_file_doc = current_app.get_doc("File", audiobook_doc.audio_file)
 
-    file_path = frappe.get_site_path("public", audio_file_doc.file_url[1:])
+    file_path = current_app.get_site_path("public", audio_file_doc.file_url[1:])
     filename = secure_filename(audio_file_doc.file_name)
     mimetype = mimetypes.guess_type(filename)[0]
 
-    # audiobook_doc = frappe.get_doc("Audiobook", audiobook_id)
-    # audio_file_doc = frappe.get_doc("File", audiobook_doc.sample_audio_file)
-    # # audio_file_url = get_file_url(audiobook.audio_file) if audiobook.audio_file else None
-    # file_path = frappe.get_site_path("public", audio_file_doc.file_url[1:])
-    # filename = secure_filename(audio_file_doc.file_name)
-    # mimetype = mimetypes.guess_type(filename)[0]
+    with current_app.test_request_context():
+        return send_file(
+            file_path, mimetype=mimetype, as_attachment=True, conditional=True, download_name=filename
+        )
 
-    return Response(stream_with_context(send_file(file_path, mimetype=mimetype, as_attachment=True, attachment_filename=filename, streaming=True)), content_type=mimetype)
-
-
+if __name__ == '__main__':
+    app.run()
 
 # @frappe.whitelist(allow_guest=False)
 # def retrieve_audiobook_chapters(audiobook_id):

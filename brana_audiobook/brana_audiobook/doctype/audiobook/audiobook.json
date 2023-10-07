@@ -13,6 +13,7 @@
   "author",
   "narrator",
   "publisher",
+  "genre",
   "subscription_level",
   "audio_file",
   "thumbnail",
@@ -106,11 +107,17 @@
    "fieldtype": "Attach Image",
    "label": "Thumbnail",
    "reqd": 1
+  },
+  {
+   "fieldname": "genre",
+   "fieldtype": "Link",
+   "label": "Genre",
+   "options": "Genre"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-09-30 10:51:40.652258",
+ "modified": "2023-10-07 10:54:39.436493",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Audiobook",
