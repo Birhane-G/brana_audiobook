@@ -3,7 +3,7 @@ import json
 from frappe.utils import now_datetime
 import mimetypes
 from frappe.utils.file_manager import get_file_url
-from flask import send_file, request, current_app
+from flask import Flask, Response, send_file, request, make_response
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -113,27 +113,25 @@ def retrieve_audiobook(audiobook_id):
     }
 
     return json.dumps({"success": True, "data": response}, ensure_ascii=False)
-@current_app.route("/api/audiobook/retrieve_audiobook_sample/<audiobook_id>")
+
 @frappe.whitelist(allow_guest=False)
 def retrieve_audiobook_sample(audiobook_id):
-    if not request.user:
-        return current_app.abort(401)
+    if not frappe.session.user:
+        frappe.throw("User not authenticated", frappe.AuthenticationError)
 
     # Perform user role and permission checks here
     # ...
     # Ensure the authenticated user has the necessary roles and permissions to access the API method
 
-    audiobook_doc = current_app.get_doc("Audiobook", audiobook_id)
-    audio_file_doc = current_app.get_doc("File", audiobook_doc.audio_file)
+    audiobook_doc = frappe.get_doc("Audiobook", audiobook_id)
+    audio_file_doc = frappe.get_doc("File", audiobook_doc.audio_file)
 
-    file_path = current_app.get_site_path("public", audio_file_doc.file_url[1:])
+    file_path = frappe.get_site_path("public", audio_file_doc.file_url[1:])
     filename = secure_filename(audio_file_doc.file_name)
     mimetype = mimetypes.guess_type(filename)[0]
 
-    with current_app.test_request_context():
-        return send_file(
-            file_path, mimetype=mimetype, as_attachment=True, conditional=True, download_name=filename
-        )
+    return send_file(file_path, mimetype=mimetype, as_attachment=True, conditional=True, download_name=filename)
+
 
 if __name__ == '__main__':
     app.run()
