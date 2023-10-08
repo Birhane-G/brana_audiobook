@@ -113,7 +113,7 @@ def retrieve_audiobook(audiobook_id):
     }
 
     return json.dumps({"success": True, "data": response}, ensure_ascii=False)
-
+import os
 @frappe.whitelist(allow_guest=False)
 def retrieve_audiobook_sample(audiobook_id):
     if not frappe.session.user:
@@ -130,12 +130,77 @@ def retrieve_audiobook_sample(audiobook_id):
     filename = secure_filename(audio_file_doc.file_name)
     mimetype = mimetypes.guess_type(filename)[0]
 
-    return send_file(file_path, mimetype=mimetype, as_attachment=True, conditional=True, download_name=filename)
+    abso_file_path = os.path.abspath(file_path)
 
+    with app.test_request_context():
+        return send_file(abso_file_path, mimetype=mimetype, as_attachment=True, conditional=True, download_name=filename)
+import subprocess
+@frappe.whitelist(allow_guest=False)
+def test_audiobook_sample(audiobook_id):
+    if not frappe.session.user:
+        frappe.throw("User not authenticated", frappe.AuthenticationError)
+    audiobook_doc = frappe.get_doc("Audiobook", audiobook_id)
+    audio_file_doc = frappe.get_doc("File", audiobook_doc.audio_file)
+
+    file_path = frappe.get_site_path("public", audio_file_doc.file_url[1:])
+    filename = secure_filename(audio_file_doc.file_name)
+    mimetype = mimetypes.guess_type(filename)[0]
+    abso_file_path = os.path.abspath(file_path)
+
+    if not os.path.exists(os.path.dirname(abso_file_path)+"/hls"):
+        os.makedirs(os.path.dirname(abso_file_path)+"/hls")
+    os.chmod(os.path.dirname(abso_file_path)+"/hls", 0o777)
+
+    # Used TO Test
+    # return os.path.exists(os.path.dirname(abso_file_path)+"/hls")
+
+    # ffmpeg -y -i Abdu.mp3 -hls_time 5 -c:v libx264 -b:v 1M -c:a aac -b:a 128k 
+    # -f segment -segment_time 10 -segment_list playlist.m3u8 segment_%03dbook.ts
+    
+    try:
+        hls_cmd = [
+            "ffmpeg","-y" ,"-i", abso_file_path, "-hls_time", "5", "-c:v", "libx264", "-b:v", "1M",
+            "-c:a", "aac", "-b:a", "128k", "-f", "segment", "-segment_time", "10", "-segment_list", 
+            os.path.dirname(abso_file_path)+"/hls/playlist.m3u8", os.path.dirname(abso_file_path)+"/hls/segment_%03dbook.ts"
+        ]
+        # hls_cmd = [
+        #     "ffmpeg","-y", "-i", abso_file_path, "-c:a", "acc", "-b:a", "128k",
+        #     "-f", "-segment_time", "10", os.path.dirname(abso_file_path)+"/hls/playlist.m3u8", 
+        #     os.path.dirname(abso_file_path)+"/hls/segment%dbook.ts"
+        # ]
+        subprocess_result = subprocess.run(hls_cmd)
+        if subprocess_result.returncode != 0:
+            raise Exception(f"FFmpeg command failed: {subprocess_result.stderr}")
+        # with open(os.path.dirname(abso_file_path)+"/hls/playlist.m3u8", "r", encoding="utf-8") as f:
+        #     file_content = f.read()
+        #     segments = json.loads(file_content)
+        with open(os.path.dirname(abso_file_path)+"/hls/playlist.m3u8", "r", encoding="utf-8") as f:
+            file_content = f.readlines()
+            segments = []
+            for line in file_content:
+                if line.startswith("#EXTINF"):
+                    duration_str = line.split(",")[1]
+                    duration = float(duration_str)
+                    segments.append({"duration": duration})
+                elif line.startswith("#EXT-X-ENDLIST"):
+                    break
+                else:
+                    segments.append({"url": line})
+        # if(vall):
+        #     return os.path.dirname(abso_file_path)+"/hls/playlist.m3u8"
+        # return "not work"
+    except (FileNotFoundError, json.decoder.JSONDecodeError) as e:
+        message = f"Failed to generate new HLS manifest file: {e}"
+        frappe.throw(message, frappe.ValidationError)
+
+        with app.test_request_context():
+            return send_file(os.path.dirname(abso_file_path)+"/hls/playlist.m3u8", mimetype="application/vnd.apple.mpegurl")
+    
 
 if __name__ == '__main__':
     app.run()
 
+# 51ae2b8175
 # @frappe.whitelist(allow_guest=False)
 # def retrieve_audiobook_chapters(audiobook_id):
 #     if not frappe.session.user:
@@ -177,9 +242,7 @@ if __name__ == '__main__':
 #             "end_time": chapter_doc.end_time,
 #             "total_duration": chapter_doc.total_duration
 #         })
-
 #     return json.dumps({"success": True, "data": response_data})
-
 
 # @frappe.whitelist(allow_guest=False)
 # def retrieve_audiobook_chapter_audio(audiobook_id, chapter_id):
