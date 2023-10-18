@@ -3,7 +3,7 @@ import json
 from frappe.utils import now_datetime
 import mimetypes
 from frappe.utils.file_manager import get_file_url
-from flask import Flask, Response, send_file, request, make_response
+from flask import Flask, Response, send_file, request, make_response, current_app, stream_with_context
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -131,14 +131,16 @@ def retrieve_audiobook_sample(audiobook_id):
     mimetype = mimetypes.guess_type(filename)[0]
 
     abso_file_path = os.path.abspath(file_path)
-
     with app.test_request_context():
-        return send_file(abso_file_path, mimetype=mimetype, as_attachment=True, conditional=True, download_name=filename)
+        return Response(stream_with_context(send_file(abso_file_path, mimetype=mimetype, as_attachment=True)), content_type=mimetype)
+    # with app.test_request_context():
+    #     return send_file(abso_file_path, mimetype=mimetype, as_attachment=True, conditional=True, download_name=filename)
 import subprocess
 @frappe.whitelist(allow_guest=False)
 def test_audiobook_sample(audiobook_id):
     if not frappe.session.user:
         frappe.throw("User not authenticated", frappe.AuthenticationError)
+    
     audiobook_doc = frappe.get_doc("Audiobook", audiobook_id)
     audio_file_doc = frappe.get_doc("File", audiobook_doc.audio_file)
 
@@ -147,55 +149,100 @@ def test_audiobook_sample(audiobook_id):
     mimetype = mimetypes.guess_type(filename)[0]
     abso_file_path = os.path.abspath(file_path)
 
-    if not os.path.exists(os.path.dirname(abso_file_path)+"/hls"):
-        os.makedirs(os.path.dirname(abso_file_path)+"/hls")
-    os.chmod(os.path.dirname(abso_file_path)+"/hls", 0o777)
-
-    # Used TO Test
-    # return os.path.exists(os.path.dirname(abso_file_path)+"/hls")
-
-    # ffmpeg -y -i Abdu.mp3 -hls_time 5 -c:v libx264 -b:v 1M -c:a aac -b:a 128k 
-    # -f segment -segment_time 10 -segment_list playlist.m3u8 segment_%03dbook.ts
-    
+    if not os.path.exists(os.path.dirname(abso_file_path) + "/hls"):
+        os.makedirs(os.path.dirname(abso_file_path) + "/hls")
+    os.chmod(os.path.dirname(abso_file_path) + "/hls", 0o777)
     try:
         hls_cmd = [
-            "ffmpeg","-y" ,"-i", abso_file_path, "-hls_time", "5", "-c:v", "libx264", "-b:v", "1M",
-            "-c:a", "aac", "-b:a", "128k", "-f", "segment", "-segment_time", "10", "-segment_list", 
-            os.path.dirname(abso_file_path)+"/hls/playlist.m3u8", os.path.dirname(abso_file_path)+"/hls/segment_%03dbook.ts"
+            "ffmpeg", "-y", "-i", abso_file_path, "-hls_time", "5", "-c:v", "libx264", "-b:v", "1M",
+            "-c:a", "aac", "-b:a", "128k", "-f", "hls", "-hls_segment_filename",
+            os.path.dirname(abso_file_path) + "/hls/segment_%03d.ts",
+            os.path.dirname(abso_file_path) + "/hls/playlist.m3u8", "-vn", "-c:a", "copy", os.path.dirname(abso_file_path) + "/hls/output.mp3"
         ]
-        # hls_cmd = [
-        #     "ffmpeg","-y", "-i", abso_file_path, "-c:a", "acc", "-b:a", "128k",
-        #     "-f", "-segment_time", "10", os.path.dirname(abso_file_path)+"/hls/playlist.m3u8", 
-        #     os.path.dirname(abso_file_path)+"/hls/segment%dbook.ts"
-        # ]
         subprocess_result = subprocess.run(hls_cmd)
         if subprocess_result.returncode != 0:
             raise Exception(f"FFmpeg command failed: {subprocess_result.stderr}")
-        # with open(os.path.dirname(abso_file_path)+"/hls/playlist.m3u8", "r", encoding="utf-8") as f:
-        #     file_content = f.read()
-        #     segments = json.loads(file_content)
-        with open(os.path.dirname(abso_file_path)+"/hls/playlist.m3u8", "r", encoding="utf-8") as f:
-            file_content = f.readlines()
-            segments = []
-            for line in file_content:
-                if line.startswith("#EXTINF"):
-                    duration_str = line.split(",")[1]
-                    duration = float(duration_str)
-                    segments.append({"duration": duration})
-                elif line.startswith("#EXT-X-ENDLIST"):
-                    break
-                else:
-                    segments.append({"url": line})
-        # if(vall):
-        #     return os.path.dirname(abso_file_path)+"/hls/playlist.m3u8"
-        # return "not work"
+        # return frappe.utils.get_url() + os.path.dirname(abso_file_path) + "/hls/output.mp3"
     except (FileNotFoundError, json.decoder.JSONDecodeError) as e:
         message = f"Failed to generate new HLS manifest file: {e}"
         frappe.throw(message, frappe.ValidationError)
-
-        with app.test_request_context():
-            return send_file(os.path.dirname(abso_file_path)+"/hls/playlist.m3u8", mimetype="application/vnd.apple.mpegurl")
     
+    try:
+        with app.test_request_context():
+            return send_file(os.path.dirname(abso_file_path) + "/hls/output.mp3", mimetype="application/vnd.apple.mpegurl")
+    finally:
+        cleanup_hls_files(abso_file_path)
+
+def cleanup_hls_files(abso_file_path):
+    hls_dir = os.path.dirname(abso_file_path) + "/hls"
+    if os.path.exists(hls_dir):
+        for file in os.listdir(hls_dir):
+            os.remove(os.path.join(hls_dir, file))
+        os.rmdir(hls_dir)
+# def test_audiobook_sample(audiobook_id):
+#     if not frappe.session.user:
+#         frappe.throw("User not authenticated", frappe.AuthenticationError)
+#     audiobook_doc = frappe.get_doc("Audiobook", audiobook_id)
+#     audio_file_doc = frappe.get_doc("File", audiobook_doc.audio_file)
+
+#     file_path = frappe.get_site_path("public", audio_file_doc.file_url[1:])
+#     filename = secure_filename(audio_file_doc.file_name)
+#     mimetype = mimetypes.guess_type(filename)[0]
+#     abso_file_path = os.path.abspath(file_path)
+
+#     if not os.path.exists(os.path.dirname(abso_file_path)+"/hls"):
+#         os.makedirs(os.path.dirname(abso_file_path)+"/hls")
+#     os.chmod(os.path.dirname(abso_file_path)+"/hls", 0o777)
+
+#     # Used TO Test
+#     # return os.path.exists(os.path.dirname(abso_file_path)+"/hls")
+
+    # ffmpeg -y -i Abdu.mp3 -hls_time 5 -c:v libx264 -b:v 1M -c:a aac -b:a 128k 
+    # -f segment -segment_time 10 -segment_list playlist.m3u8 segment_%03dbook.ts -vn -c:a copy output.mp3
+#     try:
+#         hls_cmd = [
+#             "ffmpeg","-y" ,"-i", abso_file_path, "-hls_time", "5", "-c:v", "libx264", "-b:v", "1M",
+#             "-c:a", "aac", "-b:a", "128k", "-f", "segment", "-segment_time", "10", "-segment_list",
+#             os.path.dirname(abso_file_path)+"/hls/playlist.m3u8", os.path.dirname(abso_file_path)+"/hls/segment_%03dbook.ts"
+#         ]
+#         # hls_cmd = [
+#         #     "ffmpeg","-y", "-i", abso_file_path, "-c:a", "acc", "-b:a", "128k",
+#         #     "-f", "-segment_time", "10", os.path.dirname(abso_file_path)+"/hls/playlist.m3u8", 
+#         #     os.path.dirname(abso_file_path)+"/hls/segment%dbook.ts"
+#         # ]
+#         subprocess_result = subprocess.run(hls_cmd)
+#         if subprocess_result.returncode != 0:
+#             raise Exception(f"FFmpeg command failed: {subprocess_result.stderr}")
+#          # with open(os.path.dirname(abso_file_path)+"/hls/playlist.m3u8", "r", encoding="utf-8") as f:
+#         #     file_content = f.read()
+#         #     segments = json.loads(file_content)
+#         with open(os.path.dirname(abso_file_path)+"/hls/playlist.m3u8", "r", encoding="utf-8") as f:
+#             file_content = f.readlines()
+#             segments = []
+#             for line in file_content:
+#                 if line.startswith("#EXTINF"):
+#                     duration_str = line.split(",")[1]
+#                     try:
+#                         duration = float(duration_str)
+#                         segments.append({"duration": duration})
+#                     except ValueError:
+#                         continue  # Skip lines with invalid duration
+#                 elif line.startswith("#EXT-X-ENDLIST"):
+#                     break
+#                 else:
+#                     segments.append({"url": line})
+
+#                      # if(vall):
+#         #     return os.path.dirname(abso_file_path)+"/hls/playlist.m3u8"
+#         # return "not work"
+#     except (FileNotFoundError, json.decoder.JSONDecodeError) as e:
+#         message = f"Failed to generate new HLS manifest file: {e}"
+#         frappe.throw(message, frappe.ValidationError)
+
+#     # with current_app.test_request_context():
+#     site = frappe.local.site
+#     with frappe.get_site_context(site):
+#         return send_file(os.path.dirname(abso_file_path)+"/hls/playlist.m3u8", mimetype="application/vnd.apple.mpegurl")
 
 if __name__ == '__main__':
     app.run()

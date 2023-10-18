@@ -9,18 +9,24 @@
  "engine": "InnoDB",
  "field_order": [
   "title",
-  "description",
   "author",
   "narrator",
   "publisher",
   "genre",
-  "subscription_level",
-  "audio_file",
   "thumbnail",
+  "column_break_p5nef",
+  "description",
+  "audio_file",
+  "section_break_8q8zp",
   "total_listening_time",
+  "subscription_level",
+  "royalty_percentage",
+  "column_break_vdrmp",
   "licensing_cost",
   "production_cost",
-  "royalty_percentage",
+  "section_break_zbbmx",
+  "chapter",
+  "section_break_gev9r",
   "listening_history"
  ],
  "fields": [
@@ -34,7 +40,7 @@
   },
   {
    "fieldname": "description",
-   "fieldtype": "Text Editor",
+   "fieldtype": "Text",
    "label": "Description"
   },
   {
@@ -99,7 +105,6 @@
   {
    "fieldname": "listening_history",
    "fieldtype": "Table",
-   "label": "Listening History",
    "options": "Audiobook Listening History"
   },
   {
@@ -113,11 +118,38 @@
    "fieldtype": "Link",
    "label": "Genre",
    "options": "Genre"
+  },
+  {
+   "fieldname": "chapter",
+   "fieldtype": "Table",
+   "options": "Audiobook Chapter"
+  },
+  {
+   "fieldname": "column_break_p5nef",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_8q8zp",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_vdrmp",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_zbbmx",
+   "fieldtype": "Section Break",
+   "label": "Chapter"
+  },
+  {
+   "fieldname": "section_break_gev9r",
+   "fieldtype": "Section Break",
+   "label": "Listening History"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-10-07 10:54:39.436493",
+ "modified": "2023-10-14 18:25:37.282218",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Audiobook",

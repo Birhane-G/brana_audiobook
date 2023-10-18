@@ -7,24 +7,24 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "name1",
+  "genre_name",
   "principal_category"
  ],
  "fields": [
   {
-   "fieldname": "name1",
-   "fieldtype": "Data",
-   "label": "Name"
-  },
-  {
    "fieldname": "principal_category",
    "fieldtype": "Data",
    "label": "Principal Category"
+  },
+  {
+   "fieldname": "genre_name",
+   "fieldtype": "Data",
+   "label": "Name"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-10-06 14:19:22.235783",
+ "modified": "2023-10-14 18:58:41.118255",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Genre",
@@ -46,6 +46,7 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
+ "title_field": "genre_name",
  "track_changes": 1,
  "track_seen": 1
 }
