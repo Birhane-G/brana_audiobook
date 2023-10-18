@@ -16,3 +16,5 @@
 ### Authors
 
     ```https://app.berana.app/api/method/brana_audiobook.api.authors_api.retrive_authors```
+
+    ```https://app.berana.app/api/method/brana_audiobook.api.authors_api.retrieve_author?author_id=ገነነ መኩሪያ```
