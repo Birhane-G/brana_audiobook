@@ -35,6 +35,7 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
                 "subscription_level",
                 "audio_file",
                 "thumbnail",
+                "chapter",
                 "total_listening_time",
                 ],
         limit=limit,
@@ -57,6 +58,7 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
         author = frappe.get_doc("User", audiobook.author)
         narrator = frappe.get_doc("User", audiobook.narrator)
         audio_file_url = get_file_url(audiobook.audio_file) if audiobook.audio_file else None
+        chapters = frappe.get_all("Audiobook Chapter", filters={ "audiobook": audiobook.name }, fields=["title",])
         response_data.append({
             "id": audiobook.name,
             "title": audiobook.title,
@@ -67,6 +69,7 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
             "total_listening_time": str(audiobook.total_listening_time),
             "thumbnail": audiobook.thumbnail,
             "audio_file_url": audio_file_url,
+            "chapter" : chapters,
         })
 
     return json.dumps({"success": True, "data": {"audiobooks": response_data, "total_count": total_count}}, ensure_ascii=False)

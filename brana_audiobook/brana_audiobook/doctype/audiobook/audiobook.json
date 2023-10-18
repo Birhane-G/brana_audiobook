@@ -122,6 +122,7 @@
   {
    "fieldname": "chapter",
    "fieldtype": "Table",
+   "label": "Chapter",
    "options": "Audiobook Chapter"
   },
   {
@@ -138,8 +139,7 @@
   },
   {
    "fieldname": "section_break_zbbmx",
-   "fieldtype": "Section Break",
-   "label": "Chapter"
+   "fieldtype": "Section Break"
   },
   {
    "fieldname": "section_break_gev9r",
@@ -149,7 +149,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-10-14 18:25:37.282218",
+ "modified": "2023-10-18 12:11:32.597779",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Audiobook",
