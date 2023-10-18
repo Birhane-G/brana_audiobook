@@ -65,6 +65,24 @@ def retrive_authors(search=None, page=1, limit=20):
 def retrieve_author(author_id):
     if not frappe.session.user:
         frappe.throw("User not authenticated", frappe.AuthenticationError)
-    author = frappe.get_doc("User", author_id)
-
-    return author.full_name
+    authors = frappe.get_all(
+        "User",
+        filters={
+                "full_name" : author_id,
+                 },
+        fields=[
+                "full_name",
+                "user_image",
+                'email',
+                ],
+    )
+    response_data = []
+    for author in authors:
+        total_book_count = frappe.get_value(
+            "Audiobook",
+        filters={
+            "author": author.email,
+        },
+        fieldname="COUNT(*)"
+        )
+        return total_book_count
