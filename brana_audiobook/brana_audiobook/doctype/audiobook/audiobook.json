@@ -18,10 +18,11 @@
   "description",
   "audio_file",
   "section_break_8q8zp",
-  "total_listening_time",
+  "duration",
   "subscription_level",
   "royalty_percentage",
   "column_break_vdrmp",
+  "total_listening_time",
   "licensing_cost",
   "production_cost",
   "section_break_zbbmx",
@@ -145,11 +146,17 @@
    "fieldname": "section_break_gev9r",
    "fieldtype": "Section Break",
    "label": "Listening History"
+  },
+  {
+   "fieldname": "duration",
+   "fieldtype": "Time",
+   "label": "Duration",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-10-18 12:11:32.597779",
+ "modified": "2023-10-19 12:52:47.169458",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Audiobook",

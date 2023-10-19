@@ -80,7 +80,6 @@ def retrieve_author(author_id):
     )
     response_data = []
     for author in authors:
-        # Audiobook = frappe.get_doc("Audiobook", author.email)
         total_book_count = frappe.get_value(
             "Audiobook",
         filters={
@@ -88,15 +87,24 @@ def retrieve_author(author_id):
         },
         fieldname = "COUNT(*)"
         )
+        books = frappe.get_all(
+            "Audiobook",
+        filters={
+            "author": author.email,
+        },
+        fields=[
+            "title",
+            "total_listening_time"
+],
+        )
         response_data.append({
             "name": author.full_name,
+            "user Image": author.user_image,
+            "number of books" : total_book_count,
+            # Rating Will Be here
         })
-    # for author in authors:
-    #     total_book_count = frappe.get_value(
-    #         "Audiobook",
-    #     filters={
-    #         "author": author.email,
-    #     },
-    #     fieldname="COUNT(*)"
-    #     )
+        response_data.append({
+            "Books": books
+        })
+
     return response_data
