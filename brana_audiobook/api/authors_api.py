@@ -60,7 +60,9 @@ def retrive_authors(search=None, page=1, limit=20):
     return response_data
 
 
-
+"""
+It must check the argument if it is email or full name 
+"""
 @frappe.whitelist(allow_guest=False)
 def retrieve_author(author_id):
     if not frappe.session.user:
@@ -78,11 +80,23 @@ def retrieve_author(author_id):
     )
     response_data = []
     for author in authors:
+        # Audiobook = frappe.get_doc("Audiobook", author.email)
         total_book_count = frappe.get_value(
             "Audiobook",
         filters={
             "author": author.email,
         },
-        fieldname="COUNT(*)"
+        fieldname = "COUNT(*)"
         )
-        return total_book_count
+        response_data.append({
+            "name": author.full_name,
+        })
+    # for author in authors:
+    #     total_book_count = frappe.get_value(
+    #         "Audiobook",
+    #     filters={
+    #         "author": author.email,
+    #     },
+    #     fieldname="COUNT(*)"
+    #     )
+    return response_data
