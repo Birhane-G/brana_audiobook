@@ -28,7 +28,11 @@
   "section_break_zbbmx",
   "chapter",
   "section_break_gev9r",
-  "listening_history"
+  "listening_history",
+  "section_break_tyzek",
+  "editors_name",
+  "column_break_zxgxw",
+  "editors_pick"
  ],
  "fields": [
   {
@@ -152,11 +156,34 @@
    "fieldtype": "Time",
    "label": "Duration",
    "read_only": 1
+  },
+  {
+   "fieldname": "section_break_tyzek",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "user_fullname",
+   "fieldname": "editors_name",
+   "fieldtype": "Data",
+   "label": "Editors Name",
+   "options": "User",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_zxgxw",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "editors_pick",
+   "fieldtype": "Check",
+   "label": "Editors Pick"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-10-19 12:52:47.169458",
+ "modified": "2023-10-19 13:08:00.573194",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Audiobook",

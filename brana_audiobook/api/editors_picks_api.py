@@ -6,5 +6,12 @@ import json
 """
 
 @frappe.whitelist(allow_guest=False)
-def retrieve_editors_picks(search=None, page=1,limit=20):
-    return "Work"
+def retrieve_editors_picks(audiobook_id):
+    editors_pick = frappe.get_value(
+        "Audiobook",
+        filters={
+            "title": audiobook_id, 
+            },
+        fieldname="editors_pick"
+    )
+    return editors_pick
