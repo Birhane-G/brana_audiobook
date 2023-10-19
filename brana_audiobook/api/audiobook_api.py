@@ -112,6 +112,7 @@ def retrieve_audiobook(audiobook_id):
         # "release_date": audiobook.release_date,
         # "average_rating": audiobook.average_rating,
         # "num_ratings": audiobook.num_ratings,
+        # Is bookmarked ?
         "is_favorite": is_favorite
     }
 
