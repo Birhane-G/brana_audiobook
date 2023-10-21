@@ -26,6 +26,7 @@ def retrieve_editors_picks():
                 "author",
                 "narrator",
                 "publisher",
+                "description",
                 "subscription_level",
                 "audio_file",
                 "thumbnail",
@@ -38,10 +39,10 @@ def retrieve_editors_picks():
     for editors_picks_audiobook in editors_picks_audiobooks:
         author = frappe.get_doc("User", editors_picks_audiobook.author)
         response_data.append({
-            "thumbnail" : editors_picks_audiobook.thumbnail,
             "title": editors_picks_audiobook.name,
-            "description": editors_picks_audiobook.description,
             "Author": author.full_name,
+            "description": editors_picks_audiobook.description,
+            "thumbnail": editors_picks_audiobook.thumbnail,
         })
 
     return response_data
