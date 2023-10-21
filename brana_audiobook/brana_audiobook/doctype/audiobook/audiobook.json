@@ -1,13 +1,14 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:title",
+ "autoname": "naming_series:",
  "creation": "2023-08-18 19:52:37.715223",
  "default_view": "List",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "naming_series",
   "title",
   "author",
   "narrator",
@@ -179,15 +180,23 @@
    "fieldname": "editors_pick",
    "fieldtype": "Check",
    "label": "Editors Pick"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "no_copy": 1,
+   "options": "AUDIO-BOOK-.YYYY.-",
+   "set_only_once": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-10-19 13:08:00.573194",
+ "modified": "2023-10-21 23:07:17.272603",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Audiobook",
- "naming_rule": "By fieldname",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
