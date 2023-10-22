@@ -41,7 +41,6 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Title",
-   "reqd": 1,
    "unique": 1
   },
   {
@@ -54,8 +53,7 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Author",
-   "options": "User",
-   "reqd": 1
+   "options": "User"
   },
   {
    "fieldname": "narrator",
@@ -74,39 +72,34 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Subscription Level",
-   "options": "Subscription Level",
-   "reqd": 1
+   "options": "Subscription Level"
   },
   {
    "fieldname": "audio_file",
    "fieldtype": "Link",
    "in_list_view": 1,
-   "label": "Audio File",
-   "options": "File",
-   "reqd": 1
+   "label": "Sample Audio File",
+   "options": "Audiobook File"
   },
   {
    "fieldname": "total_listening_time",
-   "fieldtype": "Time",
+   "fieldtype": "Duration",
    "label": "Total Listening Time"
   },
   {
    "fieldname": "licensing_cost",
    "fieldtype": "Currency",
-   "label": "Licensing Cost",
-   "reqd": 1
+   "label": "Licensing Cost"
   },
   {
    "fieldname": "production_cost",
    "fieldtype": "Currency",
-   "label": "Production Cost",
-   "reqd": 1
+   "label": "Production Cost"
   },
   {
    "fieldname": "royalty_percentage",
    "fieldtype": "Float",
-   "label": "Royalty Percentage",
-   "reqd": 1
+   "label": "Royalty Percentage"
   },
   {
    "fieldname": "listening_history",
@@ -116,8 +109,7 @@
   {
    "fieldname": "thumbnail",
    "fieldtype": "Attach Image",
-   "label": "Thumbnail",
-   "reqd": 1
+   "label": "Thumbnail"
   },
   {
    "fieldname": "genre",
@@ -154,7 +146,7 @@
   },
   {
    "fieldname": "duration",
-   "fieldtype": "Time",
+   "fieldtype": "Duration",
    "label": "Duration",
    "read_only": 1
   },
@@ -192,7 +184,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-10-21 23:07:17.272603",
+ "modified": "2023-10-22 16:45:03.045528",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Audiobook",

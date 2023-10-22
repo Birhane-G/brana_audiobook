@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "field:name1",
  "creation": "2023-08-18 22:48:12.824286",
  "default_view": "List",
  "doctype": "DocType",
@@ -18,7 +19,8 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Name",
-   "reqd": 1
+   "reqd": 1,
+   "unique": 1
   },
   {
    "fieldname": "monthly_price",
@@ -44,10 +46,11 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-08-18 22:48:12.824286",
+ "modified": "2023-10-22 11:36:51.659006",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Subscription Level",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {

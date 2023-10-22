@@ -3,7 +3,10 @@
 
 import frappe
 from frappe.model.document import Document
-
+from pydub import AudioSegment
+from frappe.utils.file_manager import get_file_url
+import os
+from werkzeug.utils import secure_filename
 class Audiobook(Document):
       def after_insert(self):
               company = frappe.defaults.get_user_default("Company")
@@ -14,7 +17,7 @@ class Audiobook(Document):
               stock_entry.company = company
               stock_entry.append(
                 "items",{
-                    "item_code": self.naming_series,
+                    "item_code": "Test",
                     "qty": 1,
                     # "valuation_rate": self.licensing_cost,
                     # If Their is Ant calculation will be here
@@ -26,11 +29,18 @@ class Audiobook(Document):
               stock_entry.submit()
               self.reload()
 
+      def validate(self):
+        if self.audio_file:
+            # audio_file_doc = frappe.get_doc("File", self.audio_file)
+            # file_path = frappe.get_site_path("public", audio_file_doc.file_url[1:])
+            file_path = frappe.get_site_path("public", self.audio_file[1:])
+            abso_file_path = os.path.abspath(file_path)
 
-	# def after_insert(self):
-	# 	stock_account = frappe.get_doc("Account", "Stock in Hand - BRA")
-	# 	stock_account.balance += float(self.licensing_cost)
-	# 	stock_account.save()
+            # frappe.msgprint(abso_file_path)
+            audio = AudioSegment.from_file(abso_file_path)
+            # frappe.msgprint(audio)
+            duration_sec = len(audio) / 1000
+            self.duration = duration_sec
 
 	# def after_insert(self):
 	# 	company = frappe.defaults.get_user_default("Company")
