@@ -26,6 +26,8 @@ class AudiobookFile(Document):
 			file_size = os.path.getsize(abso_file_path)
 			self.size = f"{file_size} byte"
 
+			self.file_url = abso_file_path
+
 			audio = AudioSegment.from_file(abso_file_path)
 			duration_sec = len(audio) / 1000
 			self.duration = duration_sec

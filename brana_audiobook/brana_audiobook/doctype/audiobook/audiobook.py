@@ -21,7 +21,8 @@ class Audiobook(Document):
                     "qty": 1,
                     # "valuation_rate": self.licensing_cost,
                     # If Their is Ant calculation will be here
-                    "basic_rate": self.licensing_cost * self.production_cost,
+                    # * self.production_cost,
+                    "basic_rate": (self.licensing_cost or 0) * (self.production_cost or 0), 
                     "cost_center": frappe.defaults.get_user_default("Cost Center"),
                     "t_warehouse": "Stores - BRA", 
     })
@@ -31,16 +32,14 @@ class Audiobook(Document):
 
       def validate(self):
         if self.audio_file:
-            # audio_file_doc = frappe.get_doc("File", self.audio_file)
-            # file_path = frappe.get_site_path("public", audio_file_doc.file_url[1:])
-            file_path = frappe.get_site_path("public", self.audio_file[1:])
-            abso_file_path = os.path.abspath(file_path)
-
-            # frappe.msgprint(abso_file_path)
-            audio = AudioSegment.from_file(abso_file_path)
+            audio_file_doc = frappe.get_doc("Audiobook File", self.audio_file)
+            # file_path = frappe.get_site_path("public", audio_file_doc.file_url)
+            # abso_file_path = os.path.abspath(file_path)
+            # frappe.msgprint(audio_file_doc.file_url[:1])
+            # audio = AudioSegment.from_file(audio_file_doc.file_url)
             # frappe.msgprint(audio)
-            duration_sec = len(audio) / 1000
-            self.duration = duration_sec
+            # duration_sec = len(audio) / 1000
+            self.duration = audio_file_doc.duration
 
 	# def after_insert(self):
 	# 	company = frappe.defaults.get_user_default("Company")

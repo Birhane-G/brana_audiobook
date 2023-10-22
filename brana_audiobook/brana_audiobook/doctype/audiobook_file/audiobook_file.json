@@ -14,7 +14,8 @@
   "duration",
   "file_path",
   "size",
-  "type"
+  "type",
+  "file_url"
  ],
  "fields": [
   {
@@ -57,11 +58,17 @@
    "fieldtype": "Data",
    "label": "Audio Base Name",
    "read_only": 1
+  },
+  {
+   "fieldname": "file_url",
+   "fieldtype": "Data",
+   "label": "File Url",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-10-22 16:29:20.069185",
+ "modified": "2023-10-22 17:19:25.310097",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Audiobook File",

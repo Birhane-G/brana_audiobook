@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "naming_series:",
+ "autoname": "field:title",
  "creation": "2023-08-18 19:52:37.715223",
  "default_view": "List",
  "doctype": "DocType",
@@ -18,8 +18,8 @@
   "column_break_p5nef",
   "description",
   "audio_file",
-  "section_break_8q8zp",
   "duration",
+  "section_break_8q8zp",
   "subscription_level",
   "royalty_percentage",
   "column_break_vdrmp",
@@ -28,6 +28,7 @@
   "production_cost",
   "section_break_zbbmx",
   "chapter",
+  "total_chapters_duration",
   "section_break_gev9r",
   "listening_history",
   "section_break_tyzek",
@@ -89,12 +90,14 @@
   {
    "fieldname": "licensing_cost",
    "fieldtype": "Currency",
-   "label": "Licensing Cost"
+   "label": "Licensing Cost",
+   "reqd": 1
   },
   {
    "fieldname": "production_cost",
    "fieldtype": "Currency",
-   "label": "Production Cost"
+   "label": "Production Cost",
+   "reqd": 1
   },
   {
    "fieldname": "royalty_percentage",
@@ -180,15 +183,21 @@
    "no_copy": 1,
    "options": "AUDIO-BOOK-.YYYY.-",
    "set_only_once": 1
+  },
+  {
+   "fieldname": "total_chapters_duration",
+   "fieldtype": "Data",
+   "label": "Total Chapters Duration",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-10-22 16:45:03.045528",
+ "modified": "2023-10-22 17:47:01.721466",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Audiobook",
- "naming_rule": "By \"Naming Series\" field",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {
