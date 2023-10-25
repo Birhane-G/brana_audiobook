@@ -23,15 +23,15 @@
   "subscription_level",
   "royalty_percentage",
   "column_break_vdrmp",
-  "total_listening_time",
   "licensing_cost",
   "production_cost",
   "section_break_zbbmx",
   "chapter",
   "total_chapters_duration",
-  "section_break_gev9r",
+  "column_break_cdu8y",
   "listening_history",
-  "section_break_tyzek",
+  "total_listening_time",
+  "section_break_gev9r",
   "editors_name",
   "column_break_zxgxw",
   "editors_pick"
@@ -107,6 +107,7 @@
   {
    "fieldname": "listening_history",
    "fieldtype": "Table",
+   "label": "Listening History",
    "options": "Audiobook Listening History"
   },
   {
@@ -144,18 +145,13 @@
   },
   {
    "fieldname": "section_break_gev9r",
-   "fieldtype": "Section Break",
-   "label": "Listening History"
+   "fieldtype": "Section Break"
   },
   {
    "fieldname": "duration",
    "fieldtype": "Duration",
    "label": "Duration",
    "read_only": 1
-  },
-  {
-   "fieldname": "section_break_tyzek",
-   "fieldtype": "Section Break"
   },
   {
    "default": "user_fullname",
@@ -186,14 +182,18 @@
   },
   {
    "fieldname": "total_chapters_duration",
-   "fieldtype": "Data",
+   "fieldtype": "Duration",
    "label": "Total Chapters Duration",
    "read_only": 1
+  },
+  {
+   "fieldname": "column_break_cdu8y",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-10-22 17:47:01.721466",
+ "modified": "2023-10-25 13:18:26.412893",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Audiobook",

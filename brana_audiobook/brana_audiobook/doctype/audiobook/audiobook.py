@@ -33,13 +33,19 @@ class Audiobook(Document):
       def validate(self):
         if self.audio_file:
             audio_file_doc = frappe.get_doc("Audiobook File", self.audio_file)
-            # file_path = frappe.get_site_path("public", audio_file_doc.file_url)
-            # abso_file_path = os.path.abspath(file_path)
-            # frappe.msgprint(audio_file_doc.file_url[:1])
-            # audio = AudioSegment.from_file(audio_file_doc.file_url)
-            # frappe.msgprint(audio)
-            # duration_sec = len(audio) / 1000
             self.duration = audio_file_doc.duration
+            
+        self.total_chapters_duration = 0
+        for data in self.chapter:
+            chapter_audio_file_doc = frappe.get_doc("Audiobook File", data.audio_file)
+            data.duration = chapter_audio_file_doc.duration
+
+            
+            self.total_chapters_duration += data.duration
+
+
+
+
 
 	# def after_insert(self):
 	# 	company = frappe.defaults.get_user_default("Company")
