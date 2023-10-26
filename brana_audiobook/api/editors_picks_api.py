@@ -5,7 +5,7 @@ import json
  * This File Containe All Api's For Editors picks basically Authors 
 """
 
-@frappe.whitelist(allow_guest=False)
+@frappe.whitelist(allow_guest=True)
 def retrieve_editors_picks():
     """it return 1 if editors pic true else return 0"""
     # editors_picks = frappe.get_value(

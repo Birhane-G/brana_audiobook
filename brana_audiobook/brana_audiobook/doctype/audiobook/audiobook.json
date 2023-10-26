@@ -17,6 +17,7 @@
   "thumbnail",
   "column_break_p5nef",
   "description",
+  "sample_audio_title",
   "audio_file",
   "duration",
   "section_break_8q8zp",
@@ -34,7 +35,8 @@
   "section_break_gev9r",
   "editors_name",
   "column_break_zxgxw",
-  "editors_pick"
+  "editors_pick",
+  "recommendation"
  ],
  "fields": [
   {
@@ -189,11 +191,22 @@
   {
    "fieldname": "column_break_cdu8y",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sample_audio_title",
+   "fieldtype": "Data",
+   "label": "sample Audio Title"
+  },
+  {
+   "default": "0",
+   "fieldname": "recommendation",
+   "fieldtype": "Check",
+   "label": "Recommendation"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-10-25 13:18:26.412893",
+ "modified": "2023-10-25 16:11:10.622863",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Audiobook",
