@@ -2,12 +2,18 @@ import frappe
 import json
 from frappe.utils import now_datetime
 import mimetypes
+import subprocess
+import os
 from frappe.utils.file_manager import get_file_url
 from flask import Flask, Response, send_file, request, make_response, current_app, stream_with_context
 from werkzeug.utils import secure_filename
-from frappe.utils.file_manager import get_file
-
+from flask import send_file
+from frappe.utils.file_manager import get_files_path, get_file_path
 app = Flask(__name__)
+
+"""
+# This Api Used To Retrieve All Audiobooks 
+"""
 
 @frappe.whitelist(allow_guest=True)
 def retrieve_audiobooks(search=None, page=1, limit=20):
@@ -33,11 +39,11 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
                 "author",
                 "narrator",
                 "publisher",
-                "subscription_level",
-                "audio_file",
+                # "subscription_level",
+                # "audio_file",
                 "thumbnail",
                 "chapter",
-                "total_listening_time",
+                # "total_listening_time",
                 ],
         limit=limit,
         start=offset,
@@ -52,7 +58,6 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
                  },
         fieldname="COUNT(title)"
     )
-
     response_data = []
     for audiobook in audiobooks:
         author = frappe.get_doc("User", audiobook.author)
@@ -82,12 +87,14 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
         response_data.append({
             "Total_chapter": total_chapter_count,
             "Total_audiobook": total_audiobook_count
-
         })
 
     return response_data
 
     # return json.dumps({"success": True, "data": {"audiobooks": response_data, "total_count": total_count}}, ensure_ascii=False)
+"""
+#
+"""
 @frappe.whitelist(allow_guest=True)
 def retrieve_recommended_audiobooks(search=None, page=1, limit=20):
     if not frappe.session.user:
@@ -97,7 +104,6 @@ def retrieve_recommended_audiobooks(search=None, page=1, limit=20):
         filters.append(f"(ab.title LIKE '%{search}%' OR aut.name LIKE '%{search}%' OR nar.name LIKE '%{search}%')")
     filters_str = " AND ".join(filters)
     offset = (page - 1) * limit
-
     audiobooks = frappe.get_all(
         "Audiobook",
         filters={
@@ -117,16 +123,11 @@ def retrieve_recommended_audiobooks(search=None, page=1, limit=20):
         start=offset,
         order_by="creation DESC"
     )
-    
     response_data = []
     for audiobook in audiobooks:
         author = frappe.get_doc("User", audiobook.author)
         narrator = frappe.get_doc("User", audiobook.narrator)
         chapters = frappe.get_all("Audiobook Chapter", filters={ "audiobook": audiobook.name }, fields=["title","duration"])
-        # thumnail_url = get_file_url(audiobook.thumbnail) if audiobook.thumbnail else None
-        # audio_file_doc = frappe.get_doc("File", "7703025466")
-        # file_path = frappe.get_site_path("public", audio_file_doc.file_url)
-        # file_path = frappe.get_site_path("public", audio_file_doc.file_url[1:])
         file_path = frappe.get_site_path('public', 'files', "photo1695894679.jpeg")
         abso_file_path = os.path.abspath(file_path)
         total_chapter_count = frappe.get_value(
@@ -149,15 +150,11 @@ def retrieve_recommended_audiobooks(search=None, page=1, limit=20):
 def retrieve_audiobook(audiobook_id):
     if not frappe.session.user:
         frappe.throw("User not authenticated", frappe.AuthenticationError)
-
     # Perform user role and permission checks here
     # ...
     # Ensure the authenticated user has the necessary roles and permissions to access the API method
-
     audiobook = frappe.get_doc("Audiobook", audiobook_id)
-
     # Retrieve User Favorite
-
     user_favorite = frappe.get_value(
         "User Favorite",
         filters={"user": frappe.session.user, "audio_content": audiobook_id},
@@ -189,39 +186,40 @@ def retrieve_audiobook(audiobook_id):
     }
 
     return json.dumps({"success": True, "data": response}, ensure_ascii=False)
-import os
+
 @frappe.whitelist(allow_guest=False)
-def retrieve_audiobook_sample(audiobook_id):
+def retrieve_audiobook_thumbnail(audiobook_id):
     if not frappe.session.user:
         frappe.throw("User not authenticated", frappe.AuthenticationError)
-
-    # Perform user role and permission checks here
-    # ...
-    # Ensure the authenticated user has the necessary roles and permissions to access the API method
-
     audiobook_doc = frappe.get_doc("Audiobook", audiobook_id)
-    audio_file_doc = frappe.get_doc("File", audiobook_doc.audio_file)
-
-    file_path = frappe.get_site_path("public", audio_file_doc.file_url[1:])
+    audio_file_doc = frappe.get_doc("File", audiobook_doc.thumbnail)
+    file_path = get_file_path(audio_file_doc.file_url[7:])
     filename = secure_filename(audio_file_doc.file_name)
     mimetype = mimetypes.guess_type(filename)[0]
 
     abso_file_path = os.path.abspath(file_path)
-    with app.test_request_context():
-        return Response(stream_with_context(send_file(abso_file_path, mimetype=mimetype, as_attachment=True)), content_type=mimetype)
+
+    # with open(abso_file_path, 'rb') as file:
+    #     file_data = file.read()
+
+    
+    return abso_file_path
+    
     # with app.test_request_context():
     #     return send_file(abso_file_path, mimetype=mimetype, as_attachment=True, conditional=True, download_name=filename)
-import subprocess
+
 @frappe.whitelist(allow_guest=False)
 def test_audiobook_sample(audiobook_id):
     if not frappe.session.user:
         frappe.throw("User not authenticated", frappe.AuthenticationError)
     
     audiobook_doc = frappe.get_doc("Audiobook", audiobook_id)
-    audio_file_doc = frappe.get_doc("File", audiobook_doc.audio_file)
+    audio_file_doc = frappe.get_doc("Audiobook File", audiobook_doc.audio_file)
+    # file_path = frappe.get_site_path("public", audio_file_doc.file_url[1:])
+    file_url = audio_file_doc.file_url
+    file_path = frappe.utils.get_files_path(file_url)
 
-    file_path = frappe.get_site_path("public", audio_file_doc.file_url[1:])
-    filename = secure_filename(audio_file_doc.file_name)
+    filename = secure_filename(audio_file_doc.audio_base_name)
     mimetype = mimetypes.guess_type(filename)[0]
     abso_file_path = os.path.abspath(file_path)
 
@@ -242,37 +240,35 @@ def test_audiobook_sample(audiobook_id):
     except (FileNotFoundError, json.decoder.JSONDecodeError) as e:
         message = f"Failed to generate new HLS manifest file: {e}"
         frappe.throw(message, frappe.ValidationError)
-    
     try:
         with app.test_request_context():
             return send_file(os.path.dirname(abso_file_path) + "/hls/output.mp3", mimetype="application/vnd.apple.mpegurl")
     finally:
         cleanup_hls_files(abso_file_path)
-
 def cleanup_hls_files(abso_file_path):
     hls_dir = os.path.dirname(abso_file_path) + "/hls"
     if os.path.exists(hls_dir):
         for file in os.listdir(hls_dir):
             os.remove(os.path.join(hls_dir, file))
         os.rmdir(hls_dir)
+
+
+  
+
 # def test_audiobook_sample(audiobook_id):
 #     if not frappe.session.user:
 #         frappe.throw("User not authenticated", frappe.AuthenticationError)
 #     audiobook_doc = frappe.get_doc("Audiobook", audiobook_id)
 #     audio_file_doc = frappe.get_doc("File", audiobook_doc.audio_file)
-
 #     file_path = frappe.get_site_path("public", audio_file_doc.file_url[1:])
 #     filename = secure_filename(audio_file_doc.file_name)
 #     mimetype = mimetypes.guess_type(filename)[0]
 #     abso_file_path = os.path.abspath(file_path)
-
 #     if not os.path.exists(os.path.dirname(abso_file_path)+"/hls"):
 #         os.makedirs(os.path.dirname(abso_file_path)+"/hls")
 #     os.chmod(os.path.dirname(abso_file_path)+"/hls", 0o777)
-
 #     # Used TO Test
 #     # return os.path.exists(os.path.dirname(abso_file_path)+"/hls")
-
     # ffmpeg -y -i Abdu.mp3 -hls_time 5 -c:v libx264 -b:v 1M -c:a aac -b:a 128k 
     # -f segment -segment_time 10 -segment_list playlist.m3u8 segment_%03dbook.ts -vn -c:a copy output.mp3
 #     try:
@@ -319,10 +315,8 @@ def cleanup_hls_files(abso_file_path):
 #     site = frappe.local.site
 #     with frappe.get_site_context(site):
 #         return send_file(os.path.dirname(abso_file_path)+"/hls/playlist.m3u8", mimetype="application/vnd.apple.mpegurl")
-
 if __name__ == '__main__':
     app.run()
-
 # 51ae2b8175
 # @frappe.whitelist(allow_guest=False)
 # def retrieve_audiobook_chapters(audiobook_id):
@@ -333,9 +327,7 @@ if __name__ == '__main__':
 #     subscription_plan = frappe.get_all("Subscription Plan",
 #         filters={"user_profile": frappe.session.user, "end_date": (">=", frappe.utils.nowdate())},
 #         fields=["subscription_level"])
-
 #     audiobook_subscription_level = frappe.get_value("Audiobook", audiobook_id, "subscription_level")
-
 #     if not any(plan.subscription_level == audiobook_subscription_level for plan in subscription_plan):
 #         frappe.throw("You are not subscribed to a subscription level that allows access to this audiobook")
 
