@@ -252,9 +252,84 @@ def cleanup_hls_files(abso_file_path):
             os.remove(os.path.join(hls_dir, file))
         os.rmdir(hls_dir)
 
+@frappe.whitelist(allow_guest=False)
+def retreive_audiobook_genres(search=None, page=1, limit=20):
+    if not frappe.session.user:
+        frappe.throw("User not authenticated", frappe.AuthenticationError)
+    filters = []
+    if search:
+        filters.append(f"(ab.title LIKE '%{search}%' OR aut.name LIKE '%{search}%' OR nar.name LIKE '%{search}%')")
+    filters_str = " AND ".join(filters)
+    offset = (page - 1) * limit
+    Genres = frappe.get_all(
+        "Genre",
+        filters={
 
-  
+        },
+        fields=[
+            "genre_name"
+        ]
+    )
+    response_data = []
+    for Genre in Genres:
+        number_of_audiobooks = frappe.get_value(
+        "Audiobook",
+        filters={
+                "genre": Genre.genre_name
+                 },
+        fieldname="COUNT(title)"
+    )
+        response_data.append({
+            "Genre Name": Genre.genre_name,
+            "Audiobooks": number_of_audiobooks
+        })
+   
+    return response_data
+@frappe.whitelist(allow_guest=False)
+def retreive_audiobook_genre(audiobook_genre):
+    if not frappe.session.user:
+        frappe.throw("User not authenticated", frappe.AuthenticationError)
 
+    audiobooks = frappe.get_all(
+        "Audiobook",
+        filters={
+            "genre": audiobook_genre
+        },
+        fields=[
+            "name",
+                "title",
+                "description",
+                "author",
+                "narrator",
+                "publisher",
+                "thumbnail",
+                "chapter",
+                "genre"
+        ]
+    )
+    response_data = []
+    for audiobook in audiobooks:
+        author = frappe.get_doc("User", audiobook.author)
+        narrator = frappe.get_doc("User", audiobook.narrator)
+        chapters = frappe.get_all("Audiobook Chapter", filters={ "audiobook": audiobook.name }, fields=["title","duration"])
+        file_path = frappe.get_site_path('public', 'files', "photo1695894679.jpeg")
+        abso_file_path = os.path.abspath(file_path)
+        total_chapter_count = frappe.get_value(
+        "Audiobook Chapter",
+        filters={"audiobook": audiobook.name},
+        fieldname="COUNT(title)")
+        response_data.append({
+            "title": audiobook.title,
+            "description": audiobook.description,
+            "author": author.full_name,
+            "narrator": narrator.full_name,
+            "thumbnail": audiobook.thumbnail,
+            "chapter" : chapters,
+            "Total Duration" : audiobook.total_chapters_duration,
+            "Total_chapter": total_chapter_count
+        })
+   
+    return response_data
 # def test_audiobook_sample(audiobook_id):
 #     if not frappe.session.user:
 #         frappe.throw("User not authenticated", frappe.AuthenticationError)
