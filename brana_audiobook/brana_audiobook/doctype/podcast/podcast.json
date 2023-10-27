@@ -8,16 +8,20 @@
  "engine": "InnoDB",
  "field_order": [
   "title",
-  "description",
   "host",
   "cover_image_url",
   "publisher",
+  "column_break_0ubep",
+  "description",
+  "section_break_dmuq5",
   "subscription_level",
-  "audio_file",
-  "total_listening_time",
+  "royalty_percentage",
+  "column_break_drsx0",
   "licensing_cost",
   "production_cost",
-  "royalty_percentage"
+  "section_break_eiefa",
+  "episodes",
+  "total_listening_time"
  ],
  "fields": [
   {
@@ -29,7 +33,7 @@
   },
   {
    "fieldname": "description",
-   "fieldtype": "Text Editor",
+   "fieldtype": "Text",
    "label": "Description"
   },
   {
@@ -57,15 +61,8 @@
    "reqd": 1
   },
   {
-   "fieldname": "audio_file",
-   "fieldtype": "Data",
-   "label": "Audio File",
-   "options": "File",
-   "reqd": 1
-  },
-  {
    "fieldname": "total_listening_time",
-   "fieldtype": "Time",
+   "fieldtype": "Duration",
    "label": "Total Listening Time",
    "reqd": 1
   },
@@ -92,11 +89,33 @@
    "fieldtype": "Data",
    "label": "Cover Image Url",
    "reqd": 1
+  },
+  {
+   "fieldname": "column_break_0ubep",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_dmuq5",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_drsx0",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_eiefa",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "episodes",
+   "fieldtype": "Table",
+   "label": "Episodes",
+   "options": "Podcast Episode"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-08-19 16:08:04.279425",
+ "modified": "2023-10-27 09:07:07.146404",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Podcast",
