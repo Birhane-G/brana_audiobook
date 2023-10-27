@@ -1,5 +1,4 @@
 # List Of RESTAPI
-
 ### Auth
     ```https://app.berana.app/api/method/brana_audiobook.api.auth_api.login```
 ### AudioBooks
@@ -24,7 +23,5 @@
     ```https://app.berana.app/api/method/brana_audiobook.api.authors_api.retrive_authors```
 #### This Api retreive Author, No of Books, Image 
     ```https://app.berana.app/api/method/brana_audiobook.api.authors_api.retrieve_author?author_id=ገነነ መኩሪያ```
-
 ### Podcasts
-
     ```https://app.berana.app/api/method/brana_audiobook.api.podcast_api.retrieve_podcasts```
