@@ -92,6 +92,41 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
     return response_data
 
     # return json.dumps({"success": True, "data": {"audiobooks": response_data, "total_count": total_count}}, ensure_ascii=False)
+@frappe.whitelist(allow_guest=True)
+def retrieve_audiobook(audiobook_id):
+    if not frappe.session.user:
+        frappe.throw("User not authenticated", frappe.AuthenticationError)
+    # Perform user role and permission checks here
+    # ...
+    # Ensure the authenticated user has the necessary roles and permissions to access the API method
+    audiobook = frappe.get_doc("Audiobook", audiobook_id)
+    # Retrieve User Favorite
+    user_favorite = frappe.get_value(
+        "User Favorite",
+        filters={"user": frappe.session.user, "audio_content": audiobook_id},
+        fieldname="name"
+    )
+
+    is_favorite = False
+    if user_favorite:
+        is_favorite = True
+
+    author = frappe.get_doc("User", audiobook.author)
+    narrator = frappe.get_doc("User", audiobook.narrator)
+    total_listening_time = str(audiobook.total_listening_time) if audiobook.total_listening_time else None
+    response = {
+        "id": audiobook.name,
+        "title": audiobook.title,
+        "author": author.full_name,
+        "narrator": narrator.full_name,
+        "duration": total_listening_time,
+        "description": audiobook.description,
+        # Is bookmarked ?
+        "is_favorite": is_favorite
+    }
+
+    return response
+
 """
 #
 """
@@ -144,47 +179,56 @@ def retrieve_recommended_audiobooks(search=None, page=1, limit=20):
             "Total_chapter": total_chapter_count
         })
         
-    return abso_file_path
+    return response_data
 
 @frappe.whitelist(allow_guest=True)
-def retrieve_audiobook(audiobook_id):
-    if not frappe.session.user:
-        frappe.throw("User not authenticated", frappe.AuthenticationError)
-    # Perform user role and permission checks here
-    # ...
-    # Ensure the authenticated user has the necessary roles and permissions to access the API method
-    audiobook = frappe.get_doc("Audiobook", audiobook_id)
-    # Retrieve User Favorite
-    user_favorite = frappe.get_value(
-        "User Favorite",
-        filters={"user": frappe.session.user, "audio_content": audiobook_id},
-        fieldname="name"
+def retrieve_editors_picks(search=None, page=1, limit=20):
+    """it return 1 if editors pic true else return 0"""
+    # editors_picks = frappe.get_value(
+    #     "Audiobook",
+    #     filters={
+    #         "title": audiobook_id, 
+    #         },
+    #     fieldname="editors_pick"
+    # )
+    filters = []
+    if search:
+        filters.append(f"(ab.title LIKE '%{search}%' OR aut.name LIKE '%{search}%' OR nar.name LIKE '%{search}%')")
+    filters_str = " AND ".join(filters)
+    offset = (page - 1) * limit
+    editors_picks_audiobooks = frappe.get_all(
+        "Audiobook",
+        filters={
+               "editors_pick": 1
+                 },
+        fields=[
+                "name",
+                "title",
+                "author",
+                "narrator",
+                "publisher",
+                "description",
+                "subscription_level",
+                "audio_file",
+                "thumbnail",
+                "chapter",
+                "total_listening_time",
+                ],
+        limit=limit,
+        start=offset,
+        order_by="creation DESC"
     )
+    response_data = []
+    for editors_picks_audiobook in editors_picks_audiobooks:
+        author = frappe.get_doc("User", editors_picks_audiobook.author)
+        response_data.append({
+            "title": editors_picks_audiobook.name,
+            "Author": author.full_name,
+            "description": editors_picks_audiobook.description,
+            "thumbnail": editors_picks_audiobook.thumbnail,
+        })
 
-    is_favorite = False
-    if user_favorite:
-        is_favorite = True
-
-    author = frappe.get_doc("User", audiobook.author)
-    narrator = frappe.get_doc("User", audiobook.narrator)
-    # audio_file_url = get_file_url(audiobook.audio_file) if audiobook.audio_file else None
-    total_listening_time = str(audiobook.total_listening_time) if audiobook.total_listening_time else None
-    response = {
-        "id": audiobook.name,
-        "title": audiobook.title,
-        "author": author.full_name,
-        "narrator": narrator.full_name,
-        "duration": total_listening_time,
-        "description": audiobook.description,
-        # "audio_file_url": audio_file_url,
-        # "release_date": audiobook.release_date,
-        # "average_rating": audiobook.average_rating,
-        # "num_ratings": audiobook.num_ratings,
-        # Is bookmarked ?
-        "is_favorite": is_favorite
-    }
-
-    return response
+    return response_data
 
 @frappe.whitelist(allow_guest=False)
 def retrieve_audiobook_thumbnail(audiobook_id):
