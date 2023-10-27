@@ -1,9 +1,7 @@
 # List Of RESTAPI
 
 ### Auth
-
     ```https://app.berana.app/api/method/brana_audiobook.api.auth_api.login```
-
 ### AudioBooks
 #### This Api retreive all Audiobook 
     ```https://app.berana.app/api/method/brana_audiobook.api.audiobook_api.retrieve_audiobooks```
@@ -22,11 +20,10 @@
 #### This Api play Audiobook Chapters based on Chapter Title
     ```https://app.berana.app/api/method/brana_audiobook.api.audiobook_api.play_audiobook_chapter?audiobook_chapter=ሚፈልግ ሰው```
 ### Authors
-
+#### This Api list All Authors
     ```https://app.berana.app/api/method/brana_audiobook.api.authors_api.retrive_authors```
-
+#### This Api retreive Author, No of Books, Image 
     ```https://app.berana.app/api/method/brana_audiobook.api.authors_api.retrieve_author?author_id=ገነነ መኩሪያ```
-
 
 ### Podcasts
 
