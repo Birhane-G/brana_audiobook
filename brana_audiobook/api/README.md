@@ -2,17 +2,13 @@
 
 ### Auth
 
-    ```http://0.0.0.0:8000/api/method/brana_audiobook.api.auth_api.login```
-
-### Podcasts
-
-    ```http://0.0.0.0:8000/api/method/brana_audiobook.api.podcast_api.retrieve_podcasts```
+    ```https://app.berana.app/api/method/brana_audiobook.api.auth_api.login```
 
 ### AudioBooks
-
-    ```http://0.0.0.0:8000/api/method/brana_audiobook.api.audiobook_api.retrieve_audiobooks```
-
-
+#### This Api retreive all Audiobook 
+    ```https://app.berana.app/api/method/brana_audiobook.api.audiobook_api.retrieve_audiobooks```
+#### 
+    ```https://app.berana.app/api/method/brana_audiobook.api.audiobook_api.retrieve_audiobooks```
 ### Authors
 
     ```https://app.berana.app/api/method/brana_audiobook.api.authors_api.retrive_authors```
@@ -21,3 +17,7 @@
 
 ### Editor's Picks
     ```https://app.berana.app/api/method/brana_audiobook.api.editors_picks_api.retrieve_editors_picks```
+
+### Podcasts
+
+    ```https://app.berana.app/api/method/brana_audiobook.api.podcast_api.retrieve_podcasts```

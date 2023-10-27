@@ -167,8 +167,7 @@ def retrieve_audiobook(audiobook_id):
 
     author = frappe.get_doc("User", audiobook.author)
     narrator = frappe.get_doc("User", audiobook.narrator)
-    
-    audio_file_url = get_file_url(audiobook.audio_file) if audiobook.audio_file else None
+    # audio_file_url = get_file_url(audiobook.audio_file) if audiobook.audio_file else None
     total_listening_time = str(audiobook.total_listening_time) if audiobook.total_listening_time else None
     response = {
         "id": audiobook.name,
@@ -177,7 +176,7 @@ def retrieve_audiobook(audiobook_id):
         "narrator": narrator.full_name,
         "duration": total_listening_time,
         "description": audiobook.description,
-        "audio_file_url": audio_file_url,
+        # "audio_file_url": audio_file_url,
         # "release_date": audiobook.release_date,
         # "average_rating": audiobook.average_rating,
         # "num_ratings": audiobook.num_ratings,
@@ -185,7 +184,7 @@ def retrieve_audiobook(audiobook_id):
         "is_favorite": is_favorite
     }
 
-    return json.dumps({"success": True, "data": response}, ensure_ascii=False)
+    return response
 
 @frappe.whitelist(allow_guest=False)
 def retrieve_audiobook_thumbnail(audiobook_id):
