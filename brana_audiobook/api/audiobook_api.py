@@ -23,7 +23,6 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
         filters.append(f"(ab.title LIKE '%{search}%' OR aut.name LIKE '%{search}%' OR nar.name LIKE '%{search}%')")
     filters_str = " AND ". join(filters)
     offset = (page - 1) * limit
-
     audiobooks = frappe.get_all(
         "Audiobook",
         filters={
