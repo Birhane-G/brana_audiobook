@@ -61,6 +61,9 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
         # audio_file_url = get_file_url(audiobook.audio_file) if audiobook.audio_file else None
         # audio_file_url = frappe.get_site_path('public', 'files', audiobook.audio_file)
         chapters = frappe.get_all("Audiobook Chapter", filters={ "audiobook": audiobook.name }, fields=["title","duration"])
+        total_chapters_duration = 0
+        for chapter in chapters:
+            total_chapters_duration = total_chapters_duration + chapter.duration
         audio_file_doc = frappe.get_doc("File", audiobook.thumbnail)
         site_name = frappe.local.site
         thumbnail_url = f"https://{site_name}{audio_file_doc.file_url}"
@@ -80,10 +83,11 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
             "Sample Audio Title": audiobook.sample_audio_title,
             "duration": audiobook.duration,
             "chapter" : chapters,
-            "Total_chapter": total_chapter_count,
+            "Total chapter": total_chapter_count,
+            "Total chapter Duration": total_chapters_duration
         })
     response_data.append({
-        "Total_audiobook": total_audiobook_count
+        "Total Audiobook": total_audiobook_count
     })
     return response_data
 
