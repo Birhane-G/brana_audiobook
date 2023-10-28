@@ -321,15 +321,15 @@ def retrieve_audiobook_thumbnail(audiobook_id):
     file_path = get_file_path(audio_file_doc.file_url[7:])
     filename = secure_filename(audio_file_doc.file_name)
     mimetype = mimetypes.guess_type(filename)[0]
-
     abso_file_path = os.path.abspath(file_path)
-
+    site_name = frappe.local.site
+    thumbnail_url = f"https://{site_name}{audio_file_doc.file_url}"
+    
+    return thumbnail_url
+    
     # with open(abso_file_path, 'rb') as file:
     #     file_data = file.read()
 
-    
-    return abso_file_path
-    
     # with app.test_request_context():
     #     return send_file(abso_file_path, mimetype=mimetype, as_attachment=True, conditional=True, download_name=filename)
 
