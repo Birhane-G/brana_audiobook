@@ -8,13 +8,12 @@ from frappe.utils.file_manager import get_file_url
 from flask import Flask, Response, send_file, request, make_response, current_app, stream_with_context
 from werkzeug.utils import secure_filename
 from flask import send_file
-from frappe.utils.file_manager import get_files_path, get_file_path
+from frappe.utils.file_manager import get_file_path
 app = Flask(__name__)
 
 """
 # This Api Used To Retrieve All Audiobooks 
 """
-
 @frappe.whitelist(allow_guest=True)
 def retrieve_audiobooks(search=None, page=1, limit=20):
     if not frappe.session.user:
@@ -22,7 +21,7 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
     filters = []
     if search:
         filters.append(f"(ab.title LIKE '%{search}%' OR aut.name LIKE '%{search}%' OR nar.name LIKE '%{search}%')")
-    filters_str = " AND ".join(filters)
+    filters_str = " AND ". join(filters)
     offset = (page - 1) * limit
 
     audiobooks = frappe.get_all(
@@ -39,11 +38,8 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
                 "author",
                 "narrator",
                 "publisher",
-                # "subscription_level",
-                # "audio_file",
                 "thumbnail",
                 "chapter",
-                # "total_listening_time",
                 ],
         limit=limit,
         start=offset,
@@ -63,20 +59,11 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
         author = frappe.get_doc("User", audiobook.author)
         narrator = frappe.get_doc("User", audiobook.narrator)
         # audio_file_url = get_file_url(audiobook.audio_file) if audiobook.audio_file else None
-        audio_file_url = frappe.get_site_path('public', 'files', audiobook.audio_file)
+        # audio_file_url = frappe.get_site_path('public', 'files', audiobook.audio_file)
         chapters = frappe.get_all("Audiobook Chapter", filters={ "audiobook": audiobook.name }, fields=["title","duration"])
-        response_data.append({
-            # "id": audiobook.name,
-            "title": audiobook.title,
-            "description": audiobook.description,
-            "author": author.full_name,
-            "narrator": narrator.full_name,
-            # "publisher": audiobook.publisher,
-            # "total_listening_time": str(audiobook.total_listening_time),
-            "thumbnail": audiobook.thumbnail,
-            # "audio_file_url": audio_file_url,
-            "chapter" : chapters,
-        })
+        audio_file_doc = frappe.get_doc("File", audiobook.thumbnail)
+        site_name = frappe.local.site
+        thumbnail_url = f"https://{site_name}{audio_file_doc.file_url}"
         total_chapter_count = frappe.get_value(
         "Audiobook Chapter",
         filters={
@@ -85,13 +72,21 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
         fieldname="COUNT(title)"
     )
         response_data.append({
+            "title": audiobook.title,
+            "description": audiobook.description,
+            "author": author.full_name,
+            "narrator": narrator.full_name,
+            "thumbnail": thumbnail_url,
+            "Sample Audio Title": audiobook.sample_audio_title,
+            "duration": audiobook.duration,
+            "chapter" : chapters,
             "Total_chapter": total_chapter_count,
-            "Total_audiobook": total_audiobook_count
         })
-
+    response_data.append({
+        "Total_audiobook": total_audiobook_count
+    })
     return response_data
 
-    # return json.dumps({"success": True, "data": {"audiobooks": response_data, "total_count": total_count}}, ensure_ascii=False)
 @frappe.whitelist(allow_guest=True)
 def retrieve_audiobook(audiobook_id):
     if not frappe.session.user:
@@ -106,11 +101,9 @@ def retrieve_audiobook(audiobook_id):
         filters={"user": frappe.session.user, "audio_content": audiobook_id},
         fieldname="name"
     )
-
     is_favorite = False
     if user_favorite:
         is_favorite = True
-
     author = frappe.get_doc("User", audiobook.author)
     narrator = frappe.get_doc("User", audiobook.narrator)
     total_listening_time = str(audiobook.total_listening_time) if audiobook.total_listening_time else None
@@ -163,8 +156,8 @@ def retrieve_recommended_audiobooks(search=None, page=1, limit=20):
         author = frappe.get_doc("User", audiobook.author)
         narrator = frappe.get_doc("User", audiobook.narrator)
         chapters = frappe.get_all("Audiobook Chapter", filters={ "audiobook": audiobook.name }, fields=["title","duration"])
-        file_path = frappe.get_site_path('public', 'files', "photo1695894679.jpeg")
-        abso_file_path = os.path.abspath(file_path)
+        # file_path = frappe.get_site_path('public', 'files', "photo1695894679.jpeg")
+        # abso_file_path = os.path.abspath(file_path)
         total_chapter_count = frappe.get_value(
         "Audiobook Chapter",
         filters={"audiobook": audiobook.name},
@@ -309,7 +302,6 @@ def retreive_audiobook_genre(audiobook_genre):
             "Total_chapter": total_chapter_count
         })
    
-    # return {"Test" : response_data}
     return response_data
 
 @frappe.whitelist(allow_guest=False)
