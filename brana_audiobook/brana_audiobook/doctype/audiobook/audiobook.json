@@ -15,6 +15,7 @@
   "publisher",
   "genre",
   "thumbnail",
+  "publication_date",
   "column_break_p5nef",
   "description",
   "sample_audio_title",
@@ -203,11 +204,16 @@
    "fieldname": "sample_audio_title",
    "fieldtype": "Data",
    "label": "sample Audio Title"
+  },
+  {
+   "fieldname": "publication_date",
+   "fieldtype": "Date",
+   "label": "Publication Date"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-10-31 11:58:25.256707",
+ "modified": "2023-10-31 15:49:12.012836",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Audiobook",

@@ -1,17 +1,13 @@
 import frappe
 import json
-from frappe.utils import now_datetime
 import mimetypes
 import subprocess
 import os
-# from frappe.utils.file_manager import get_file_url
-from flask import Flask, Response, send_file, request, make_response, current_app, stream_with_context
+from flask import Flask, send_file, request
 from werkzeug.utils import secure_filename
 from flask import send_file
-from frappe.utils.file_manager import get_file_path
 from frappe.utils import format_duration
 app = Flask(__name__)
-
 """
 # This Api Used To Retrieve All Audiobooks 
 """
@@ -339,7 +335,7 @@ def retreive_audiobook_genre(audiobook_genre):
 
     # with open(abso_file_path, 'rb') as file:
     #     file_data = file.read()
-    
+
 @frappe.whitelist(allow_guest=False)
 def audiobook_sample(audiobook_id):
     if not frappe.session.user:
@@ -382,6 +378,7 @@ def cleanup_hls_files(abso_file_path):
         for file in os.listdir(hls_dir):
             os.remove(os.path.join(hls_dir, file))
         os.rmdir(hls_dir)
+
 @frappe.whitelist(allow_guest=False)
 def play_audiobook_chapter(audiobook_chapter):
     if not frappe.session.user:
