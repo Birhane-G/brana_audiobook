@@ -4,7 +4,7 @@ from frappe.utils import now_datetime
 import mimetypes
 import subprocess
 import os
-from frappe.utils.file_manager import get_file_url
+# from frappe.utils.file_manager import get_file_url
 from flask import Flask, Response, send_file, request, make_response, current_app, stream_with_context
 from werkzeug.utils import secure_filename
 from flask import send_file
@@ -71,8 +71,7 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
         filters={
             "audiobook": audiobook.name
                  },
-        fieldname="COUNT(title)"
-    )
+        fieldname="COUNT(title)")
         response_data.append({
             "title": audiobook.title,
             "description": audiobook.description,
@@ -81,14 +80,14 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
             "thumbnail": thumbnail_url,
             "Sample Audio Title": audiobook.sample_audio_title,
             "duration": audiobook.duration,
-            "chapter" : chapters,
+            "chapter": chapters,
             "Total chapter": total_chapter_count,
             "Total chapter Duration": total_chapters_duration
         })
     response_data.append({
         "Total Audiobook": total_audiobook_count
     })
-    return response_data
+    return audiobook.sample_audio_title
 
 @frappe.whitelist(allow_guest=True)
 def retrieve_audiobook(audiobook_id):
