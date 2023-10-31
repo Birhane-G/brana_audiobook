@@ -39,6 +39,8 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
                 "publisher",
                 "thumbnail",
                 "chapter",
+                "sample_audio_title",
+                "duration"
                 ],
         limit=limit,
         start=offset,
@@ -78,16 +80,16 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
             "author": author.full_name,
             "narrator": narrator.full_name,
             "thumbnail": thumbnail_url,
-            "Sample Audio Title": audiobook.sample_audio_title,
+            "Sample Audiobook": audiobook.sample_audio_title,
             "duration": audiobook.duration,
             "chapter": chapters,
             "Total chapter": total_chapter_count,
             "Total chapter Duration": total_chapters_duration
         })
-    response_data.append({
-        "Total Audiobook": total_audiobook_count
-    })
-    return audiobook.sample_audio_title
+    # response_data.append({
+    #     "Total Audiobook": total_audiobook_count
+    # })
+    return response_data
 
 @frappe.whitelist(allow_guest=True)
 def retrieve_audiobook(audiobook_id):
@@ -116,6 +118,7 @@ def retrieve_audiobook(audiobook_id):
         "narrator": narrator.full_name,
         "duration": total_listening_time,
         "description": audiobook.description,
+        "Audiobook Title" : audiobook.sample_audio_title,
         # Is bookmarked ?
         "is_favorite": is_favorite
     }

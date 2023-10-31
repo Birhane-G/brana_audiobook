@@ -194,20 +194,20 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "sample_audio_title",
-   "fieldtype": "Data",
-   "label": "sample Audio Title"
-  },
-  {
    "default": "0",
    "fieldname": "recommendation",
    "fieldtype": "Check",
    "label": "Recommendation"
+  },
+  {
+   "fieldname": "sample_audio_title",
+   "fieldtype": "Data",
+   "label": "sample Audio Title"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-10-31 11:34:23.859536",
+ "modified": "2023-10-31 11:58:25.256707",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Audiobook",
