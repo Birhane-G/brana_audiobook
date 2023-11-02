@@ -9,7 +9,6 @@ from flask import send_file
 from frappe.utils import format_duration
 
 app = Flask(__name__)
-
 """
 This function retrieve all audiobook available in the 
 Brana Audiobook collection That is not disabled
@@ -517,7 +516,6 @@ def cleanup_hls_files(abso_file_path):
         for file in os.listdir(hls_dir):
             os.remove(os.path.join(hls_dir, file))
         os.rmdir(hls_dir)
-
 
 if __name__ == '__main__':
     app.run()

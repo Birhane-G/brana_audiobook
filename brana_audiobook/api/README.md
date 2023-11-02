@@ -315,13 +315,86 @@ Endpoint: ```brana_audiobook.api.audiobook_api.play_audiobook_chapter?audiobook_
     Example:
 ![Audioplay](https://app.berana.app/api/method/brana_audiobook.api.audiobook_api.play_audiobook_chapter?audiobook_chapter=ሚፈልግ ሰው)
 ### Authors
-#### This Api list All Authors
-    ```https://app.berana.app/api/method/brana_audiobook.api.authors_api.retrive_authors```
-#### This Api retreive Author, No of Books, Image 
-    ```https://app.berana.app/api/method/brana_audiobook.api.authors_api.retrieve_author?author_id=ገነነ መኩሪያ```
+This api endpoint allows you to retrieve authors Brana.
+Endpoint: ```brana_audiobook.api.authors_api.retrive_authors```
+###### Request
+    HTTP Method: GET
+    Parameters: None
+###### Response
+    HTTP Status Code: 200 OK
+    Content-Type: application/json
+###### Response Body
+    The response body will contain authors full name, image and number of books in JSON format.
+    Example:
+```
+{
+     {
+            "full name": "ድርቡ አደራ",
+            "user image": "https://app.berana.app/files/book464a244.jpeg",
+            "total Book": 1
+        },
+        {
+            "full name": "አያልቅበት አደም",
+            "user image": "https://app.berana.app/files/ዘነበወላ.jpg",
+            "total Book": 0
+        },
+        {
+            "full name": "በዓሉ ግርማ",
+            "user image": "https://app.berana.app/files/bealu.jpeg",
+            "total Book": 2
+        },
+}
+```
+#### Author
+This api endpoint allows you to retrieve author based on author id/name from Brana.
+Endpoint: ```brana_audiobook.api.authors_api.retrieve_author?author_id=በዓሉ ግርማ```
+###### Request
+    HTTP Method: GET
+    Parameters: author_id
+###### Response
+    HTTP Status Code: 200 OK
+    Content-Type: application/json
+###### Response Body
+    The response body will contain authors full name, image, number of books, list of books in JSON format.
+    Example:
+```
+{
+    "message": [
+        {
+            "name": "በዓሉ ግርማ",
+            "author image": "https://app.berana.app/files/bealu.jpeg",
+            "number of books": 2,
+            "books": [
+                {
+                    "title": "ከአድማስ ባሻገር",
+                    "narrator": "Natnael Tilaye",
+                    "thumbnail": "https://app.berana.app/files/book4.jpeg",
+                    "sample audiobook title": "በቀድሞዋ የሶቪየት ሶሽያሊስት ሕብረት",
+                    "duration": "31s",
+                    "total chapter": 0,
+                    "total chapter duration": "",
+                    "chapters": []
+                },
+                {
+                    "title": "The Fable Of Us",
+                    "narrator": "Daniel Muluneh",
+                    "thumbnail": "https://app.berana.app/files/book1.jpg",
+                    "sample audiobook title": "ዘመዶቼ",
+                    "duration": "7m 7s",
+                    "total chapter": 0,
+                    "total chapter duration": "",
+                    "chapters": []
+                }
+            ]
+        }
+    ]
+}
+```
+#### Upcoming Audiobooks
+
 ### Podcasts
     ```https://app.berana.app/api/method/brana_audiobook.api.podcast_api.retrieve_podcasts```
 
 
 ## Conclusion
-This document has provided an overview of the Brana Audiobook API, including the available endpoints for
+This document has provided an overview of the Brana Audiobook API, including the available endpoints
