@@ -88,6 +88,12 @@ def logout():
         "message": "Logged out successfully."
     }
 
+@frappe.whitelist(allow_guest=True)
+def signin(identifier, password):
+
+    return "signed in"
+
+
 def is_rate_limited():
     # Get the client's IP address (assuming Frappe request object is available)
     client_ip = frappe.request_ip
