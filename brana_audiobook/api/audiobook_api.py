@@ -11,7 +11,8 @@ from frappe.utils import format_duration
 app = Flask(__name__)
 
 """
-# This Api Used To Retrieve All Audiobooks 
+This function retrieve all audiobook available in the 
+Brana Audiobook collection That is not disabled
 """
 @frappe.whitelist(allow_guest=True)
 def retrieve_audiobooks(search=None, page=1, limit=20):
@@ -25,9 +26,7 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
     audiobooks = frappe.get_all(
         "Audiobook",
         filters={
-                #  "docstatus": 1,
-                #  "disabled": 0,
-                #  "subscription_level": ("!=", "")
+            "disabled": 0,
                  },
         fields=[
                 "name",
@@ -40,58 +39,55 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
                 "chapter",
                 "sample_audio_title",
                 "duration",
-                "total_chapters_duration"
+                "total_chapters_duration",
                 ],
         limit=limit,
         start=offset,
         order_by="creation DESC"
     )
-    total_audiobook_count = frappe.get_value(
+    if audiobooks:
+        total_audiobook_count = frappe.get_value(
         "Audiobook",
         filters={
-                #  "docstatus": 1,
-                #  "disabled": 0,
-                #  "subscription_level": ("!=", "")
+                 "disabled": 0,
                  },
         fieldname="COUNT(title)"
     )
-    response_data = []
-    for audiobook in audiobooks:
-        author = frappe.get_doc("User", audiobook.author)
-        narrator = frappe.get_doc("User", audiobook.narrator)
-        # audio_file_url = get_file_url(audiobook.audio_file) if audiobook.audio_file else None
-        # audio_file_url = frappe.get_site_path('public', 'files', audiobook.audio_file)
-        chapters = frappe.get_all("Audiobook Chapter", filters={ "audiobook": audiobook.name }, fields=["title","duration"])
-        # thumbnail = frappe.get_doc("File", audiobook.thumbnail)
-        thumbnail_url = f"https://{frappe.local.site}{audiobook.thumbnail}"
-        total_chapter_count = frappe.get_value(
-        "Audiobook Chapter",
-        filters={
-            "audiobook": audiobook.name
-                 },
-        fieldname="COUNT(title)")
-        response_data.append({
-            "title": audiobook.title,
-            "description": audiobook.description,
-            "author": author.full_name,
-            "narrator": narrator.full_name,
-            "thumbnail": thumbnail_url,
-            "Sample Audiobook": audiobook.sample_audio_title,
-            "duration": format_duration(audiobook.duration),
-            "Total chapter": total_chapter_count,
-            "Total chapter Duration": format_duration(audiobook.total_chapters_duration),
-            "chapters" : chapters
+        response_data = []
+        for audiobook in audiobooks:
+            author = frappe.get_doc("User", audiobook.author)
+            narrator = frappe.get_doc("User", audiobook.narrator)
+            chapters = frappe.get_all("Audiobook Chapter", filters={ "audiobook": audiobook.name }, fields=["title","duration"])
+            thumbnail_url = f"https://{frappe.local.site}{audiobook.thumbnail}"
+            total_chapter_count = frappe.get_value(
+                "Audiobook Chapter",
+                filters={
+                    "audiobook": audiobook.name
+                },
+                fieldname="COUNT(title)")
+            response_data.append({
+                "title": audiobook.title,
+                "description": audiobook.description,
+                "author": author.full_name,
+                "narrator": narrator.full_name,
+                "thumbnail": thumbnail_url,
+                "Sample Audiobook": audiobook.sample_audio_title,
+                "duration": format_duration(audiobook.duration),
+                "Total chapter": total_chapter_count,
+                "Total chapter Duration": format_duration(audiobook.total_chapters_duration),
+                "chapters" : []
         })
-        # for chapter in chapters:
-        #     response_data.append({
-        #         "title": chapter.title,
-        #         "duration" : format_duration(chapter.duration)
-        #     })
-
-    # response_data.append({
-    #     "Total Audiobook": total_audiobook_count
-    # })
-    return response_data
+            for chapter in chapters:
+                response_data[-1]["chapters"].append({
+                "title": chapter.title,
+                "duration" : format_duration(chapter.duration)
+            })
+        response_data.append({
+            "Total Audiobook": total_audiobook_count
+            })
+        return response_data
+    else:
+        return "No Audiobook found."
 
 @frappe.whitelist(allow_guest=True)
 def retrieve_audiobook(audiobook_id):

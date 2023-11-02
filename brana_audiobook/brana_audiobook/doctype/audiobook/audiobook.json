@@ -8,7 +8,6 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "naming_series",
   "title",
   "author",
   "narrator",
@@ -17,6 +16,7 @@
   "thumbnail",
   "publication_date",
   "column_break_p5nef",
+  "disabled",
   "description",
   "sample_audio_title",
   "audio_file",
@@ -176,14 +176,6 @@
    "label": "Editors Pick"
   },
   {
-   "fieldname": "naming_series",
-   "fieldtype": "Select",
-   "label": "Series",
-   "no_copy": 1,
-   "options": "AUDIO-BOOK-.YYYY.-",
-   "set_only_once": 1
-  },
-  {
    "fieldname": "total_chapters_duration",
    "fieldtype": "Duration",
    "label": "Total Chapters Duration",
@@ -208,11 +200,19 @@
    "fieldname": "publication_date",
    "fieldtype": "Date",
    "label": "Publication Date"
+  },
+  {
+   "default": "0",
+   "fieldname": "disabled",
+   "fieldtype": "Check",
+   "label": " Disabled",
+   "no_copy": 1,
+   "set_only_once": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-11-02 09:06:56.145080",
+ "modified": "2023-11-02 13:53:44.202420",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Audiobook",
