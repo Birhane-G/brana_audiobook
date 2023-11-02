@@ -1,10 +1,10 @@
 # Brana Audiobook API Documentation
 ### Introduction
 This document provides detailed documentation for the Brana Audiobook API. The API allows users to access and manage user profile, including retrieving audiobooks, , updating information, and more.
-### Base URL
+##### Base URL
 The base URL for accessing the Brana Audiobook API is: 
        ```https://app.berana.app/api/method/```
-### End Points
+#### End Points
 ### Authentication
 All API requests require authentication using an API key.
 Endpoint: ```brana_audiobook.api.auth_api.login```
@@ -16,6 +16,7 @@ Endpoint: ```brana_audiobook.api.auth_api.login```
     Content-Type: application/json
 ###### Response Body
     The response body will contain the details of the user Data in JSON format.
+    Example:
 ```{
     "message": {
         "user": "Administrator",
@@ -30,26 +31,67 @@ Endpoint: ```brana_audiobook.api.auth_api.login```
     }
 ```
 ### AudioBooks
-#### This Api retreive all Audiobook 
-    ```https://app.berana.app/api/method/brana_audiobook.api.audiobook_api.retrieve_audiobooks```
-    Endpoint: /audiobooks/latest
-Request
-
+This api endpoint allows you to retrieve all audiobook available in the Brana Audiobook collection.
+Endpoint: ```brana_audiobook.api.audiobook_api.retrieve_audiobooks```
+###### Request
     HTTP Method: GET
     Parameters: None
-
-Response
-
+###### Response
     HTTP Status Code: 200 OK
     Content-Type: application/json
+###### Response Body
+    The response body will contain list Audiobooks and Chapters in JSON format.
+    Example:
+```{
+     {
+            "title": "መተዋወቂያ",
+            "description": "ደንበኛው በጣም አስፈላጊ ነው, ደንበኛው በደንበኛው ይከተላል. ተጫዋቾቹ እድለኞች እስኪሆኑ ድረስ, ካሲኖው በህይወት የተሞላ ነው, እና አየር መንገዱ ንጹህ ነው. የእኔ ሁለቱ ኩርባዎች ነፍሰ ጡር ናቸው። ሞሪሺያን ነበር፣ ሁልጊዜም በፎቶግራፍ የተማረከ፣ ሁልጊዜም የሕይወት አልጋ። ለዚያ የአልጋ አባላት፣ በወቅቱ የሳቅ አካል፣ የቅርጫት ኳስ ገንዳ። አሁን የምድር መንኮራኩሮች ያጌጡ ናቸው, ነገር ግን ሸለቆው ያማልላል. ለህፃናት ግን ካሲኖው ነፃ ነው, ይህ ንጹህ ታሪክ ነው. ሁል ጊዜ ቀላል መሆን ከሚፈልግ ሰው ጋር ምንም አትጨነቅ። ቅስት ለመከታተል ጊዜው",
+            "author": "Kebede Desta",
+            "narrator": "Birhane Gabriel",
+            "thumbnail": "https://app.berana.app/files/book6.webp",
+            "Sample Audiobook": "ደንበኛው በጣም አስፈላጊ ነው",
+            "duration": "7m 7s",
+            "Total chapter": 2,
+            "Total chapter Duration": "1m 26s",
+            "chapters": [
+                {
+                    "title": "ሚፈልግ ሰው",
+                    "duration": 31.957
+                },
+                {
+                    "title": "ቅስት ለመከታተል ጊዜው",
+                    "duration": 54.909
+                }
+            ]
+        }
+    }
+```
+#### Audiobook
+This api endpoint allows you to retrieve audiobook from Brana Audiobook collection.
+Endpoint: ```brana_audiobook.api.audiobook_api retrieve_audiobook```
+###### Request
+    HTTP Method: GET
+    Parameters: audiobook_id
+###### Response
+    HTTP Status Code: 200 OK
+    Content-Type: application/json
+###### Response Body
+    The response body will contain Audiobook and It's Chapters in JSON format.
+    Example:
+```
+{
+    "message": {
+        "title": "መተዋወቂያ",
+        "author": "Kebede Desta",
+        "narrator": "Birhane Gabriel",
+        "thumbnail": "https://app.berana.app/files/book6.webp",
+        "Sample Audiobook": "ደንበኛው በጣም አስፈላጊ ነው",
+        "duration": "7m 7s",
+        "description": "ደንበኛው በጣም አስፈላጊ ነው, ደንበኛው በደንበኛው ይከተላል. ተጫዋቾቹ እድለኞች እስኪሆኑ ድረስ, ካሲኖው በህይወት የተሞላ ነው, እና አየር መንገዱ ንጹህ ነው. የእኔ ሁለቱ ኩርባዎች ነፍሰ ጡር ናቸው። ሞሪሺያን ነበር፣ ሁልጊዜም በፎቶግራፍ የተማረከ፣ ሁልጊዜም የሕይወት አልጋ። ለዚያ የአልጋ አባላት፣ በወቅቱ የሳቅ አካል፣ የቅርጫት ኳስ ገንዳ። አሁን የምድር መንኮራኩሮች ያጌጡ ናቸው, ነገር ግን ሸለቆው ያማልላል. ለህፃናት ግን ካሲኖው ነፃ ነው, ይህ ንጹህ ታሪክ ነው. ሁል ጊዜ ቀላል መሆን ከሚፈልግ ሰው ጋር ምንም አትጨነቅ። ቅስት ለመከታተል ጊዜው"
+    }
+}
+```
 
-Response Body
-
-The response body will contain the details of the latest audiobook in JSON format.
-
-Example:
-#### This Api Retrive single Audiobook based on Audiobook Title 
-    ```https://app.berana.app/api/method/brana_audiobook.api.audiobook_api retrieve_audiobookaudiobook_id=መተዋወቂያ```
 #### This Api Retrive Recommended Audiobooks 
     ```https://app.berana.app/api/method/brana_audiobook.api.audiobook_api.retrieve_recommended_audiobooks```
 #### This Api Retrive Editors Picks Audiobooks 
@@ -69,3 +111,7 @@ Example:
     ```https://app.berana.app/api/method/brana_audiobook.api.authors_api.retrieve_author?author_id=ገነነ መኩሪያ```
 ### Podcasts
     ```https://app.berana.app/api/method/brana_audiobook.api.podcast_api.retrieve_podcasts```
+
+
+## Conclusion
+This document has provided an overview of the Brana Audiobook API, including the available endpoints for
