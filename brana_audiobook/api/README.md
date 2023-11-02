@@ -7,6 +7,7 @@ The base URL for accessing the Brana Audiobook API is:
 ### End Points
 ### Authentication
 All API requests require authentication using an API key.
+
     Endpoint: ```brana_audiobook.api.auth_api.login```
     ###### Request
     HTTP Method: POST
@@ -16,6 +17,18 @@ All API requests require authentication using an API key.
     Content-Type: application/json
     ###### Response Body
     The response body will contain the details of the user Data in JSON format.
+```{
+    "message": {
+        "user": "Administrator",
+        "first_name": "Administrator",
+        "middle_name": null,
+        "last_name": null,
+        "email": "admin@example.com",
+        "user_profile": null
+    },
+    "home_page": "/app",
+    "full_name": "Administrator"
+}```
 ### AudioBooks
 #### This Api retreive all Audiobook 
     ```https://app.berana.app/api/method/brana_audiobook.api.audiobook_api.retrieve_audiobooks```
