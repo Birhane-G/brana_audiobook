@@ -271,6 +271,13 @@ def retreive_audiobook_genres(search=None, page=1, limit=20):
     )
     response_data = []
     for Genre in Genres:
+        genre_images = frappe.get_all(
+            "Audiobook",
+            filters={"genre": Genre.genre_name},
+            fields=["thumbnail"],
+            limit=5,
+            order_by="creation DESC"
+        )
         number_of_audiobooks = frappe.get_value(
         "Audiobook",
         filters={
@@ -278,9 +285,15 @@ def retreive_audiobook_genres(search=None, page=1, limit=20):
             },
         fieldname="COUNT(title)"
     )
+        if genre_images:
+            image_urls = [f"https://{frappe.local.site}{image.thumbnail}" for image in genre_images]
+        else:
+            image_urls = []
+        
         response_data.append({
             "Genre Name": Genre.genre_name,
-            "Audiobooks": number_of_audiobooks
+            "Audiobooks": number_of_audiobooks,
+            "thumbnail": image_urls
         })
    
     return response_data
