@@ -46,16 +46,16 @@ def retrive_authors(search=None, page=1, limit=20):
             "Total Book": total_book_count
         })
 
-    total_count = frappe.get_value(
-        "User",
-    filters={
-        "type": "author",
-    },
-    fieldname="COUNT(*)"
-    )
-    response_data.append({
-        "Total Authors" : total_count
-    })
+    # total_count = frappe.get_value(
+    #     "User",
+    # filters={
+    #     "type": "author",
+    # },
+    # fieldname="COUNT(*)"
+    # )
+    # response_data.append({
+    #     "Total Authors" : total_count
+    # })
 
     return response_data
 

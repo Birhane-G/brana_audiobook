@@ -205,14 +205,12 @@
    "default": "0",
    "fieldname": "disabled",
    "fieldtype": "Check",
-   "label": " Disabled",
-   "no_copy": 1,
-   "set_only_once": 1
+   "label": " Disabled"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-11-02 13:53:44.202420",
+ "modified": "2023-11-02 16:25:38.344694",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Audiobook",
