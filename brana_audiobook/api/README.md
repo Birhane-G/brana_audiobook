@@ -68,7 +68,7 @@ Endpoint: ```brana_audiobook.api.audiobook_api.retrieve_audiobooks```
 ```
 #### Audiobook
 This api endpoint allows you to retrieve audiobook from Brana Audiobook collection.
-Endpoint: ```brana_audiobook.api.audiobook_api retrieve_audiobook```
+Endpoint: ```brana_audiobook.api.audiobook_api.retrieve_audiobook```
 ###### Request
     HTTP Method: GET
     Parameters: audiobook_id
@@ -81,13 +81,29 @@ Endpoint: ```brana_audiobook.api.audiobook_api retrieve_audiobook```
 ```
 {
     "message": {
-        "title": "መተዋወቂያ",
-        "author": "Kebede Desta",
-        "narrator": "Birhane Gabriel",
-        "thumbnail": "https://app.berana.app/files/book6.webp",
-        "Sample Audiobook": "ደንበኛው በጣም አስፈላጊ ነው",
-        "duration": "7m 7s",
-        "description": "ደንበኛው በጣም አስፈላጊ ነው, ደንበኛው በደንበኛው ይከተላል. ተጫዋቾቹ እድለኞች እስኪሆኑ ድረስ, ካሲኖው በህይወት የተሞላ ነው, እና አየር መንገዱ ንጹህ ነው. የእኔ ሁለቱ ኩርባዎች ነፍሰ ጡር ናቸው። ሞሪሺያን ነበር፣ ሁልጊዜም በፎቶግራፍ የተማረከ፣ ሁልጊዜም የሕይወት አልጋ። ለዚያ የአልጋ አባላት፣ በወቅቱ የሳቅ አካል፣ የቅርጫት ኳስ ገንዳ። አሁን የምድር መንኮራኩሮች ያጌጡ ናቸው, ነገር ግን ሸለቆው ያማልላል. ለህፃናት ግን ካሲኖው ነፃ ነው, ይህ ንጹህ ታሪክ ነው. ሁል ጊዜ ቀላል መሆን ከሚፈልግ ሰው ጋር ምንም አትጨነቅ። ቅስት ለመከታተል ጊዜው"
+        "title": "ባርቾ",
+        "description": "ሁሌም የገጠር ‹‹ዘመዶቻችን›› ሲመጡ እኔም፣ ታላቅ እህቴም፣ ታላቅ ወንድሜም እንከፋለን፡፡ ይሄንን ደግሞ ደብቀነው አናውቅም፡፡ ያውቃል፡፡ ጠንቅቆ ያውቃል፡፡ እኔ ግን ዛሬ ምን እንዲህ እንዳደረገው አላወቅኩም፡፡\nየገጠር ዘመዶቹን የማልወድበት ምክንያት ብዙ ነው፡፡\nአንደኛ፤ እንዲህ አይነት- ጫማው የሚሸት፣ ፀገሩ የማይበጠር፣ ልብሱ የማይታጠብ፣ በበረባሶ የሚሄድ- ዘመድ አለኝ ብዬ ማመን ዝቅ የሚያደርገኝ ስለሚመስለኝ፤ ((እህቴ ‹‹እነሱ ሁለት ሳምንት ቆይተው ሲሄዱ የጫማ ቸው ሽታ ግን ሁለት ወር ይቆያል›› እያለች ታስቀን ነበር)\nሁለተኛ፤ ዘመዶቻችን እኛ ቤት መጥተው ሲከርሙ ከአልጋዬም ከዘወትር ኑሮዬም ስለሚያፈናቅሉኝ (ለምሳሌ- እነሱ እንግሊዝኛ ስለማይገባቸው የቴሌቪዥን ፊልም እንዳይ አይፈቀድም፡፡ የሚከፈተው የአማርኛ ፕሮግራም ብቻ ነው፡፡)",
+        "author": "ህይወት እምሻው",
+        "narrator": "Natnael Tilaye",
+        "thumbnail": "https://app.berana.app/files/book1.jpg",
+        "Sample Audiobook Title": "ዘመዶቼ",
+        "duration": "7m 24s",
+        "total chapter": 3,
+        "total chapter duration": "14m 45s",
+        "chapters": [
+            {
+                "title": "ሰዎችን እንድታስቢ",
+                "duration": "54s"
+            },
+            {
+                "title": "ከዲሞክራሲያዊ መሪ",
+                "duration": "6m 26s"
+            },
+            {
+                "title": "ጆሮዬን እየጎተተና",
+                "duration": "7m 24s"
+            }
+        ]
     }
 }
 ```
@@ -105,25 +121,190 @@ Endpoint: ```brana_audiobook.api.audiobook_api.retrieve_recommended_audiobooks``
     Example:
 ```
 {
-    "message": {
-        "title": "መተዋወቂያ",
-        "author": "Kebede Desta",
-        "narrator": "Birhane Gabriel",
-        "thumbnail": "https://app.berana.app/files/book6.webp",
-        "Sample Audiobook": "ደንበኛው በጣም አስፈላጊ ነው",
-        "duration": "7m 7s",
-        "description": "ደንበኛው በጣም አስፈላጊ ነው, ደንበኛው በደንበኛው ይከተላል. ተጫዋቾቹ እድለኞች እስኪሆኑ ድረስ, ካሲኖው በህይወት የተሞላ ነው, እና አየር መንገዱ ንጹህ ነው. የእኔ ሁለቱ ኩርባዎች ነፍሰ ጡር ናቸው። ሞሪሺያን ነበር፣ ሁልጊዜም በፎቶግራፍ የተማረከ፣ ሁልጊዜም የሕይወት አልጋ። ለዚያ የአልጋ አባላት፣ በወቅቱ የሳቅ አካል፣ የቅርጫት ኳስ ገንዳ። አሁን የምድር መንኮራኩሮች ያጌጡ ናቸው, ነገር ግን ሸለቆው ያማልላል. ለህፃናት ግን ካሲኖው ነፃ ነው, ይህ ንጹህ ታሪክ ነው. ሁል ጊዜ ቀላል መሆን ከሚፈልግ ሰው ጋር ምንም አትጨነቅ። ቅስት ለመከታተል ጊዜው"
-    }
+            "title": "ሌባሻይ",
+            "description": "የዑንታ ወንዝ  ከላይ ከገሪማ  ተራራ  ሰው ይዞ  መጥቶ መንጅቦ ና  ቡሳሴ  ላይ አዝመራውን  የሚያጠፋው ጂኒዎች ሲጋቡ ነው  በተለይ ይህንን ክረምት  ጅኒዎች ሰርጋቸው በዝቷል  ሲጨፍሩ ነው የሚያድሩት እኔ ቋንቋ ቸውን  ስለማውቅ  የሚነጋገሩትን እሰማለሁ  ኩሪሚሪሚሪ..... ማለት በጅኒ ቋንቋ ሰውን  እንፍጅ \" ማለት ነው ፡፡ ያን  ሰአት  ድፋን ክፍ እንቅልፉን ሲለጥጥ እኔ  ከጅኒ ጋር ስዋጋ ነው የምድረው  የኮርማ  ደራሯ እመቤት  ከመፅሀፍ  የተወሰደ፡፡ ገፅ 400 ",
+            "author": "ድርቡ አደራ",
+            "narrator": "Abebe Balcha",
+            "thumbnail": "https://app.berana.app/files/book2cbd491.jpeg",
+            "sample audiobook title": null,
+            "duration": "7m 24s",
+            "total chapter": 0,
+            "total chapter duration": "",
+            "chapters": []
 }
 ```
 #### Editors Picks Audiobooks
-    ```https://app.berana.app/api/method/brana_audiobook.api.audiobook_api.retrieve_editors_picks```
-#### This Api Retrive All Genres And Number of Audiobooks  
-    ```https://app.berana.app/api/method/brana_audiobook.api.audiobook_api.retreive_audiobook_genres```
-#### This Api Retrive Audiobooks based on Genre 
-    ```https://app.berana.app/api/method/brana_audiobook.api.audiobook_api.retreive_audiobook_genre?audiobook_genre=Historical Fiction```
-#### This Api play Audiobooks Sample based on Audiobook Name  
+This api endpoint allows you to retrieve editors picks audiobook from Brana Audiobook collection.
+Endpoint: ```brana_audiobook.api.audiobook_api.retrieve_editors_picks```
+###### Request
+    HTTP Method: GET
+    Parameters: None
+###### Response
+    HTTP Status Code: 200 OK
+    Content-Type: application/json
+###### Response Body
+    The response body will contain editor picks Audiobook and It's Chapters in JSON format.
+    Example:
+```
+{
+            "title": "ባርቾ",
+            "description": "ሁሌም የገጠር ‹‹ዘመዶቻችን›› ሲመጡ እኔም፣ ታላቅ እህቴም፣ ታላቅ ወንድሜም እንከፋለን፡፡ ይሄንን ደግሞ ደብቀነው አናውቅም፡፡ ያውቃል፡፡ ጠንቅቆ ያውቃል፡፡ እኔ ግን ዛሬ ምን እንዲህ እንዳደረገው አላወቅኩም፡፡\nየገጠር ዘመዶቹን የማልወድበት ምክንያት ብዙ ነው፡፡\nአንደኛ፤ እንዲህ አይነት- ጫማው የሚሸት፣ ፀገሩ የማይበጠር፣ ልብሱ የማይታጠብ፣ በበረባሶ የሚሄድ- ዘመድ አለኝ ብዬ ማመን ዝቅ የሚያደርገኝ ስለሚመስለኝ፤ ((እህቴ ‹‹እነሱ ሁለት ሳምንት ቆይተው ሲሄዱ የጫማ ቸው ሽታ ግን ሁለት ወር ይቆያል›› እያለች ታስቀን ነበር)\nሁለተኛ፤ ዘመዶቻችን እኛ ቤት መጥተው ሲከርሙ ከአልጋዬም ከዘወትር ኑሮዬም ስለሚያፈናቅሉኝ (ለምሳሌ- እነሱ እንግሊዝኛ ስለማይገባቸው የቴሌቪዥን ፊልም እንዳይ አይፈቀድም፡፡ የሚከፈተው የአማርኛ ፕሮግራም ብቻ ነው፡፡)",
+            "Author": "ህይወት እምሻው",
+            "narrator": "Natnael Tilaye",
+            "thumbnail": "https://app.berana.app/files/book1.jpg",
+            "sample audiobook title": "ዘመዶቼ",
+            "duration": "7m 24s",
+            "Total chapter": 3,
+            "Total chapter Duration": "14m 45s",
+            "chapters": [
+                {
+                    "title": "ሰዎችን እንድታስቢ",
+                    "duration": "54s"
+                },
+                {
+                    "title": "ከዲሞክራሲያዊ መሪ",
+                    "duration": "6m 26s"
+                },
+                {
+                    "title": "ጆሮዬን እየጎተተና",
+                    "duration": "7m 24s"
+                }
+            ]
+}
+```
+#### Genres
+This api endpoint allows you to retrieve all genres, It's associated audiobooks, 5 thubnails and total number of audiobook from Brana Audiobook collection.
+Endpoint: ```brana_audiobook.api.audiobook_api.retreive_audiobook_genres```
+###### Request
+    HTTP Method: GET
+    Parameters: None
+###### Response
+    HTTP Status Code: 200 OK
+    Content-Type: application/json
+###### Response Body
+    The response body will contain genres, thumbnails and total number of Audiobook in JSON format.
+    Example:
+```
+{
+    {
+        "Genre Name": "Biography",
+        "Audiobooks": 1,
+        "thumbnail": [
+            "https://app.berana.app/files/book6.webp"
+            ]
+    },
+    {
+        "Genre Name": "Thriller",
+        "Audiobooks": 0,
+        "thumbnail": []
+    },
+    {
+        "Genre Name": "Fiction",
+        "Audiobooks": 5,
+        "thumbnail": [
+            "https://app.berana.app/files/book4.jpeg",
+            "https://app.berana.app/files/book3.jpg",
+            "https://app.berana.app/files/book2cbd491.jpeg",
+            "https://app.berana.app/files/book4.jpeg",
+            "https://app.berana.app/files/book1.jpg"
+        ]
+    }
+}
+```
+#### Genre 
+This api endpoint allows you to retrieve Audiobook based on genre from Brana Audiobook collection.
+Endpoint: ```brana_audiobook.api.audiobook_api.retreive_audiobook_genre?audiobook_genre=Fiction```
+###### Request
+    HTTP Method: POST
+    Parameters: audiobook_genre
+###### Response
+    HTTP Status Code: 200 OK
+    Content-Type: application/json
+###### Response Body
+    The response body will contain audiobooks in JSON format.
+    Example:
+```
+{
+    {
+            "title": "ባርቾ",
+            "description": "ሁሌም የገጠር ‹‹ዘመዶቻችን›› ሲመጡ እኔም፣ ታላቅ እህቴም፣ ታላቅ ወንድሜም እንከፋለን፡፡ ይሄንን ደግሞ ደብቀነው አናውቅም፡፡ ያውቃል፡፡ ጠንቅቆ ያውቃል፡፡ እኔ ግን ዛሬ ምን እንዲህ እንዳደረገው አላወቅኩም፡፡\nየገጠር ዘመዶቹን የማልወድበት ምክንያት ብዙ ነው፡፡\nአንደኛ፤ እንዲህ አይነት- ጫማው የሚሸት፣ ፀገሩ የማይበጠር፣ ልብሱ የማይታጠብ፣ በበረባሶ የሚሄድ- ዘመድ አለኝ ብዬ ማመን ዝቅ የሚያደርገኝ ስለሚመስለኝ፤ ((እህቴ ‹‹እነሱ ሁለት ሳምንት ቆይተው ሲሄዱ የጫማ ቸው ሽታ ግን ሁለት ወር ይቆያል›› እያለች ታስቀን ነበር)\nሁለተኛ፤ ዘመዶቻችን እኛ ቤት መጥተው ሲከርሙ ከአልጋዬም ከዘወትር ኑሮዬም ስለሚያፈናቅሉኝ (ለምሳሌ- እነሱ እንግሊዝኛ ስለማይገባቸው የቴሌቪዥን ፊልም እንዳይ አይፈቀድም፡፡ የሚከፈተው የአማርኛ ፕሮግራም ብቻ ነው፡፡)",
+            "author": "ህይወት እምሻው",
+            "narrator": "Natnael Tilaye",
+            "thumbnail": "https://app.berana.app/files/book1.jpg",
+            "sample audiobook title": "ዘመዶቼ",
+            "duration": "7m 24s",
+            "Total chapter": 3,
+            "Total chapter Duration": "14m 45s",
+            "chapters": [
+                {
+                    "title": "ሰዎችን እንድታስቢ",
+                    "duration": "54s"
+                },
+                {
+                    "title": "ከዲሞክራሲያዊ መሪ",
+                    "duration": "6m 26s"
+                },
+                {
+                    "title": "ጆሮዬን እየጎተተና",
+                    "duration": "7m 24s"
+                }
+            ]
+        },
+        {
+            "title": "ሌባሻይ",
+            "description": "የዑንታ ወንዝ  ከላይ ከገሪማ  ተራራ  ሰው ይዞ  መጥቶ መንጅቦ ና  ቡሳሴ  ላይ አዝመራውን  የሚያጠፋው ጂኒዎች ሲጋቡ ነው  በተለይ ይህንን ክረምት  ጅኒዎች ሰርጋቸው በዝቷል  ሲጨፍሩ ነው የሚያድሩት እኔ ቋንቋ ቸውን  ስለማውቅ  የሚነጋገሩትን እሰማለሁ  ኩሪሚሪሚሪ..... ማለት በጅኒ ቋንቋ ሰውን  እንፍጅ \" ማለት ነው ፡፡ ያን  ሰአት  ድፋን ክፍ እንቅልፉን ሲለጥጥ እኔ  ከጅኒ ጋር ስዋጋ ነው የምድረው  የኮርማ  ደራሯ እመቤት  ከመፅሀፍ  የተወሰደ፡፡ ገፅ 400 ",
+            "author": "ድርቡ አደራ",
+            "narrator": "Abebe Balcha",
+            "thumbnail": "https://app.berana.app/files/book2cbd491.jpeg",
+            "sample audiobook title": null,
+            "duration": "7m 24s",
+            "Total chapter": 0,
+            "Total chapter Duration": "",
+            "chapters": []
+        }
+}
+```
+#### Latest Audiobook
+This api endpoint allows you to retrieve latest Audiobook based on the last 5 day from Brana Audiobook collection.
+Endpoint: ```brana_audiobook.api.audiobook_api.retreive_latest_audiobook```
+###### Request
+    HTTP Method: GET
+    Parameters: None
+###### Response
+    HTTP Status Code: 200 OK
+    Content-Type: application/json
+###### Response Body
+    The response body will contain latest audiobooks in JSON format.
+    Example:
+```
+{
+            "title": "እያደር ሲገለጥ",
+            "description": "ድርሰቱ  በአጠቃላይ በሀገራችን በገጠሩ ህብረተሰብ  ውስጥ ያሉትን ማህበራዊ  ክስተቶች  የሚዳስ ስ  መፅሀፍ ነው ሌሎችንም  የህገራችንን  የገጠሩን ባህል ከዕለት ዕለት እንቅስቃሴ ውስጥ ያሉትን  ሂደቶች ይተርካል፡፡ ገፅ 76",
+            "author": "ጎበዜ ጣፈጠ",
+            "narrator": "Daniel Muluneh",
+            "thumbnail": "https://app.berana.app/files/book3.jpg",
+            "Sample Audiobook": "ዘመዶቼ",
+            "duration": "7m 7s",
+            "Total chapter": 0,
+            "Total chapter Duration": "",
+            "chapters": []
+}
+```
+#### Audiobooks Sample
     ```https://app.berana.app/api/method/brana_audiobook.api.audiobook_api.audiobook_sample?audiobook_id=መተዋወቂያ```
+This api endpoint allows you to play Audiobook based audiobook title from Brana Audiobook collection.
+Endpoint: ```brana_audiobook.api.audiobook_api.audiobook_sample?audiobook_id=መተዋወቂያ```
+###### Request
+    HTTP Method: GET
+    Parameters: None
+###### Response
+    HTTP Status Code: 200 OK
+    Content-Type: application/json
+###### Response Body
+    The response body will contain latest audiobooks in JSON format.
+    Example:
+![Audioplay](https://app.berana.app/api/method/brana_audiobook.api.audiobook_api.audiobook_sample?audiobook_id=እያደር ሲገለጥ)
+
 #### This Api play Audiobook Chapters based on Chapter Title
     ```https://app.berana.app/api/method/brana_audiobook.api.audiobook_api.play_audiobook_chapter?audiobook_chapter=ሚፈልግ ሰው```
 ### Authors
