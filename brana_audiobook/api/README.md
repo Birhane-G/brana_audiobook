@@ -91,10 +91,32 @@ Endpoint: ```brana_audiobook.api.audiobook_api retrieve_audiobook```
     }
 }
 ```
-
-#### This Api Retrive Recommended Audiobooks 
-    ```https://app.berana.app/api/method/brana_audiobook.api.audiobook_api.retrieve_recommended_audiobooks```
-#### This Api Retrive Editors Picks Audiobooks 
+#### Recommended Audiobooks 
+This api endpoint allows you to retrieve recommended audiobook from Brana Audiobook collection.
+Endpoint: ```brana_audiobook.api.audiobook_api.retrieve_recommended_audiobooks```
+###### Request
+    HTTP Method: GET
+    Parameters: None
+###### Response
+    HTTP Status Code: 200 OK
+    Content-Type: application/json
+###### Response Body
+    The response body will contain Recommended Audiobook and It's Chapters in JSON format.
+    Example:
+```
+{
+    "message": {
+        "title": "መተዋወቂያ",
+        "author": "Kebede Desta",
+        "narrator": "Birhane Gabriel",
+        "thumbnail": "https://app.berana.app/files/book6.webp",
+        "Sample Audiobook": "ደንበኛው በጣም አስፈላጊ ነው",
+        "duration": "7m 7s",
+        "description": "ደንበኛው በጣም አስፈላጊ ነው, ደንበኛው በደንበኛው ይከተላል. ተጫዋቾቹ እድለኞች እስኪሆኑ ድረስ, ካሲኖው በህይወት የተሞላ ነው, እና አየር መንገዱ ንጹህ ነው. የእኔ ሁለቱ ኩርባዎች ነፍሰ ጡር ናቸው። ሞሪሺያን ነበር፣ ሁልጊዜም በፎቶግራፍ የተማረከ፣ ሁልጊዜም የሕይወት አልጋ። ለዚያ የአልጋ አባላት፣ በወቅቱ የሳቅ አካል፣ የቅርጫት ኳስ ገንዳ። አሁን የምድር መንኮራኩሮች ያጌጡ ናቸው, ነገር ግን ሸለቆው ያማልላል. ለህፃናት ግን ካሲኖው ነፃ ነው, ይህ ንጹህ ታሪክ ነው. ሁል ጊዜ ቀላል መሆን ከሚፈልግ ሰው ጋር ምንም አትጨነቅ። ቅስት ለመከታተል ጊዜው"
+    }
+}
+```
+#### Editors Picks Audiobooks
     ```https://app.berana.app/api/method/brana_audiobook.api.audiobook_api.retrieve_editors_picks```
 #### This Api Retrive All Genres And Number of Audiobooks  
     ```https://app.berana.app/api/method/brana_audiobook.api.audiobook_api.retreive_audiobook_genres```

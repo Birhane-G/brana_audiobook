@@ -179,7 +179,7 @@ def retrieve_recommended_audiobooks(search=None, page=1, limit=20):
             "author": author.full_name,
             "narrator": narrator.full_name,
             "thumbnail": thumbnail_url,
-            "Sample Audiobook": audiobook.sample_audio_title,
+            "Sample Audiobook Title": audiobook.sample_audio_title,
             "duration": format_duration(audiobook.duration),
             "Total chapter": total_chapter_count,
             "Total chapter Duration": format_duration(audiobook.total_chapters_duration),
