@@ -60,8 +60,8 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
         # audio_file_url = get_file_url(audiobook.audio_file) if audiobook.audio_file else None
         # audio_file_url = frappe.get_site_path('public', 'files', audiobook.audio_file)
         chapters = frappe.get_all("Audiobook Chapter", filters={ "audiobook": audiobook.name }, fields=["title","duration"])
-        thumbnail = frappe.get_doc("File", audiobook.thumbnail)
-        thumbnail_url = f"https://{frappe.local.site}{thumbnail.file_url}"
+        # thumbnail = frappe.get_doc("File", audiobook.thumbnail)
+        thumbnail_url = f"https://{frappe.local.site}{audiobook.thumbnail}"
         total_chapter_count = frappe.get_value(
         "Audiobook Chapter",
         filters={
@@ -110,8 +110,8 @@ def retrieve_audiobook(audiobook_id):
     #     is_favorite = True
     author = frappe.get_doc("User", audiobook.author)
     narrator = frappe.get_doc("User", audiobook.narrator)
-    thumbnail = frappe.get_doc("File", audiobook.thumbnail)
-    thumbnail_url = f"https://{frappe.local.site}{thumbnail.file_url}"
+    # thumbnail = frappe.get_doc("File", audiobook.thumbnail)
+    thumbnail_url = f"https://{frappe.local.site}{audiobook.thumbnail}"
     response = {
         "title": audiobook.title,
         "author": author.full_name,
@@ -165,8 +165,8 @@ def retrieve_recommended_audiobooks(search=None, page=1, limit=20):
         author = frappe.get_doc("User", audiobook.author)
         narrator = frappe.get_doc("User", audiobook.narrator)
         chapters = frappe.get_all("Audiobook Chapter", filters={ "audiobook": audiobook.name }, fields=["title","duration"])
-        thumbnail = frappe.get_doc("File", audiobook.thumbnail)
-        thumbnail_url = f"https://{frappe.local.site}{thumbnail.file_url}"
+        # thumbnail = frappe.get_doc("File", audiobook.thumbnail)
+        thumbnail_url = f"https://{frappe.local.site}{audiobook.thumbnail}"
         total_chapter_count = frappe.get_value(
         "Audiobook Chapter",
         filters={"audiobook": audiobook.name},
@@ -227,8 +227,8 @@ def retrieve_editors_picks(search=None, page=1, limit=20):
     for editors_picks_audiobook in editors_picks_audiobooks:
         chapters = frappe.get_all("Audiobook Chapter", filters={ "audiobook": editors_picks_audiobook.name }, fields=["title","duration"])
         author = frappe.get_doc("User", editors_picks_audiobook.author)
-        thumbnail = frappe.get_doc("File", editors_picks_audiobook.thumbnail)
-        thumbnail_url = f"https://{frappe.local.site}{thumbnail.file_url}"
+        # thumbnail = frappe.get_doc("File", editors_picks_audiobook.thumbnail)
+        thumbnail_url = f"https://{frappe.local.site}{editors_picks_audiobook.thumbnail}"
         total_chapter_count = frappe.get_value(
         "Audiobook Chapter",
         filters={"audiobook": editors_picks_audiobook.name},
@@ -313,8 +313,8 @@ def retreive_audiobook_genre(audiobook_genre):
         author = frappe.get_doc("User", audiobook.author)
         narrator = frappe.get_doc("User", audiobook.narrator)
         chapters = frappe.get_all("Audiobook Chapter", filters={ "audiobook": audiobook.name }, fields=["title","duration"])
-        thumbnail = frappe.get_doc("File", audiobook.thumbnail)
-        thumbnail_url = f"https://{frappe.local.site}{thumbnail.file_url}"
+        # thumbnail = frappe.get_doc("File", audiobook.thumbnail)
+        thumbnail_url = f"https://{frappe.local.site}{audiobook.thumbnail}"
         total_chapter_count = frappe.get_value(
         "Audiobook Chapter",
         filters={"audiobook": audiobook.name},

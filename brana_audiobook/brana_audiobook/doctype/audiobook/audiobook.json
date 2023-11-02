@@ -115,9 +115,8 @@
   },
   {
    "fieldname": "thumbnail",
-   "fieldtype": "Link",
-   "label": "Thumbnail",
-   "options": "File"
+   "fieldtype": "Attach Image",
+   "label": "Thumbnail"
   },
   {
    "fieldname": "genre",
@@ -213,7 +212,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-10-31 15:49:12.012836",
+ "modified": "2023-11-02 09:06:56.145080",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Audiobook",
