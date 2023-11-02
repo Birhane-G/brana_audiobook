@@ -442,7 +442,6 @@ def audiobook_sample(audiobook_id):
         frappe.throw("User not authenticated", frappe.AuthenticationError)
     audiobook_doc = frappe.get_doc("Audiobook", audiobook_id)
     audio_file_doc = frappe.get_doc("Audiobook File", audiobook_doc.audio_file)
-    # file_path = frappe.get_site_path("public", audio_file_doc.file_url[1:])
     file_url = audio_file_doc.file_url
     file_path = frappe.utils.get_files_path(file_url)
 
@@ -463,7 +462,6 @@ def audiobook_sample(audiobook_id):
         subprocess_result = subprocess.run(hls_cmd)
         if subprocess_result.returncode != 0:
             raise Exception(f"FFmpeg command failed: {subprocess_result.stderr}")
-        # return frappe.utils.get_url() + os.path.dirname(abso_file_path) + "/hls/output.mp3"
     except (FileNotFoundError, json.decoder.JSONDecodeError) as e:
         message = f"Failed to generate new HLS manifest file: {e}"
         frappe.throw(message, frappe.ValidationError)

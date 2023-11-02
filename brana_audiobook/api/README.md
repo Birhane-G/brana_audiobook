@@ -290,8 +290,7 @@ Endpoint: ```brana_audiobook.api.audiobook_api.retreive_latest_audiobook```
             "chapters": []
 }
 ```
-#### Audiobooks Sample
-    ```https://app.berana.app/api/method/brana_audiobook.api.audiobook_api.audiobook_sample?audiobook_id=መተዋወቂያ```
+#### Play Audiobooks Sample
 This api endpoint allows you to play Audiobook based audiobook title from Brana Audiobook collection.
 Endpoint: ```brana_audiobook.api.audiobook_api.audiobook_sample?audiobook_id=መተዋወቂያ```
 ###### Request
@@ -299,14 +298,22 @@ Endpoint: ```brana_audiobook.api.audiobook_api.audiobook_sample?audiobook_id=መ
     Parameters: None
 ###### Response
     HTTP Status Code: 200 OK
-    Content-Type: application/json
-###### Response Body
-    The response body will contain latest audiobooks in JSON format.
+    Content-Type: ""
+###### Response
     Example:
 ![Audioplay](https://app.berana.app/api/method/brana_audiobook.api.audiobook_api.audiobook_sample?audiobook_id=እያደር ሲገለጥ)
-
-#### This Api play Audiobook Chapters based on Chapter Title
-    ```https://app.berana.app/api/method/brana_audiobook.api.audiobook_api.play_audiobook_chapter?audiobook_chapter=ሚፈልግ ሰው```
+#### Play Audiobook Chapters
+This api endpoint allows you to play Audiobook chapters based chapter title from Brana Audiobook collection.
+Endpoint: ```brana_audiobook.api.audiobook_api.play_audiobook_chapter?audiobook_chapter=ሚፈልግ ሰው```
+###### Request
+    HTTP Method: GET
+    Parameters: audiobook_chapter
+###### Response
+    HTTP Status Code: 200 OK
+    Content-Type: ""
+###### Response
+    Example:
+![Audioplay](https://app.berana.app/api/method/brana_audiobook.api.audiobook_api.play_audiobook_chapter?audiobook_chapter=ሚፈልግ ሰው)
 ### Authors
 #### This Api list All Authors
     ```https://app.berana.app/api/method/brana_audiobook.api.authors_api.retrive_authors```
