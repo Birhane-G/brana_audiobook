@@ -30,6 +30,21 @@ Endpoint: ```brana_audiobook.api.auth_api.login```
     "full_name": "Administrator"
     }
 ```
+### Registeration
+This Api used to register user 
+Endpoint: ```brana_audiobook.api.auth_api.signup```
+###### Request
+    HTTP Method: POST
+    Parameters: firstname, lastname, email, phonenumber and Password
+###### Response
+    HTTP Status Code: 200 OK
+    Content-Type: application/json
+###### Response Body
+    The response body will contain the details of the user Data in JSON format.
+    Example:
+```
+
+```
 ### AudioBooks
 This api endpoint allows you to retrieve all audiobook available in the Brana Audiobook collection.
 Endpoint: ```brana_audiobook.api.audiobook_api.retrieve_audiobooks```

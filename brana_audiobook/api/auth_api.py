@@ -3,8 +3,7 @@ from frappe import _
 # from frappe.utils import cstr, get_url, random_string
 import requests
 import logging
-from frappe.utils import scrub
-from frappe.utils import validate_email, validate_phone_number
+from frappe.utils import validate_email_address, validate_phone_number
 logger = logging.getLogger(__name__)
 
 # Constants for rate limiting
@@ -94,27 +93,28 @@ def signup(firstname, lastname, email, phonenumber, password):
         if not (firstname and lastname and email and phonenumber and password):
             return {"message": _("Please provide all required parameters.")}
         
-        if not validate_email(email):
+        if not validate_email_address(email):
             return {"message": _("Invalid email address.")}
-        
-        if frappe.get_value("User", {"email": email}):
-            return {"message": _("Email is already registered.")}
         
         if not validate_phone_number(phonenumber):
             return {"message": _("Invalid phone number.")}
         
+        if frappe.get_value("User", {"email": email}):
+            return {"message": _("Email is already registered.")}
+        
         user = frappe.new_doc('User')
-        user.first_name = scrub(firstname)
-        user.last_name = scrub(lastname)
-        user.email = scrub(email)
-        user.phone = scrub(phonenumber)
+        user.first_name = firstname
+        user.last_name = lastname
+        user.email = email
+        user.phone = phonenumber
         # user.birth_date = dateofbirth
         user.insert(ignore_permissions=True)
-        user.add_roles("YourRoleName")
+        user.add_roles("author")
         user.password = password
         user.save(ignore_permissions=True)
         
         return {'message': 'User registered successfully'}
+
     except Exception as e:
         frappe.log_error(frappe.get_traceback(), "User Registration Failed")
         return {"message": _("User registration failed. Please try again later.")}
