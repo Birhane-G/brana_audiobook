@@ -390,7 +390,29 @@ Endpoint: ```brana_audiobook.api.authors_api.retrieve_author?author_id=በዓሉ
     ]
 }
 ```
-#### Upcoming Audiobooks
+#### Promotions
+This api endpoint allows you to retrieve promotions Brana.
+Endpoint: ```brana_audiobook.api.promotion_api.promotion```
+###### Request
+    HTTP Method: GET
+    Parameters: None
+###### Response
+    HTTP Status Code: 200 OK
+    Content-Type: application/json
+###### Response Body
+    The response body will contain image, header, description in JSON format.
+    Example:
+```
+{
+    "message": [
+        {
+            "image": "https://app.berana.app/files/BRANA RE FINAL LOGO-ai.png",
+            "header": "Upcoming",
+            "description": "Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum"
+        }
+    ]
+}
+```
 
 ### Podcasts
     ```https://app.berana.app/api/method/brana_audiobook.api.podcast_api.retrieve_podcasts```

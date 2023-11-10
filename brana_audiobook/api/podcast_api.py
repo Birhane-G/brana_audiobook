@@ -2,59 +2,120 @@ import frappe
 from frappe import get_doc, get_list, get_all
 from frappe.sessions import Session
 
-@frappe.whitelist()
-def retrieve_podcasts(search=None, page=None, limit=None):
-    filters = {}
+# @frappe.whitelist()
+# def retrieve_podcasts(search=None, page=None, limit=None):
+#     filters = {}
+#     if search:
+#         filters["title"] = ["like", f"%{search}%"]
+#     podcasts = get_list(
+#         "Podcast",
+#         filters=filters,
+#         fields=["name", 
+#                 "title", 
+#                 "host", 
+#                 "description",
+#                 "host", 
+#                 "cover_image_url",
+#                 "publisher",
+#                 "subscription_level", 
+#                 "audio_file", 
+#                 "total_listening_time",
+#                 "licensing_cost",
+#                 # "royality_percentage"
+#                 ],
+#         or_filters=[],
+#         limit_page_length=limit,
+#         start=page * limit if page and limit else None
+#     )
+
+#     total_count = get_all(
+#         "Podcast",
+#         filters=filters,
+#         fields=["count(*) as total_count"]
+#     )[0].total_count
+
+#     # Get the currently logged-in user
+#     session = frappe.session.user
+#     user_favorite_podcasts = get_list(
+#         "User Favorite",
+#         filters={"user": session},
+#         fields=["audio_content"],
+#     )
+
+#     favorite_podcast_ids = [fav.audio_content for fav in user_favorite_podcasts]
+
+#     for podcast in podcasts:
+#         podcast["is_favorite"] = podcast["name"] in favorite_podcast_ids
+
+#     response = {
+#         "podcasts": podcasts,
+#         "total_count": total_count
+#     }
+
+#     return response
+@frappe.whitelist(allow_guest=True)
+def retrieve_podcasts(search=None, page=1, limit=20):
+    if not frappe.session.user:
+        frappe.throw("User not authenticated", frappe.AuthenticationError)
+    filters = []
     if search:
-        filters["title"] = ["like", f"%{search}%"]
-
-    podcasts = get_list(
+        filters.append(f"(ab.title LIKE '%{search}%' OR aut.name LIKE '%{search}%' OR nar.name LIKE '%{search}%')")
+    filters_str = " AND ". join(filters)
+    offset = (page - 1) * limit
+    podcasts = frappe.get_all(
         "Podcast",
-        filters=filters,
-        fields=["name", 
-                "title", 
-                "host", 
+        filters={
+            "disabled": 0,
+                 },
+        fields=[
+                "name",
+                "title",
                 "description",
-                "host", 
-                "cover_image_url",
+                "host",
+                "narrator",
                 "publisher",
-                "subscription_level", 
-                "audio_file", 
-                "total_listening_time",
-                "licensing_cost",
-                # "royality_percentage"
+                "cover_image_url",
+                "episodes",
                 ],
-        or_filters=[],
-        limit_page_length=limit,
-        start=page * limit if page and limit else None
+        limit=limit,
+        start=offset,
+        order_by="creation DESC"
     )
-
-    total_count = get_all(
+    if podcasts:
+        total_bodcast_count = frappe.get_value(
         "Podcast",
-        filters=filters,
-        fields=["count(*) as total_count"]
-    )[0].total_count
-
-    # Get the currently logged-in user
-    session = frappe.session.user
-    user_favorite_podcasts = get_list(
-        "User Favorite",
-        filters={"user": session},
-        fields=["audio_content"],
+        filters={
+                 "disabled": 0,
+                 },
+        fieldname="COUNT(title)"
     )
-
-    favorite_podcast_ids = [fav.audio_content for fav in user_favorite_podcasts]
-
-    for podcast in podcasts:
-        podcast["is_favorite"] = podcast["name"] in favorite_podcast_ids
-
-    response = {
-        "podcasts": podcasts,
-        "total_count": total_count
-    }
-
-    return response
-
+        response_data = []
+        for podcast in podcasts:
+            chapters = frappe.get_all("Audiobook Chapter", filters={ "audiobook": podcast.name }, fields=["title","duration"])
+            thumbnail_url = f"https://{frappe.local.site}{podcast.thumbnail}"
+            response_data.append({
+                "title": podcast.title,
+                "description": podcast.description,
+                "Host": podcast.host,
+                "narrator": narrator.full_name,
+                "thumbnail": thumbnail_url,
+                "Sample Audiobook Title": audiobook.sample_audio_title,
+                "duration": format_duration(audiobook.duration),
+                "Total chapter": total_chapter_count,
+                "Total chapter Duration": format_duration(audiobook.total_chapters_duration),
+                "chapters" : []
+        })
+            for chapter in chapters:
+                response_data[-1]["chapters"].append({
+                "title": chapter.title,
+                "duration" : format_duration(chapter.duration)
+            })
+        response_data.append({
+            "Total Audiobook": total_audiobook_count
+            })
+        return response_data
+    else:
+        return "No Audiobook found."
 # @frappe.whitelist()
 # def retrieve_podcast(podcast_id):
 #     podcast = get_doc("Podcast", podcast_id)
