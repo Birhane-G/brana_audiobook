@@ -140,8 +140,8 @@ def retrieve_podcast(podcast_id):
         "description": podcast.description,
         "Host": host.full_name,
         "cover image": cover_image_url,
-        "total episodes" : total_episode_count,
-        "episodes" : []
+        "episodes" : [],
+        "total episodes" : total_episode_count
         # Is bookmarked ?
         # "is_favorite": is_favorite
     }

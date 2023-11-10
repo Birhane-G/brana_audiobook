@@ -24,7 +24,12 @@
   "section_break_eiefa",
   "episodes",
   "total_listening_time",
-  "total_episode_duration"
+  "total_episode_duration",
+  "section_break_sijac",
+  "editors_name",
+  "column_break_tdhj7",
+  "editors_pick",
+  "recommendation"
  ],
  "fields": [
   {
@@ -126,11 +131,39 @@
    "fieldtype": "Duration",
    "label": "Total Episode Duration",
    "read_only": 1
+  },
+  {
+   "fieldname": "section_break_sijac",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "user_fullname",
+   "fieldname": "editors_name",
+   "fieldtype": "Link",
+   "label": "Editors Name",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_tdhj7",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "editors_pick",
+   "fieldtype": "Check",
+   "label": "Editors Pick"
+  },
+  {
+   "default": "0",
+   "fieldname": "recommendation",
+   "fieldtype": "Check",
+   "label": "Recommendation"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-11-10 12:08:45.884902",
+ "modified": "2023-11-10 12:25:01.845550",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Podcast",
