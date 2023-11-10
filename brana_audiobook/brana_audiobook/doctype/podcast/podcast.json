@@ -23,7 +23,8 @@
   "production_cost",
   "section_break_eiefa",
   "episodes",
-  "total_listening_time"
+  "total_listening_time",
+  "total_episode_duration"
  ],
  "fields": [
   {
@@ -119,11 +120,17 @@
    "fieldname": "disabled",
    "fieldtype": "Check",
    "label": "Disabled"
+  },
+  {
+   "fieldname": "total_episode_duration",
+   "fieldtype": "Duration",
+   "label": "Total Episode Duration",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-11-10 11:33:58.513960",
+ "modified": "2023-11-10 12:08:45.884902",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Podcast",

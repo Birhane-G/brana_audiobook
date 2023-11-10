@@ -13,7 +13,7 @@ class Audiobook(Document):
         stock_entry.company = company
         stock_entry.append(
             "items",{
-            "item_code": "Test",
+            "item_code": "Brand - Audiobook",
             "qty": 1,
             # "valuation_rate": self.licensing_cost,
             # If Their is another calculation will be here

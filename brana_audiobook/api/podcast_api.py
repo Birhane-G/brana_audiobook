@@ -102,7 +102,8 @@ def retrieve_podcasts(search=None, page=1, limit=20):
             for episode in episodes:
                 response_data[-1]["episodes"].append({
                 "title": episode.title,
-                "duration" : format_duration(episode.duration)
+                "duration" : format_duration(episode.duration),
+                "podcast Number" : episode.episode_number
             })
         response_data.append({
             "Total Podcast": total_bodcast_count
