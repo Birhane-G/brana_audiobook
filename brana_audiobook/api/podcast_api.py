@@ -1,7 +1,7 @@
 import frappe
 from frappe import get_doc, get_list, get_all
 from frappe.sessions import Session
-
+from frappe.utils import format_duration
 # @frappe.whitelist()
 # def retrieve_podcasts(search=None, page=None, limit=None):
 #     filters = {}
@@ -68,11 +68,9 @@ def retrieve_podcasts(search=None, page=1, limit=20):
             "disabled": 0,
                  },
         fields=[
-                "name",
                 "title",
                 "description",
                 "host",
-                "narrator",
                 "publisher",
                 "cover_image_url",
                 "episodes",
@@ -91,31 +89,28 @@ def retrieve_podcasts(search=None, page=1, limit=20):
     )
         response_data = []
         for podcast in podcasts:
-            chapters = frappe.get_all("Audiobook Chapter", filters={ "audiobook": podcast.name }, fields=["title","duration"])
-            thumbnail_url = f"https://{frappe.local.site}{podcast.thumbnail}"
+            host = frappe.get_doc("User", podcast.host)
+            episodes = frappe.get_all("Podcast Episode", filters={ "podcast": podcast.title }, fields=["title","duration", "episode_number"])
+            cover_image_url = f"https://{frappe.local.site}{podcast.cover_image_url}"
             response_data.append({
                 "title": podcast.title,
                 "description": podcast.description,
-                "Host": podcast.host,
-                "narrator": narrator.full_name,
-                "thumbnail": thumbnail_url,
-                "Sample Audiobook Title": audiobook.sample_audio_title,
-                "duration": format_duration(audiobook.duration),
-                "Total chapter": total_chapter_count,
-                "Total chapter Duration": format_duration(audiobook.total_chapters_duration),
-                "chapters" : []
+                "Host": host.full_name,
+                "cover image": cover_image_url,
+                "episodes" : []
         })
-            for chapter in chapters:
-                response_data[-1]["chapters"].append({
-                "title": chapter.title,
-                "duration" : format_duration(chapter.duration)
+            for episode in episodes:
+                response_data[-1]["episodes"].append({
+                "title": episode.title,
+                "duration" : format_duration(episode.duration)
             })
         response_data.append({
-            "Total Audiobook": total_audiobook_count
+            "Total Podcast": total_bodcast_count
             })
         return response_data
     else:
-        return "No Audiobook found."
+        return "No Podcast found."
+
 # @frappe.whitelist()
 # def retrieve_podcast(podcast_id):
 #     podcast = get_doc("Podcast", podcast_id)
@@ -142,7 +137,7 @@ def retrieve_podcasts(search=None, page=1, limit=20):
 
 #     response["is_favorite"] = bool(user_favorite_podcast)
 
-    return response
+    # return response
 
 # @frappe.whitelist(allow_guest=True)
 # def retrieve_podcast_sample(podcast_id):

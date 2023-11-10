@@ -41,10 +41,10 @@
   },
   {
    "fieldname": "host",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Host",
-   "options": "User Profile",
+   "options": "User",
    "reqd": 1
   },
   {
@@ -123,7 +123,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-11-02 19:33:56.878436",
+ "modified": "2023-11-10 11:33:58.513960",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Podcast",

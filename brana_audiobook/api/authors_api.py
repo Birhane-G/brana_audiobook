@@ -121,6 +121,7 @@ def retrieve_author(author_id):
                 fieldname="COUNT(title)")
             response_data[-1]["books"].append({
                 "title": book.title,
+                "description": book.description,
                 "narrator": narrator.full_name,
                 "thumbnail" : thumbnail_urls,
                 "sample audiobook title": book.sample_audio_title,
