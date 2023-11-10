@@ -14,16 +14,15 @@
  "fields": [
   {
    "fieldname": "user",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "User",
-   "options": "User",
    "reqd": 1
   },
   {
    "fieldname": "wish_list",
-   "fieldtype": "Link",
-   "label": "Wish List",
+   "fieldtype": "Table",
+   "label": "Wish List And Favourite",
    "options": "Wish List Item"
   },
   {
@@ -35,7 +34,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-09-30 09:41:42.256697",
+ "modified": "2023-11-10 13:13:49.046802",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Brana User Profile",
