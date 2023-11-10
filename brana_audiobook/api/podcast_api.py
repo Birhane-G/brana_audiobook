@@ -153,6 +153,120 @@ def retrieve_podcast(podcast_id):
             })
     return response
 
+@frappe.whitelist(allow_guest=True)
+def retrieve_recommended_podcasts(search=None, page=1, limit=20):
+    if not frappe.session.user:
+        frappe.throw("User not authenticated", frappe.AuthenticationError)
+    filters = []
+    if search:
+        filters.append(f"(ab.title LIKE '%{search}%' OR aut.name LIKE '%{search}%' OR nar.name LIKE '%{search}%')")
+    filters_str = " AND ". join(filters)
+    offset = (page - 1) * limit
+    podcasts = frappe.get_all(
+        "Podcast",
+        filters={
+            "disabled": 0,
+            "recommendation" : 1,
+                 },
+        fields=[
+                "title",
+                "description",
+                "host",
+                "publisher",
+                "cover_image_url",
+                "episodes",
+                ],
+        limit=limit,
+        start=offset,
+        order_by="creation DESC"
+    )
+    if podcasts:
+        response_data = []
+        for podcast in podcasts:
+            host = frappe.get_doc("User", podcast.host)
+            episodes = frappe.get_all("Podcast Episode", filters={ "podcast": podcast.title }, fields=["title","duration", "episode_number"])
+            cover_image_url = f"https://{frappe.local.site}{podcast.cover_image_url}"
+            total_episode_count = frappe.get_value(
+                "Podcast Episode",
+                filters={
+                    "podcast": podcast.title
+                },
+                fieldname="COUNT(title)")
+            response_data.append({
+                "title": podcast.title,
+                "description": podcast.description,
+                "Host": host.full_name,
+                "cover image": cover_image_url,
+                "episodes" : [],
+                "total episodes" : total_episode_count
+        })
+            for episode in episodes:
+                response_data[-1]["episodes"].append({
+                "title": episode.title,
+                "duration" : format_duration(episode.duration),
+                "podcast Number" : episode.episode_number
+            })
+        return response_data
+    else:
+        return "No Recommended Podcast found."
+    
+@frappe.whitelist(allow_guest=True)
+def retrieve_recommended_podcasts(search=None, page=1, limit=20):
+    if not frappe.session.user:
+        frappe.throw("User not authenticated", frappe.AuthenticationError)
+    filters = []
+    if search:
+        filters.append(f"(ab.title LIKE '%{search}%' OR aut.name LIKE '%{search}%' OR nar.name LIKE '%{search}%')")
+    filters_str = " AND ". join(filters)
+    offset = (page - 1) * limit
+    podcasts = frappe.get_all(
+        "Podcast",
+        filters={
+            "disabled": 0,
+            "editors_pick": 1,
+                 },
+        fields=[
+                "title",
+                "description",
+                "host",
+                "publisher",
+                "cover_image_url",
+                "episodes",
+                ],
+        limit=limit,
+        start=offset,
+        order_by="creation DESC"
+    )
+    if podcasts:
+        response_data = []
+        for podcast in podcasts:
+            host = frappe.get_doc("User", podcast.host)
+            episodes = frappe.get_all("Podcast Episode", filters={ "podcast": podcast.title }, fields=["title","duration", "episode_number"])
+            cover_image_url = f"https://{frappe.local.site}{podcast.cover_image_url}"
+            total_episode_count = frappe.get_value(
+                "Podcast Episode",
+                filters={
+                    "podcast": podcast.title
+                },
+                fieldname="COUNT(title)")
+            response_data.append({
+                "title": podcast.title,
+                "description": podcast.description,
+                "Host": host.full_name,
+                "cover image": cover_image_url,
+                "episodes" : [],
+                "total episodes" : total_episode_count
+        })
+            for episode in episodes:
+                response_data[-1]["episodes"].append({
+                "title": episode.title,
+                "duration" : format_duration(episode.duration),
+                "podcast Number" : episode.episode_number
+            })
+        return response_data
+    else:
+        return "No Editor picks Podcast found."
+    
 # @frappe.whitelist(allow_guest=True)
 # def retrieve_podcast_sample(podcast_id):
 #     podcast = get_doc("Podcast", podcast_id)

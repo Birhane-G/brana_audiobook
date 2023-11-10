@@ -139,7 +139,7 @@
   {
    "default": "user_fullname",
    "fieldname": "editors_name",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "Editors Name",
    "options": "User",
    "read_only": 1
@@ -163,7 +163,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-11-10 12:25:01.845550",
+ "modified": "2023-11-10 12:47:10.879781",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Podcast",
