@@ -319,7 +319,6 @@ def retreive_audiobook_genre(audiobook_genre):
         frappe.throw("User not authenticated", frappe.AuthenticationError)
     audiobooks = frappe.get_all(
         "Audiobook",
-       
         filters={
             "disabled": 0,
             "genre": audiobook_genre
