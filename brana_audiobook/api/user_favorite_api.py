@@ -9,7 +9,7 @@ def favorite(title):
     favorite = frappe.new_doc("Brana User Profile")
     favorite.user = user.email
     # user.insert()
-    user.save()
+    favorite.save()
     
     return {
         "message": favorite
