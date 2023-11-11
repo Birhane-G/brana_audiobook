@@ -43,7 +43,40 @@ Endpoint: ```brana_audiobook.api.auth_api.signup```
     The response body will contain the details of the user Data in JSON format.
     Example:
 ```
-
+    "message": {
+        "message": "registered successfully Check Your Email",
+        "user_data": {
+            "firstname": "gemechis",
+            "lastname": "kedir",
+            "email": "testuser@gmail.com",
+            "username": "gk"
+        }
+    },
+    "home_page": "/me",
+    "full_name": "gemechis kedir",
+```
+### User Profile
+This Api used to retrieve User Profile based on user session
+Endpoint: ```brana_audiobook.api.user_profile_api.retrieve_profile```
+###### Request
+    HTTP Method: POST
+    Parameters: None
+###### Response
+    HTTP Status Code: 200 OK
+    Content-Type: application/json
+###### Response Body
+    The response body will contain the details of the user in JSON format.
+    Example:
+```
+{
+    "message": {
+        "email": "testuser@gmail.com",
+        "first_name": "gemechis",
+        "last_name": "kedir",
+        "username": "gk",
+        "profile_url": "https://app.berana.appNone"
+    }
+}
 ```
 ### AudioBooks
 This api endpoint allows you to retrieve all audiobook available in the Brana Audiobook collection.
