@@ -105,9 +105,9 @@ def retrieve_podcasts(search=None, page=1, limit=20):
                 "duration" : format_duration(episode.duration),
                 "podcast Number" : episode.episode_number
             })
-        response_data.append({
-            "Total Podcast": total_bodcast_count
-            })
+        # response_data.append({
+        #     "Total Podcast": total_bodcast_count
+        #     })
         return response_data
     else:
         return "No Podcast found."
@@ -211,7 +211,7 @@ def retrieve_recommended_podcasts(search=None, page=1, limit=20):
         return "No Recommended Podcast found."
     
 @frappe.whitelist(allow_guest=True)
-def retrieve_recommended_podcasts(search=None, page=1, limit=20):
+def retrieve_editor_podcasts(search=None, page=1, limit=20):
     if not frappe.session.user:
         frappe.throw("User not authenticated", frappe.AuthenticationError)
     filters = []
