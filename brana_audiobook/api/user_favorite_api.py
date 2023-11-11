@@ -2,6 +2,7 @@ import frappe
 from frappe import _
 @frappe.whitelist(allow_guest=True)
 def favorite(title):
+    # check the title is available on audiobook or podcast list before save
     if not frappe.session.user:
         frappe.throw("User not authenticated", frappe.AuthenticationError)
     user = frappe.get_doc("User", frappe.session.user)
