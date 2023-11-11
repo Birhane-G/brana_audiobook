@@ -8,9 +8,14 @@ def favorite(title):
     user = frappe.get_doc("User", frappe.session.user)
     favorite = frappe.new_doc("Brana User Profile")
     favorite.user = user.email
-    # user.insert()
+    favorite.user_name = user.full_name
+    
+    favorite_item = favorite.append("wish_list", {})
+    favorite_item.title = title
+    favorite_item.favourite = 1
+    
     favorite.save()
     
     return {
-        "message": favorite
+        "message": "sucess"
     }

@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "field:user",
  "creation": "2023-09-30 09:35:07.850446",
  "default_view": "List",
  "doctype": "DocType",
@@ -8,6 +9,9 @@
  "engine": "InnoDB",
  "field_order": [
   "user",
+  "column_break_ojoha",
+  "user_name",
+  "section_break_rkhhp",
   "wish_list",
   "listening_history"
  ],
@@ -18,7 +22,9 @@
    "in_list_view": 1,
    "label": "User",
    "options": "User",
-   "reqd": 1
+   "read_only": 1,
+   "reqd": 1,
+   "unique": 1
   },
   {
    "fieldname": "wish_list",
@@ -31,14 +37,30 @@
    "fieldtype": "Link",
    "label": "Listening History",
    "options": "User Listening History"
+  },
+  {
+   "fieldname": "column_break_ojoha",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "user_name",
+   "fieldtype": "Data",
+   "label": "User Name",
+   "read_only": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "section_break_rkhhp",
+   "fieldtype": "Section Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-11-11 20:52:45.647885",
+ "modified": "2023-11-11 21:56:33.253071",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Brana User Profile",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {
@@ -57,6 +79,7 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
+ "title_field": "user_name",
  "track_changes": 1,
  "track_seen": 1
 }
