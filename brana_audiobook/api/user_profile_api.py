@@ -1,5 +1,5 @@
 import frappe
-from frappe import _
+
 
 @frappe.whitelist(allow_guest=True)
 def retrieve_profile():
