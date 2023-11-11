@@ -87,8 +87,8 @@ def logout():
     }
 
 @frappe.whitelist(allow_guest=True)
-def signup(firstname, lastname, username, email, phonenumber, password):
-    if not (firstname and lastname and email and phonenumber and password):
+def signup(firstname, lastname, username, email, phonenumber):
+    if not (firstname and lastname and email and phonenumber):
         return {"message": _("Please provide all required Information.")}
         
     if not validate_email_address(email):
@@ -108,36 +108,16 @@ def signup(firstname, lastname, username, email, phonenumber, password):
     if fullname:
         return {"message": _("A user with the same full name is already registered.")}
     try:
-        # user = frappe.new_doc({
-        #     "doctype":"User",
-        #     "email": email,
-        #     "first_name": firstname,
-        #     "last_name": lastname,
-        #     "phone": phonenumber,
-        #     "username": username,
-        #     "new_password": password,
-		# })
-        # user.flags.ignore_permissions = True
-        # user.insert(ignore_permissions=True)
-        # user.save(ignore_permissions=True)
         user = frappe.new_doc("User")
         user.first_name = firstname
         user.last_name = lastname
         user.email = email
         user.phone = phonenumber
         user.username = username
-        user.add_roles("Author")
-        user.allowed_modules = []
+        # user.add_roles("Author")
+        # user.allowed_modules = []
         user.insert(ignore_permissions=True)
         user.save(ignore_permissions=True)
-        
-        # user_doc = frappe.get_doc("User", user.email)
-        # password_strength = frappe.utils.password_strength(password)
-        # if password_strength < 3:
-        #     return {"message": _("Invalid password. Please choose a stronger password.")}
-        # user.new_password = password
-        # user.insert(ignore_permissions=True)
-        # user.save(ignore_permissions=True)
         
         frappe.local.login_manager.login_as(user.name)
         user_data = {
@@ -147,12 +127,12 @@ def signup(firstname, lastname, username, email, phonenumber, password):
             'username': user.username,
         }
         return {
-            'message': 'User registered successfully', 
+            'message': 'registered successfully Check Your Email', 
             'user_data': user_data
             }
 
     except Exception as e:
-        # frappe.log_error(frappe.get_traceback(), "User Registration Failed")
+        frappe.log_error(frappe.get_traceback(), "User Registration Failed")
         return {"message": _("User registration failed. Please try again later.")}
 
 
