@@ -39,4 +39,4 @@ def favorite(title):
             return "Favourite"
     except Exception as e:
         frappe.log_error(frappe.get_traceback(), "Error")
-        return {"message": _("Favourite Error")}
+        return {"message": _("Login Error")}

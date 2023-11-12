@@ -1,5 +1,13 @@
 import frappe
+import json
+import mimetypes
+import subprocess
+import os
+from flask import Flask, send_file, request
+from werkzeug.utils import secure_filename
+from flask import send_file
 from frappe.utils import format_duration
+app = Flask(__name__)
 @frappe.whitelist(allow_guest=True)
 def retrieve_podcasts(search=None, page=1, limit=20):
     if not frappe.session.user:
@@ -277,3 +285,47 @@ def retrieve_editor_podcasts(search=None, page=1, limit=20):
         return response_data
     else:
         return "No Editor picks Podcast found."
+
+@frappe.whitelist(allow_guest=False)
+def play_podcast_episode(podcast_episode):
+    if not frappe.session.user:
+        frappe.throw("User not authenticated", frappe.AuthenticationError)
+    audiobook_doc = frappe.get_doc("Podcast Episode", podcast_episode)
+    audio_file_doc = frappe.get_doc("Audiobook File", audiobook_doc.audio_file)
+    file_url = audio_file_doc.file_url
+    file_path = frappe.utils.get_files_path(file_url)
+
+    filename = secure_filename(audio_file_doc.audio_base_name)
+    mimetype = mimetypes.guess_type(filename)[0]
+    abso_file_path = os.path.abspath(file_path)
+
+    if not os.path.exists(os.path.dirname(abso_file_path) + "/hls"):
+        os.makedirs(os.path.dirname(abso_file_path) + "/hls")
+    os.chmod(os.path.dirname(abso_file_path) + "/hls", 0o777)
+    try:
+        hls_cmd = [
+            "ffmpeg", "-y", "-i", abso_file_path, "-hls_time", "5", "-c:v", "libx264", "-b:v", "1M",
+            "-c:a", "aac", "-b:a", "128k", "-f", "hls", "-hls_segment_filename",
+            os.path.dirname(abso_file_path) + "/hls/segment_%03d.ts",
+            os.path.dirname(abso_file_path) + "/hls/playlist.m3u8", "-vn", "-c:a", "copy", os.path.dirname(abso_file_path) + "/hls/output.mp3"
+        ]
+        subprocess_result = subprocess.run(hls_cmd)
+        if subprocess_result.returncode != 0:
+            raise Exception(f"FFmpeg command failed: {subprocess_result.stderr}")
+    except (FileNotFoundError, json.decoder.JSONDecodeError) as e:
+        message = f"Failed to generate new HLS manifest file: {e}"
+        frappe.throw(message, frappe.ValidationError)
+    try:
+        with app.test_request_context():
+            return send_file(os.path.dirname(abso_file_path) + "/hls/output.mp3", mimetype="application/vnd.apple.mpegurl")
+    finally:
+        cleanup_hls_files(abso_file_path)
+def cleanup_hls_files(abso_file_path):
+    hls_dir = os.path.dirname(abso_file_path) + "/hls"
+    if os.path.exists(hls_dir):
+        for file in os.listdir(hls_dir):
+            os.remove(os.path.join(hls_dir, file))
+        os.rmdir(hls_dir)
+        
+if __name__ == '__main__':
+    app.run()
