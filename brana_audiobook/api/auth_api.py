@@ -14,7 +14,6 @@ def login(identifier, password):
     # Validate the identifier and password
     if not identifier or not password:
         frappe.throw(_("Please enter the identifier and password."))
-
     # Rate Limiting: Check if the client has exceeded the maximum number of requests per minute
     # if is_rate_limited():
     #     frappe.throw(_("Too many requests. Please try again later."))
