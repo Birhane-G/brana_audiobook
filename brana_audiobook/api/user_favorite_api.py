@@ -22,7 +22,12 @@ def favorite(title):
                         favorite.remove(item)
                         favorite.save()
                         # item.favourite = 0
-                        return "Remove Favourite"
+                        return "Removed Favourite"
+                favorite_item = favorite.append("wish_list", {})
+                favorite_item.title = title
+                favorite_item.favourite = 1
+                favorite.save()
+                return "Favourite"
         else:
             favorite = frappe.new_doc("Brana User Profile")
             favorite.user = user.email

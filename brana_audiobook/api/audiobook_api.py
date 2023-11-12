@@ -96,15 +96,15 @@ def retrieve_audiobook(audiobook_id):
     # ...
     # Ensure the authenticated user has the necessary roles and permissions to access the API method
     audiobook = frappe.get_doc("Audiobook", audiobook_id)
-    # Retrieve User Favorite
-    user_favorite = frappe.get_value(
-        "User Favorite",
-        filters={"user": frappe.session.user, "audio_content": audiobook_id},
-        fieldname="name"
-    )
-    # is_favorite = False
-    # if user_favorite:
-    #     is_favorite = True
+    user = frappe.get_doc("User", frappe.session.user)
+    favorite = frappe.get_doc("Brana User Profile", user.email)
+    is_favorite = 0
+    if not favorite.wish_list:
+        is_favorite = 0
+    else:
+        for item in favorite.wish_list:
+            if item.title == audiobook_id:
+                is_favorite = 1
     author = frappe.get_doc("User", audiobook.author)
     narrator = frappe.get_doc("User", audiobook.narrator)
     thumbnail_url = f"https://{frappe.local.site}{audiobook.thumbnail}"
@@ -125,15 +125,23 @@ def retrieve_audiobook(audiobook_id):
         "duration": format_duration(audiobook.duration),
         "total chapter": total_chapter_count,
         "total chapter duration": format_duration(audiobook.total_chapters_duration),
+        "is_favorite": is_favorite,
         "chapters" : []
-        # Is bookmarked ?
-        # "is_favorite": is_favorite
     }
     for chapter in chapters:
+        is_favorite = 0
+        if not favorite.wish_list:
+            is_favorite = 0
+        else:
+            for item in favorite.wish_list:
+                if item.title == chapter.title:
+                    is_favorite = 1
         response["chapters"].append({
             "title": chapter.title,
-            "duration" : format_duration(chapter.duration)
+            "duration" : format_duration(chapter.duration),
+            "is_favorite" : is_favorite
         })
+        
     return response
 
 """
