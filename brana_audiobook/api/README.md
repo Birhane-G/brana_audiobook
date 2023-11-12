@@ -338,6 +338,127 @@ Endpoint: ```brana_audiobook.api.audiobook_api.retreive_latest_audiobook```
             "chapters": []
 }
 ```
+### Podcasts
+This api endpoint allows you to retrieve all Podcasts available in the Brana Audiobook collection.
+Endpoint: ```brana_audiobook.api.podcast_api.retrieve_podcasts```
+###### Request
+    HTTP Method: GET
+    Parameters: None
+###### Response
+    HTTP Status Code: 200 OK
+    Content-Type: application/json
+###### Response Body
+    The response body will contain list podcasts and episodes in JSON format.
+    Example:
+```
+{
+    "message": [
+        {
+            "title": "በትምህርት ሚኒስቴር ለረጅም ጊዜ አገልግለዋል",
+            "description": "በትምህርት ሚኒስቴር ለረጅም ጊዜ አገልግለዋል",
+            "Host": "ህይወት እምሻው",
+            "cover image": "https://app.berana.app/files/049A6919.JPG",
+            "episodes": [
+                {
+                    "title": "ሚኒስቴር ለረጅም",
+                    "duration": "6m 26s",
+                    "podcast Number": "1"
+                }
+            ]
+        },
+        {
+            "title": "ባህል፣ አስተሳሰብ እንዲሁም የአኗኗር ዘይቤ",
+            "description": "የኢጣልያ ወረራ ሲከሰት ከልዑል ራስ ዕምሩ ኃይለ ሥላሴ ጦር ጋር በምዕራብ ኢትዮጵያ በአርበኝነት ሲዋጉ ቆይተው በመያዛቸው ጣሊያን ከልዑል ራስ ዕምሩ ጋር በግዞት ለሰባት ዓመታት በፖንዞ ደሴትና በሊፓሪ ደሴት ታስረው ቆይተዋል።\nከዚያም የተባባሪ ኃያላት ወታደሮች በ1935 ዓ.ም. ሲያስመልጧቸው በተመለሱበት ጊዜ በትምህርታቸው እንደገና በኦክስፎርድ ከገፉ በኋላ በተለያዩ የመንግስት ተቋማት በተለይም በትምህርት ሚኒስቴር ለረጅም ጊዜ አገልግለዋል።\n",
+            "Host": "Birhane Gabriel",
+            "cover image": "https://app.berana.app/files/049A6919.JPG",
+            "episodes": [
+                {
+                    "title": "ጊዜ አገልግለዋል",
+                    "duration": "6m 26s",
+                    "podcast Number": "1"
+                }
+            ]
+        }
+    ]
+}
+```
+#### Podcast
+This api endpoint allows you to retrieve podcast from Brana Audiobook collection.
+Endpoint: ```brana_audiobook.api.podcast_api.retrieve_podcast```
+###### Request
+    HTTP Method: GET
+    Parameters: podcast_id
+###### Response
+    HTTP Status Code: 200 OK
+    Content-Type: application/json
+###### Response Body
+    The response body will contain podcast and It's episodes in JSON format.
+    Example:
+```
+{
+    "message": {
+        "title": "ባህል፣ አስተሳሰብ እንዲሁም የአኗኗር ዘይቤ",
+        "description": "የኢጣልያ ወረራ ሲከሰት ከልዑል ራስ ዕምሩ ኃይለ ሥላሴ ጦር ጋር በምዕራብ ኢትዮጵያ በአርበኝነት ሲዋጉ ቆይተው በመያዛቸው ጣሊያን ከልዑል ራስ ዕምሩ ጋር በግዞት ለሰባት ዓመታት በፖንዞ ደሴትና በሊፓሪ ደሴት ታስረው ቆይተዋል።\nከዚያም የተባባሪ ኃያላት ወታደሮች በ1935 ዓ.ም. ሲያስመልጧቸው በተመለሱበት ጊዜ በትምህርታቸው እንደገና በኦክስፎርድ ከገፉ በኋላ በተለያዩ የመንግስት ተቋማት በተለይም በትምህርት ሚኒስቴር ለረጅም ጊዜ አገልግለዋል።\n",
+        "Host": "Birhane Gabriel",
+        "cover image": "https://app.berana.app/files/049A6919.JPG",
+        "episodes": [
+            {
+                "title": "ጊዜ አገልግለዋል",
+                "duration": "6m 26s",
+                "podcast Number": "1"
+            }
+        ],
+        "total episodes": 1
+    }
+}
+```
+#### Recommended Podcast 
+This api endpoint allows you to retrieve recommended podcasts from Brana Audiobook collection.
+Endpoint: ```brana_audiobook.api.podcast_api.retrieve_recommended_podcasts```
+###### Request
+    HTTP Method: GET
+    Parameters: None
+###### Response
+    HTTP Status Code: 200 OK
+    Content-Type: application/json
+###### Response Body
+    The response body will contain Recommended Audiobook and It's Chapters in JSON format.
+    Example:
+```
+{
+    "message": [
+        {
+            "title": "ባህል፣ አስተሳሰብ እንዲሁም የአኗኗር ዘይቤ",
+            "description": "የኢጣልያ ወረራ ሲከሰት ከልዑል ራስ ዕምሩ ኃይለ ሥላሴ ጦር ጋር በምዕራብ ኢትዮጵያ በአርበኝነት ሲዋጉ ቆይተው በመያዛቸው ጣሊያን ከልዑል ራስ ዕምሩ ጋር በግዞት ለሰባት ዓመታት በፖንዞ ደሴትና በሊፓሪ ደሴት ታስረው ቆይተዋል።\nከዚያም የተባባሪ ኃያላት ወታደሮች በ1935 ዓ.ም. ሲያስመልጧቸው በተመለሱበት ጊዜ በትምህርታቸው እንደገና በኦክስፎርድ ከገፉ በኋላ በተለያዩ የመንግስት ተቋማት በተለይም በትምህርት ሚኒስቴር ለረጅም ጊዜ አገልግለዋል።\n",
+            "Host": "Birhane Gabriel",
+            "cover image": "https://app.berana.app/files/049A6919.JPG",
+            "episodes": [
+                {
+                    "title": "ጊዜ አገልግለዋል",
+                    "duration": "6m 26s",
+                    "podcast Number": "1"
+                }
+            ],
+            "total episodes": 1
+        }
+    ]
+}
+```
+#### Editors Picks Podcasts
+This api endpoint allows you to retrieve editors picks audiobook from Brana Audiobook collection.
+Endpoint: ```brana_audiobook.api.podcast_api.retrieve_editor_podcasts```
+###### Request
+    HTTP Method: GET
+    Parameters: None
+###### Response
+    HTTP Status Code: 200 OK
+    Content-Type: application/json
+###### Response Body
+    The response body will contain editor picks Audiobook and It's Chapters in JSON format.
+    Example:
+```
+
+```
 #### Play Audiobooks Sample
 This api endpoint allows you to play Audiobook based audiobook title from Brana Audiobook collection.
 Endpoint: ```brana_audiobook.api.audiobook_api.audiobook_sample?audiobook_id=መተዋወቂያ```
@@ -461,9 +582,6 @@ Endpoint: ```brana_audiobook.api.promotion_api.promotion```
     ]
 }
 ```
-
-### Podcasts
-    ```https://app.berana.app/api/method/brana_audiobook.api.podcast_api.retrieve_podcasts```
 
 
 ## Conclusion
