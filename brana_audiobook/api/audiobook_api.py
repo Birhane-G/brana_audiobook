@@ -123,15 +123,15 @@ def retrieve_audiobook(audiobook_id):
     audiobook = frappe.get_doc("Audiobook", audiobook_id)
     user = frappe.get_doc("User", frappe.session.user)
     favorite = frappe.get_all("Brana User Profile",filters={"user": user.email})
-    
     is_favorite = 0
-    
-    if not favorite.wish_list:
-        is_favorite = 0
-    else:
-        for item in favorite.wish_list:
-            if item.title == audiobook_id:
-                is_favorite = 1
+    if favorite:
+        favorite = frappe.get_doc("Brana User Profile", user.email)
+        if not favorite.wish_list:
+            is_favorite = 0
+        else:
+            for item in favorite.wish_list:
+                if item.title == audiobook.name:
+                    is_favorite = 1
     author = frappe.get_doc("User", audiobook.author)
     narrator = frappe.get_doc("User", audiobook.narrator)
     thumbnail_url = f"https://{frappe.local.site}{audiobook.thumbnail}"
@@ -156,6 +156,7 @@ def retrieve_audiobook(audiobook_id):
         "chapters" : []
     }
     for chapter in chapters:
+        favorite = frappe.get_doc("Brana User Profile", user.email)
         is_favorite = 0
         if not favorite.wish_list:
             is_favorite = 0
@@ -220,12 +221,14 @@ def retrieve_recommended_audiobooks(search=None, page=1, limit=20):
                 filters={"audiobook": audiobook.name},
                 fieldname="COUNT(title)")
             is_favorite = 0
-            if not favorite.wish_list:
-                is_favorite = 0
-            else:
-                for item in favorite.wish_list:
-                    if item.title == audiobook.name:
-                        is_favorite = 1
+            if favorite:
+                favorite = frappe.get_doc("Brana User Profile", user.email)
+                if not favorite.wish_list:
+                    is_favorite = 0
+                else:
+                    for item in favorite.wish_list:
+                        if item.title == audiobook.name:
+                            is_favorite = 1
             response_data.append({
                 "title": audiobook.title,
                 "description": audiobook.description,
@@ -240,6 +243,7 @@ def retrieve_recommended_audiobooks(search=None, page=1, limit=20):
                 "chapters" : []
         })
         for chapter in chapters:
+            favorite = frappe.get_doc("Brana User Profile", user.email)
             is_favorite = 0
             if not favorite.wish_list:
                 is_favorite = 0
@@ -300,12 +304,14 @@ def retrieve_editors_picks(search=None, page=1, limit=20):
                 filters={"audiobook": editors_picks_audiobook.name},
                 fieldname="COUNT(title)")
             is_favorite = 0
-            if not favorite.wish_list:
-                is_favorite = 0
-            else:
-                for item in favorite.wish_list:
-                    if item.title == editors_picks_audiobook.name:
-                        is_favorite = 1
+            if favorite:
+                favorite = frappe.get_doc("Brana User Profile", user.email)
+                if not favorite.wish_list:
+                    is_favorite = 0
+                else:
+                    for item in favorite.wish_list:
+                        if item.title == editors_picks_audiobook.name:
+                            is_favorite = 1
             response_data.append({
                 "title": editors_picks_audiobook.name,
                 "description": editors_picks_audiobook.description,
@@ -320,6 +326,7 @@ def retrieve_editors_picks(search=None, page=1, limit=20):
                 "chapters" : []
         })
             for chapter in chapters:
+                favorite = frappe.get_doc("Brana User Profile", user.email)
                 is_favorite = 0
                 if not favorite.wish_list:
                     is_favorite = 0
