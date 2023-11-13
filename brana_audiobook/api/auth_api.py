@@ -53,7 +53,7 @@ def login(identifier, password):
     user_doc = frappe.get_doc("User", user.name)
 
     # Retrieve the User Profile document
-    user_profile = frappe.get_value("Brana User Profile", {"user": user_doc.name}, ["name", "wish_list", "listening_history"], as_dict=True)
+    # user_profile = frappe.get_value("Brana User Profile", {"user": user_doc.name}, ["name", "wish_list", "listening_history"], as_dict=True)
 
     # Create a new session for the user
     frappe.local.login_manager.login_as(user_doc.name)
@@ -62,7 +62,7 @@ def login(identifier, password):
     logger.info(f"User '{user_doc.name}' logged in successfully.")
 
     # Reset the request count for successful login
-    reset_request_count()
+    # reset_request_count()
 
     return {
         "user": user_doc.name,

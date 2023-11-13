@@ -35,7 +35,7 @@ This Api used to register user
 Endpoint: ```brana_audiobook.api.auth_api.signup```
 ###### Request
     HTTP Method: POST
-    Parameters: firstname, lastname, email, phonenumber and Password
+    Parameters: firstname, lastname, username, email, phonenumber and Password
 ###### Response
     HTTP Status Code: 200 OK
     Content-Type: application/json

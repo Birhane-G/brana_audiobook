@@ -1,3 +1,7 @@
+# Copyright (c) 2023, Birhane Gebrial and contributors
+# For license information, please see license.txt
+
+#Code minimization
 import frappe
 import json
 import mimetypes
@@ -9,12 +13,9 @@ from flask import send_file
 from frappe.utils import format_duration
 
 app = Flask(__name__)
-"""
-This function retrieve all audiobook available in the 
-Brana Audiobook collection That is not disabled
 
-Code minimization
-"""
+# This function retrieve all audiobooks available in the 
+# Brana Audiobook collection That is not disabled
 @frappe.whitelist(allow_guest=True)
 def retrieve_audiobooks(search=None, page=1, limit=20):
     if not frappe.session.user:
@@ -93,14 +94,15 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
                 "chapters" : []
         })
             for chapter in chapters:
-                favorite = frappe.get_doc("Brana User Profile", user.email)
                 is_favorite = 0
-                if not favorite.wish_list:
-                    is_favorite = 0
-                else:
-                    for item in favorite.wish_list:
-                        if item.title == chapter.title:
-                            is_favorite = 1
+                if favorite:
+                    favorite = frappe.get_doc("Brana User Profile", user.email)
+                    if not favorite.wish_list:
+                        is_favorite = 0
+                    else:
+                        for item in favorite.wish_list:
+                            if item.title == chapter.title:
+                                is_favorite = 1
                 response_data[-1]["chapters"].append({
                 "title": chapter.title,
                 "duration" : format_duration(chapter.duration),
@@ -156,14 +158,15 @@ def retrieve_audiobook(audiobook_id):
         "chapters" : []
     }
     for chapter in chapters:
-        favorite = frappe.get_doc("Brana User Profile", user.email)
         is_favorite = 0
-        if not favorite.wish_list:
-            is_favorite = 0
-        else:
-            for item in favorite.wish_list:
-                if item.title == chapter.title:
-                    is_favorite = 1
+        if favorite:
+            favorite = frappe.get_doc("Brana User Profile", user.email)
+            if not favorite.wish_list:
+                is_favorite = 0
+            else:
+                for item in favorite.wish_list:
+                    if item.title == chapter.title:
+                        is_favorite = 1
         response["chapters"].append({
             "title": chapter.title,
             "duration" : format_duration(chapter.duration),
@@ -243,14 +246,15 @@ def retrieve_recommended_audiobooks(search=None, page=1, limit=20):
                 "chapters" : []
         })
         for chapter in chapters:
-            favorite = frappe.get_doc("Brana User Profile", user.email)
             is_favorite = 0
-            if not favorite.wish_list:
-                is_favorite = 0
-            else:
-                for item in favorite.wish_list:
-                    if item.title == chapter.title:
-                        is_favorite = 1
+            if favorite:
+                favorite = frappe.get_doc("Brana User Profile", user.email)
+                if not favorite.wish_list:
+                    is_favorite = 0
+                else:
+                    for item in favorite.wish_list:
+                        if item.title == chapter.title:
+                            is_favorite = 1
                 response_data[-1]["chapters"].append({
                 "title": chapter.title,
                 "duration" : format_duration(chapter.duration),
@@ -326,14 +330,15 @@ def retrieve_editors_picks(search=None, page=1, limit=20):
                 "chapters" : []
         })
             for chapter in chapters:
-                favorite = frappe.get_doc("Brana User Profile", user.email)
                 is_favorite = 0
-                if not favorite.wish_list:
-                    is_favorite = 0
-                else:
-                    for item in favorite.wish_list:
-                        if item.title == chapter.title:
-                            is_favorite = 1
+                if favorite:
+                    favorite = frappe.get_doc("Brana User Profile", user.email)
+                    if not favorite.wish_list:
+                        is_favorite = 0
+                    else:
+                        for item in favorite.wish_list:
+                            if item.title == chapter.title:
+                                is_favorite = 1
                 response_data[-1]["chapters"].append({
                 "title": chapter.title,
                 "duration" : format_duration(chapter.duration),
