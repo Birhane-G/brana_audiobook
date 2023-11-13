@@ -18,7 +18,7 @@ def retrieve_podcasts(search=None, page=1, limit=20):
     filters_str = " AND ". join(filters)
     offset = (page - 1) * limit
     user = frappe.get_doc("User", frappe.session.user)
-    favorite = frappe.get_doc("Brana User Profile", user.email)
+    favorite = frappe.get_all("Brana User Profile",filters={"user": user.email})
     podcasts = frappe.get_all(
         "Podcast",
         filters={
@@ -50,12 +50,14 @@ def retrieve_podcasts(search=None, page=1, limit=20):
             episodes = frappe.get_all("Podcast Episode", filters={ "podcast": podcast.title }, fields=["title","duration", "episode_number"])
             cover_image_url = f"https://{frappe.local.site}{podcast.cover_image_url}"
             is_favorite = 0
-            if not favorite.wish_list:
-                is_favorite = 0
-            else:
-                for item in favorite.wish_list:
-                    if item.title == podcast.title:
-                        is_favorite = 1
+            if favorite:
+                favorite = frappe.get_doc("Brana User Profile", user.email)
+                if not favorite.wish_list:
+                    is_favorite = 0
+                else:
+                    for item in favorite.wish_list:
+                        if item.title == podcast.name:
+                            is_favorite = 1
             response_data.append({
                 "title": podcast.title,
                 "description": podcast.description,
@@ -66,12 +68,14 @@ def retrieve_podcasts(search=None, page=1, limit=20):
         })
             for episode in episodes:
                 is_favorite = 0
-                if not favorite.wish_list:
-                    is_favorite = 0
-                else:
-                    for item in favorite.wish_list:
-                        if item.title == episode.title:
-                            is_favorite = 1
+                if favorite:
+                    favorite = frappe.get_doc("Brana User Profile", user.email)
+                    if not favorite.wish_list:
+                        is_favorite = 0
+                    else:
+                        for item in favorite.wish_list:
+                            if item.title == episode.title:
+                                is_favorite = 1
                 response_data[-1]["episodes"].append({
                 "title": episode.title,
                 "duration" : format_duration(episode.duration),
@@ -94,15 +98,17 @@ def retrieve_podcast(podcast_id):
     # Ensure the authenticated user has the necessary roles and permissions to access the API method
     podcast = frappe.get_doc("Podcast", podcast_id)
     user = frappe.get_doc("User", frappe.session.user)
-    favorite = frappe.get_doc("Brana User Profile", user.email)
+    favorite = frappe.get_all("Brana User Profile",filters={"user": user.email})
     host = frappe.get_doc("User", podcast.host)
     is_favorite = 0
-    if not favorite.wish_list:
-        is_favorite = 0
-    else:
-        for item in favorite.wish_list:
-            if item.title == podcast_id:
-                is_favorite = 1
+    if favorite:
+        favorite = frappe.get_doc("Brana User Profile", user.email)
+        if not favorite.wish_list:
+            is_favorite = 0
+        else:
+            for item in favorite.wish_list:
+                if item.title == podcast.name:
+                    is_favorite = 1
     cover_image_url = f"https://{frappe.local.site}{podcast.cover_image_url}"
     episodes = frappe.get_all("Podcast Episode", filters={ "podcast": podcast.title }, fields=["title","duration", "episode_number"])
     total_episode_count = frappe.get_value(
@@ -122,12 +128,14 @@ def retrieve_podcast(podcast_id):
     }
     for episode in episodes:
         is_favorite = 0
-        if not favorite.wish_list:
-            is_favorite = 0
-        else:
-            for item in favorite.wish_list:
-                if item.title == episode.title:
-                    is_favorite = 1
+        if favorite:
+            favorite = frappe.get_doc("Brana User Profile", user.email)
+            if not favorite.wish_list:
+                is_favorite = 0
+            else:
+                for item in favorite.wish_list:
+                    if item.title == episode.title:
+                        is_favorite = 1
         response["episodes"].append({
                 "title": episode.title,
                 "duration" : format_duration(episode.duration),
@@ -146,7 +154,7 @@ def retrieve_recommended_podcasts(search=None, page=1, limit=20):
     filters_str = " AND ". join(filters)
     offset = (page - 1) * limit
     user = frappe.get_doc("User", frappe.session.user)
-    favorite = frappe.get_doc("Brana User Profile", user.email)
+    favorite = frappe.get_all("Brana User Profile",filters={"user": user.email})
     podcasts = frappe.get_all(
         "Podcast",
         filters={
@@ -178,12 +186,14 @@ def retrieve_recommended_podcasts(search=None, page=1, limit=20):
                 },
                 fieldname="COUNT(title)")
             is_favorite = 0
-            if not favorite.wish_list:
-                is_favorite = 0
-            else:
-                for item in favorite.wish_list:
-                    if item.title == podcast.title:
-                        is_favorite = 1
+            if favorite:
+                favorite = frappe.get_doc("Brana User Profile", user.email)
+                if not favorite.wish_list:
+                    is_favorite = 0
+                else:
+                    for item in favorite.wish_list:
+                        if item.title == podcast.name:
+                            is_favorite = 1
             response_data.append({
                 "title": podcast.title,
                 "description": podcast.description,
@@ -195,6 +205,8 @@ def retrieve_recommended_podcasts(search=None, page=1, limit=20):
         })
             for episode in episodes:
                 is_favorite = 0
+            if favorite:
+                favorite = frappe.get_doc("Brana User Profile", user.email)
                 if not favorite.wish_list:
                     is_favorite = 0
                 else:
@@ -221,7 +233,7 @@ def retrieve_editor_podcasts(search=None, page=1, limit=20):
     filters_str = " AND ". join(filters)
     offset = (page - 1) * limit
     user = frappe.get_doc("User", frappe.session.user)
-    favorite = frappe.get_doc("Brana User Profile", user.email)
+    favorite = frappe.get_all("Brana User Profile",filters={"user": user.email})
     podcasts = frappe.get_all(
         "Podcast",
         filters={
@@ -247,12 +259,14 @@ def retrieve_editor_podcasts(search=None, page=1, limit=20):
             episodes = frappe.get_all("Podcast Episode", filters={ "podcast": podcast.title }, fields=["title","duration", "episode_number"])
             cover_image_url = f"https://{frappe.local.site}{podcast.cover_image_url}"
             is_favorite = 0
-            if not favorite.wish_list:
-                is_favorite = 0
-            else:
-                for item in favorite.wish_list:
-                    if item.title == podcast.title:
-                        is_favorite = 1
+            if favorite:
+                favorite = frappe.get_doc("Brana User Profile", user.email)
+                if not favorite.wish_list:
+                    is_favorite = 0
+                else:
+                    for item in favorite.wish_list:
+                        if item.title == editors_picks_audiobook.name:
+                            is_favorite = 1
             total_episode_count = frappe.get_value(
                 "Podcast Episode",
                 filters={
@@ -270,12 +284,14 @@ def retrieve_editor_podcasts(search=None, page=1, limit=20):
         })
             for episode in episodes:
                 is_favorite = 0
-                if not favorite.wish_list:
-                    is_favorite = 0
-                else:
-                    for item in favorite.wish_list:
-                        if item.title == episode.title:
-                            is_favorite = 1
+                if favorite:
+                    favorite = frappe.get_doc("Brana User Profile", user.email)
+                    if not favorite.wish_list:
+                        is_favorite = 0
+                    else:
+                        for item in favorite.wish_list:
+                            if item.title == episode.title:
+                                is_favorite = 1
                 response_data[-1]["episodes"].append({
                 "title": episode.title,
                 "duration" : format_duration(episode.duration),

@@ -188,7 +188,7 @@ def retrieve_recommended_audiobooks(search=None, page=1, limit=20):
     filters_str = " AND ".join(filters)
     offset = (page - 1) * limit
     user = frappe.get_doc("User", frappe.session.user)
-    favorite = frappe.get_doc("Brana User Profile", user.email)
+    favorite = frappe.get_all("Brana User Profile",filters={"user": user.email})
     audiobooks = frappe.get_all(
         "Audiobook",
         filters={
@@ -272,7 +272,7 @@ def retrieve_editors_picks(search=None, page=1, limit=20):
     filters_str = " AND ".join(filters)
     offset = (page - 1) * limit
     user = frappe.get_doc("User", frappe.session.user)
-    favorite = frappe.get_doc("Brana User Profile", user.email)
+    favorite = frappe.get_all("Brana User Profile",filters={"user": user.email})
     editors_picks_audiobooks = frappe.get_all(
         "Audiobook",
         filters={
