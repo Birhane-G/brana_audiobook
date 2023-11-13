@@ -7,7 +7,7 @@ def favorite(title):
         frappe.throw("User not authenticated", frappe.AuthenticationError)
     user = frappe.get_doc("User", frappe.session.user)
     try:
-        favorite = frappe.get_doc("Brana User Profile", user.email)
+        favorite = frappe.get_all("Brana User Profile", filters={"user": user.email})
         if favorite:
             favorite = frappe.get_doc("Brana User Profile", user.email)
             if not favorite.wish_list:
@@ -23,11 +23,12 @@ def favorite(title):
                         favorite.save()
                         # item.favourite = 0
                         return "Removed Favourite"
-                favorite_item = favorite.append("wish_list", {})
-                favorite_item.title = title
-                favorite_item.favourite = 1
-                favorite.save()
-                return "Favourite"
+                    else:
+                        favorite_item = favorite.append("wish_list", {})
+                        favorite_item.title = title
+                        favorite_item.favourite = 1
+                        favorite.save()
+                        return "Favourite"
         else:
             favorite = frappe.new_doc("Brana User Profile")
             favorite.user = user.email

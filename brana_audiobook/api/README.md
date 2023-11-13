@@ -583,6 +583,5 @@ Endpoint: ```brana_audiobook.api.promotion_api.promotion```
 }
 ```
 
-
 ## Conclusion
 This document has provided an overview of the Brana Audiobook API, including the available endpoints

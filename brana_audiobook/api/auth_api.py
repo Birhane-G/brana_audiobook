@@ -113,8 +113,7 @@ def signup(firstname, lastname, username, email, phonenumber):
         user.email = email
         user.phone = phonenumber
         user.username = username
-        user.add_roles("User")
-        user.allowed_modules = []
+        user.role_profile_name = "Brana User"
         user.insert(ignore_permissions=True)
         user.save(ignore_permissions=True)
         

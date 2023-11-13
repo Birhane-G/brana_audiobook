@@ -25,7 +25,7 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
     filters_str = " AND ". join(filters)
     offset = (page - 1) * limit
     user = frappe.get_doc("User", frappe.session.user)
-    favorite = frappe.get_doc("Brana User Profile", user.email)
+    favorite = frappe.get_all("Brana User Profile",filters={"user": user.email})
     audiobooks = frappe.get_all(
         "Audiobook",
         filters={
@@ -68,13 +68,17 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
                     "audiobook": audiobook.name
                 },
                 fieldname="COUNT(title)")
+            
             is_favorite = 0
-            if not favorite.wish_list:
-                is_favorite = 0
-            else:
-                for item in favorite.wish_list:
-                    if item.title == audiobook.name:
-                        is_favorite = 1
+            if favorite:
+                favorite = frappe.get_doc("Brana User Profile", user.email)
+                if not favorite.wish_list:
+                    is_favorite = 0
+                else:
+                    for item in favorite.wish_list:
+                        if item.title == audiobook.name:
+                            is_favorite = 1
+                            
             response_data.append({
                 "title": audiobook.title,
                 "description": audiobook.description,
@@ -89,6 +93,7 @@ def retrieve_audiobooks(search=None, page=1, limit=20):
                 "chapters" : []
         })
             for chapter in chapters:
+                favorite = frappe.get_doc("Brana User Profile", user.email)
                 is_favorite = 0
                 if not favorite.wish_list:
                     is_favorite = 0
@@ -117,8 +122,10 @@ def retrieve_audiobook(audiobook_id):
     # Ensure the authenticated user has the necessary roles and permissions to access the API method
     audiobook = frappe.get_doc("Audiobook", audiobook_id)
     user = frappe.get_doc("User", frappe.session.user)
-    favorite = frappe.get_doc("Brana User Profile", user.email)
+    favorite = frappe.get_all("Brana User Profile",filters={"user": user.email})
+    
     is_favorite = 0
+    
     if not favorite.wish_list:
         is_favorite = 0
     else:
