@@ -18,7 +18,7 @@
  "fields": [
   {
    "fieldname": "user",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "in_list_view": 1,
    "label": "User",
    "options": "User",
@@ -55,7 +55,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-11-14 14:48:04.959322",
+ "modified": "2023-11-14 15:04:58.225937",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Brana User Profile",

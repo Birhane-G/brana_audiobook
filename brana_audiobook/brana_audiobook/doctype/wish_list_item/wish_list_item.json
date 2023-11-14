@@ -1,12 +1,13 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:title",
+ "autoname": "naming_series:",
  "creation": "2023-08-18 23:12:52.588111",
  "default_view": "List",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "naming_series",
   "title",
   "favourite",
   "wish_list"
@@ -17,8 +18,7 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Title",
-   "reqd": 1,
-   "unique": 1
+   "reqd": 1
   },
   {
    "default": "0",
@@ -31,16 +31,22 @@
    "fieldname": "wish_list",
    "fieldtype": "Check",
    "label": "Wish List"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Data",
+   "label": "Naming",
+   "options": "Favourite.####"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-11-11 22:59:22.269746",
+ "modified": "2023-11-14 15:09:05.074515",
  "modified_by": "Administrator",
  "module": "Brana Audiobook",
  "name": "Wish List Item",
- "naming_rule": "By fieldname",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [],
  "sort_field": "modified",

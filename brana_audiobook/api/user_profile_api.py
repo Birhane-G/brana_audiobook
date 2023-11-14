@@ -1,6 +1,5 @@
 import frappe
 
-
 @frappe.whitelist(allow_guest=True)
 def retrieve_profile():
     if not frappe.session.user:
