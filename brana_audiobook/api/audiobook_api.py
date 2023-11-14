@@ -13,7 +13,6 @@ from flask import send_file
 from frappe.utils import format_duration
 
 app = Flask(__name__)
-
 # This function retrieve all audiobooks available in the 
 # Brana Audiobook collection That is not disabled
 @frappe.whitelist(allow_guest=True)
@@ -367,7 +366,8 @@ def retreive_audiobook_genres(search=None, page=1, limit=20):
         limit=limit,
         start=offset,
         order_by="creation DESC"
-    )
+    )    
+
     response_data = []
     for Genre in Genres:
         genre_images = frappe.get_all(
@@ -421,6 +421,9 @@ def retreive_audiobook_genre(audiobook_genre):
             "total_chapters_duration"
         ]
     )
+    user = frappe.get_doc("User", frappe.session.user)
+    favorite = frappe.get_all("Brana User Profile",filters={"user": user.email})
+
     response_data = []
     if audiobooks:
         for audiobook in audiobooks:
@@ -432,6 +435,15 @@ def retreive_audiobook_genre(audiobook_genre):
                 "Audiobook Chapter",
                 filters={"audiobook": audiobook.name},
                 fieldname="COUNT(title)")
+            is_favorite = 0
+            if favorite:
+                favorite = frappe.get_doc("Brana User Profile", user.email)
+                if not favorite.wish_list:
+                    is_favorite = 0
+                else:
+                    for item in favorite.wish_list:
+                        if item.title == audiobook.name:
+                            is_favorite = 1
             response_data.append({
                 "title": audiobook.title,
                 "description": audiobook.description,
@@ -442,12 +454,23 @@ def retreive_audiobook_genre(audiobook_genre):
                 "duration": format_duration(audiobook.duration),
                 "Total chapter": total_chapter_count,
                 "Total chapter Duration": format_duration(audiobook.total_chapters_duration),
+                "is_favorite": is_favorite,
                 "chapters" : []
         })
             for chapter in chapters:
+                is_favorite = 0
+                if favorite:
+                    favorite = frappe.get_doc("Brana User Profile", user.email)
+                    if not favorite.wish_list:
+                        is_favorite = 0
+                    else:
+                        for item in favorite.wish_list:
+                            if item.title == chapter.title:
+                                is_favorite = 1
                 response_data[-1]["chapters"].append({
                 "title": chapter.title,
-                "duration" : format_duration(chapter.duration)
+                "duration" : format_duration(chapter.duration),
+                "is_favorite": is_favorite,
             })
         return response_data
     else:
