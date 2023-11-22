@@ -7,7 +7,7 @@ import json
 import mimetypes
 import subprocess
 import os
-from flask import Flask, send_file, request
+from flask import Flask, send_file, request, Response
 from werkzeug.utils import secure_filename
 from flask import send_file
 from frappe.utils import format_duration
@@ -540,7 +540,7 @@ def retreive_latest_audiobook(search=None, page=1, limit=20):
     else:
         return "No Audiobook found."
 
-@frappe.whitelist(allow_guest=False)
+@frappe.whitelist(allow_guest=True)
 def audiobook_sample(audiobook_id):
     if not frappe.session.user:
         frappe.throw("User not authenticated", frappe.AuthenticationError)
@@ -548,32 +548,89 @@ def audiobook_sample(audiobook_id):
     audio_file_doc = frappe.get_doc("Audiobook File", audiobook_doc.audio_file)
     file_url = audio_file_doc.file_url
     file_path = frappe.utils.get_files_path(file_url)
-
-    filename = secure_filename(audio_file_doc.audio_base_name)
-    mimetype = mimetypes.guess_type(filename)[0]
     abso_file_path = os.path.abspath(file_path)
+    filename = secure_filename(audio_file_doc.audio_base_name)
+    if not audio_file_doc.file_url:
+        frappe.throw("Audio file not found", frappe.DoesNotExistError)
+    mimetype = mimetypes.guess_type(filename)[0]
+    def generate():
+        with open(abso_file_path, 'rb') as file:
+            while True:
+                chunk = file.read(1024)
+                if not chunk:
+                    break
+                yield chunk
+    response = Response(generate(), mimetype=mimetype)
+    response.headers.set('Content-Disposition', 'inline', filename=filename)
+    response.headers.set('Cache-Control', 'no-store')
+    response.headers.set('Content-Transfer-Encoding', 'chunked')
 
-    if not os.path.exists(os.path.dirname(abso_file_path) + "/hls"):
-        os.makedirs(os.path.dirname(abso_file_path) + "/hls")
-    os.chmod(os.path.dirname(abso_file_path) + "/hls", 0o777)
-    try:
-        hls_cmd = [
-            "ffmpeg", "-y", "-i", abso_file_path, "-hls_time", "5", "-c:v", "libx264", "-b:v", "1M",
-            "-c:a", "aac", "-b:a", "128k", "-f", "hls", "-hls_segment_filename",
-            os.path.dirname(abso_file_path) + "/hls/segment_%03d.ts",
-            os.path.dirname(abso_file_path) + "/hls/playlist.m3u8", "-vn", "-c:a", "copy", os.path.dirname(abso_file_path) + "/hls/output.mp3"
-        ]
-        subprocess_result = subprocess.run(hls_cmd)
-        if subprocess_result.returncode != 0:
-            raise Exception(f"FFmpeg command failed: {subprocess_result.stderr}")
-    except (FileNotFoundError, json.decoder.JSONDecodeError) as e:
-        message = f"Failed to generate new HLS manifest file: {e}"
-        frappe.throw(message, frappe.ValidationError)
-    try:
-        with app.test_request_context():
-            return send_file(os.path.dirname(abso_file_path) + "/hls/output.mp3", mimetype="application/vnd.apple.mpegurl")
-    finally:
-        cleanup_hls_files(abso_file_path)
+    return response
+
+    # file_url = f"https://{frappe.local.site}{audio_file_doc.file_url}"
+    # link_html = f'<a href="{file_url}" target="_blank">Click to Play</a>'
+    # return link_html
+
+# audio_html = f'<audio controls><source src="{abso_file_path}" type="audio/mpeg"></audio>'
+#     return f"https://{frappe.local.site}/public/files/6.mp3"
+
+
+# def audiobook_sample(audiobook_id):
+#     if not frappe.session.user:
+#         frappe.throw("User not authenticated", frappe.AuthenticationError)
+#     audiobook_doc = frappe.get_doc("Audiobook", audiobook_id)
+#     audio_file_doc = frappe.get_doc("Audiobook File", audiobook_doc.audio_file)
+#     file_url = audio_file_doc.file_url
+#     file_path = frappe.utils.get_files_path(file_url)
+
+#     filename = secure_filename(audio_file_doc.audio_base_name)
+#     mimetype = mimetypes.guess_type(filename)[0]
+#     abso_file_path = os.path.abspath(file_path)
+#     folder_path = os.path.dirname(os.path.dirname(abso_file_path))
+#     folder_name = os.path.splitext(filename)[0]
+    
+#     if not os.path.exists(os.path.join(folder_path, folder_name)):
+#         os.makedirs(os.path.join(folder_path, folder_name))
+#     os.chmod(os.path.join(folder_path, folder_name), 0o777)
+#     try:
+#         hls_cmd = [
+#         "ffmpeg", "-y", "-i", abso_file_path, "-c:a", "aac", "-b:a", "128k", "-f", "hls",
+#         "-hls_segment_filename", os.path.join(folder_path, folder_name, "segment_%03d.ts"),
+#         os.path.join(folder_path, folder_name, "playlist.m3u8"), "-vn", "-c:a", "copy",
+#         os.path.join(folder_path, folder_name, "output.mp3")
+#     ]
+#         subprocess_result = subprocess.run(hls_cmd)
+#         if subprocess_result.returncode != 0:
+#             raise Exception(f"FFmpeg command failed: {subprocess_result.stderr}")
+#     except (FileNotFoundError, json.decoder.JSONDecodeError) as e:
+#         message = f"Failed to generate new HLS manifest file: {e}"
+#         frappe.throw(message, frappe.ValidationError)
+        
+#         # return os.path.join(folder_path, folder_name, "output.mp3")
+#     try:
+#         with app.test_request_context():
+#             # return send_file(os.path.dirname(abso_file_path) + "output.mp3", mimetype="application/vnd.apple.mpegurl")
+#             return f"https://{frappe.local.site}/public/6/output.mp3"
+#             # return os.path.join(folder_path, folder_name, "output.mp3")
+        
+#             # return os.path.dirname(abso_file_path)
+#     finally:
+#         cleanup_hls_files(abso_file_path)
+    # return abso_file_path
+    # try:
+    #     hls_cmd = [
+    #         "ffmpeg", "-y", "-i", abso_file_path, "-hls_time", "5", "-c:v", "libx264", "-b:v", "1M",
+    #         "-c:a", "aac", "-b:a", "128k", "-f", "hls", "-hls_segment_filename",
+    #         os.path.dirname(abso_file_path) + "/hls/segment_%03d.ts",
+    #         os.path.dirname(abso_file_path) + "/hls/playlist.m3u8", "-vn", "-c:a", "copy", os.path.dirname(abso_file_path) + "/hls/output.mp3"
+    #     ]
+    #     subprocess_result = subprocess.run(hls_cmd)
+    #     if subprocess_result.returncode != 0:
+    #         raise Exception(f"FFmpeg command failed: {subprocess_result.stderr}")
+    # except (FileNotFoundError, json.decoder.JSONDecodeError) as e:
+    #     message = f"Failed to generate new HLS manifest file: {e}"
+    #     frappe.throw(message, frappe.ValidationError)
+    
 def cleanup_hls_files(abso_file_path):
     hls_dir = os.path.dirname(abso_file_path) + "/hls"
     if os.path.exists(hls_dir):
@@ -589,7 +646,7 @@ def play_audiobook_chapter(audiobook_chapter):
     audio_file_doc = frappe.get_doc("Audiobook File", audiobook_doc.audio_file)
     file_url = audio_file_doc.file_url
     file_path = frappe.utils.get_files_path(file_url)
-
+    abso_file_path = os.path.abspath(file_path)
     filename = secure_filename(audio_file_doc.audio_base_name)
     mimetype = mimetypes.guess_type(filename)[0]
     abso_file_path = os.path.abspath(file_path)

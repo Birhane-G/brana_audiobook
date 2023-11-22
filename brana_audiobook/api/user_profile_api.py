@@ -1,6 +1,6 @@
 import frappe
 
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist(allow_guest=False)
 def retrieve_profile():
     if not frappe.session.user:
         frappe.throw("User not authenticated", frappe.AuthenticationError)
